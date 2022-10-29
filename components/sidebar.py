@@ -1,4 +1,4 @@
-from dash import html, dcc
+from dash import html, dcc,ctx
 from dash.dependencies import Input, Output, State
 from datetime import date, datetime, timedelta
 import dash_bootstrap_components as dbc
@@ -22,7 +22,7 @@ layout = dbc.Col([
 	dbc.Row([
 		dbc.Col([
 
-			html.Legend("Ações", className="card-title"),
+			html.H3("Pesquisar ações", className="card-title"),
             html.Div(
                 dcc.Dropdown(
                 id="dropdown-acoes",
@@ -47,6 +47,16 @@ layout = dbc.Col([
 		]),
 	],style={"padding": "25px"}),
 
+
+		html.Hr(),
+	dbc.Row([
+
+		html.H3("Ações selecionadas"),
+		
+		html.Div(id="div_acoes"),
+
+	],style={"padding": "25px"}),
+
 	html.Hr(),
 
 	dbc.Row([
@@ -58,23 +68,13 @@ layout = dbc.Col([
 	            dbc.NavLink("Altas baixas", href="/altas_baixas", active="exact"),
 	            dbc.NavLink("Previsões", href="/previsoes", active="exact"),
 	        ], vertical=True, pills=True, id='nav_buttons', style={"margin-bottom": "50px"}),
-			html.H5(id="testeH4"),
+			
 		]),
 
 	],style={"padding": "25px"}),
 
-	dbc.Row([
-		dbc.Col([
+	
 
-			dbc.Checklist(
-                options=[],
-                value=[1],
-                id="check_acoes",
-                switch=True),
-
-		]),
-
-	])
 
 
 ])
@@ -96,8 +96,7 @@ def popula_dropdown(data):
 	return [([{"label": x, "value": x} for x in df.Acoes.unique()])]
 
 
-@app.callback(Output("testeH4","children"),
-	Output("check_acoes","options"),
+@app.callback(Output("div_acoes","children"),
 	
 	[Input("carregar_acoes","n_clicks"),
 	Input("dropdown-acoes","value"),
@@ -107,10 +106,15 @@ def popula_dropdown(data):
 
 def carregar_acoes(n,drop_data):
 	
-	if(n):
+	if("carregar_acoes"==ctx.triggered_id):
 		
 		data = drop_data
 		
-		return [data,data]
+		return dbc.Select(options=[{'label':i,'value':i}for i in data],value=[data[0]])
 
-	return []
+	
+
+
+		
+
+	
