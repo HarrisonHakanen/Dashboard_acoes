@@ -13,7 +13,7 @@ from dash import dash_table
 
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
-
+import funcoes
 
 
 
@@ -109,6 +109,10 @@ def carregar_acoes(n,drop_data):
 	if("carregar_acoes"==ctx.triggered_id):
 		
 		data = drop_data
+
+		informacoes = funcoes.PesquisarAcoes(data)
+
+		
 		
 		return dbc.Select(options=[{'label':i,'value':i}for i in data],value=[data[0]])
 

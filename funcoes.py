@@ -526,3 +526,50 @@ def Prever_negociacoes_media_param(ticker,info,dias_anteriores=10,tipo="compra_v
     
     
     return [compra_prevista_media,venda_prevista_media]
+
+
+def PesquisarAcoes(lista_de_acoes):
+
+
+    info = GetAcoes(lista_de_acoes,0)
+
+    
+
+
+
+    neg_param = pd.DataFrame()
+    neg_mes = pd.DataFrame()
+
+    sazon_param = pd.DataFrame()
+    sazon_mes = pd.DataFrame()
+
+    i = 0
+    while i< len(info):
+
+    
+        print("\n")
+        print("\n")
+        print("\n")
+        
+        print("\n")
+        print("\n")
+        print("\n")    
+        
+        info[i].negociacoes_param["ticker"] = info[i].ticker
+        info[i].negociacoes_mes["ticker"] = info[i].ticker
+        info[i].sazonalidade_param["ticker"] = info[i].ticker
+        info[i].sazonalidade_mes["ticker"] = info[i].ticker
+        
+        
+        neg_param=pd.concat([neg_param,info[i].negociacoes_param])
+        neg_mes = pd.concat([neg_mes,info[i].negociacoes_mes])
+                             
+        sazon_param = pd.concat([sazon_param,info[i].sazonalidade_param])
+        sazon_mes = pd.concat([sazon_mes,info[i].sazonalidade_mes])
+        
+        
+        i+=1
+
+    print(info[1].negociacoes_param)
+
+    return [neg_param,neg_mes,sazon_param,sazon_mes]
