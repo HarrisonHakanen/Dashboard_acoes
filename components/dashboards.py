@@ -17,7 +17,7 @@ from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
 
 
 layout = dbc.Col([
-
+	
 	#Card negociacoes por parametro--------------------------
 	dbc.Card([
 
@@ -45,9 +45,54 @@ layout = dbc.Col([
 		#informações de negociações por parametro
 		dbc.Row([
 
-			#valor de venda
+			
+			#valor de compra
 			dbc.Col([
 
+				html.Legend("Informações compra"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_param_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_param_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_param_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_param_max")
+						]),
+					]),
+
+				]),
+
+			],width = 3),
+
+
+
+			#valor de venda
+			dbc.Col([
+				html.Legend("Informações venda"),
 				html.Table([
 					html.Tr([
 						html.Td([
@@ -87,21 +132,93 @@ layout = dbc.Col([
 
 			],width = 3),
 
-			#valor de compra
-			dbc.Col([
-
-				html.H4("Média",id="vlr_compra_neg_param_media"),
-				html.H4("Desvio padrão",id="vlr_compra_neg_param_std"),
-				html.H4("Mínima",id="vlr_compra_neg_param_min"),
-				html.H4("Máxima",id="vlr_compra_neg_param_max")
-
-			],width = 3),
 
 			#lucro
-			dbc.Col([]),
+			dbc.Col([
+
+				html.Legend("Informações lucro"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_param_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_param_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_param_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_param_max")
+						]),
+					]),
+
+				]),
+
+
+
+			],width=3),
 
 			#taxa de retorno
-			dbc.Col([]),
+			dbc.Col([
+				html.Legend("Informações taxa de retorno"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_param_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_param_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_param_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_param_max")
+						]),
+					]),
+
+				]),
+
+
+
+			],width=3),
 
 		],style={"padding": "25px"}),
 			
@@ -130,7 +247,188 @@ layout = dbc.Col([
 	        	html.Div(id="tabela_negociacoes_mes", className="dbc"),
 
 			]),
-		],style={"padding": "25px"})
+		],style={"padding": "25px"}),
+
+
+		#informações de negociações por mês
+		dbc.Row([
+
+			
+			#valor de compra
+			dbc.Col([
+
+				html.Legend("Informações compra"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_mes_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_mes_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_mes_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_compra_neg_mes_max")
+						]),
+					]),
+
+				]),
+
+			],width = 3),
+
+
+
+			#valor de venda
+			dbc.Col([
+				html.Legend("Informações venda"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_venda_neg_mes_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_venda_neg_mes_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_venda_neg_mes_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_venda_neg_mes_max")
+						]),
+					]),
+
+				]),
+
+
+			],width = 3),
+
+
+			#lucro
+			dbc.Col([
+
+				html.Legend("Informações lucro"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_mes_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_mes_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_mes_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_lucro_neg_mes_max")
+						]),
+					]),
+
+				]),
+
+
+
+			],width=3),
+
+			#taxa de retorno
+			dbc.Col([
+				html.Legend("Informações taxa de retorno"),
+				html.Table([
+					html.Tr([
+						html.Td([
+							html.H5("Média")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_mes_media"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Desvio padrão")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_mes_std"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Mínima")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_mes_min"),
+						]),
+					]),
+					html.Tr([
+						html.Td([
+							html.H5("Máxima")
+						]),
+						html.Td([
+							html.H5(id="vlr_retorno_neg_mes_max")
+						]),
+					]),
+
+				]),
+
+
+
+			],width=3),
+
+		],style={"padding": "25px"}),
 
 	])
 
@@ -139,12 +437,9 @@ layout = dbc.Col([
 
 ],width=12)
 
-"""
-vlr_venda_neg_param_media
-vlr_venda_neg_param_std
-vlr_venda_neg_param_min
-vlr_venda_neg_param_max
-"""
+
+
+#INFO DAS NEGOCIAÇÕES POR PARAMETRO
 @app.callback(
 
 	Output("vlr_venda_neg_param_media","children"),
@@ -158,10 +453,141 @@ vlr_venda_neg_param_max
 def info_vendas_param(data):
 
 	df = pd.DataFrame(data)
-	data = [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
+
+	return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
 
 
-	return data
+
+@app.callback(
+
+	Output("vlr_compra_neg_param_media","children"),
+	Output("vlr_compra_neg_param_std","children"),
+	Output("vlr_compra_neg_param_min","children"),
+	Output("vlr_compra_neg_param_max","children"),
+	[Input('store-negociacoes-param', 'data')]
+
+)
+
+def info_compra_param(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+
+
+@app.callback(
+
+	Output("vlr_lucro_neg_param_media","children"),
+	Output("vlr_lucro_neg_param_std","children"),
+	Output("vlr_lucro_neg_param_min","children"),
+	Output("vlr_lucro_neg_param_max","children"),
+	[Input('store-negociacoes-param', 'data')]
+
+)
+
+def info_lucro_param(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+
+@app.callback(
+
+	Output("vlr_retorno_neg_param_media","children"),
+	Output("vlr_retorno_neg_param_std","children"),
+	Output("vlr_retorno_neg_param_min","children"),
+	Output("vlr_retorno_neg_param_max","children"),
+	[Input('store-negociacoes-param', 'data')]
+
+)
+
+def info_taxa_retorno_param(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
+
+
+
+
+
+
+
+#INFO DAS NEGOCIAÇÕES POR MÊS
+@app.callback(
+
+	Output("vlr_venda_neg_mes_media","children"),
+	Output("vlr_venda_neg_mes_std","children"),
+	Output("vlr_venda_neg_mes_min","children"),
+	Output("vlr_venda_neg_mes_max","children"),
+	[Input('store-negociacoes-mes', 'data')]
+
+)
+
+def info_vendas_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
+
+
+
+@app.callback(
+
+	Output("vlr_compra_neg_mes_media","children"),
+	Output("vlr_compra_neg_mes_std","children"),
+	Output("vlr_compra_neg_mes_min","children"),
+	Output("vlr_compra_neg_mes_max","children"),
+	[Input('store-negociacoes-mes', 'data')]
+
+)
+
+def info_compra_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+
+
+@app.callback(
+
+	Output("vlr_lucro_neg_mes_media","children"),
+	Output("vlr_lucro_neg_mes_std","children"),
+	Output("vlr_lucro_neg_mes_min","children"),
+	Output("vlr_lucro_neg_mes_max","children"),
+	[Input('store-negociacoes-mes', 'data')]
+
+)
+
+def info_lucro_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+
+@app.callback(
+
+	Output("vlr_retorno_neg_mes_media","children"),
+	Output("vlr_retorno_neg_mes_std","children"),
+	Output("vlr_retorno_neg_mes_min","children"),
+	Output("vlr_retorno_neg_mes_max","children"),
+	[Input('store-negociacoes-mes', 'data')]
+
+)
+
+def info_taxa_retorno_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
+
+
+
+
+
+
+
+
 
 
 @app.callback(
