@@ -12,19 +12,16 @@ import dateutil.parser
 import math
 import plotly.express as px
 
-
 class Acao:
     
-    def _init_(self,ticker:str,negociacoes_mes:list,negociacoes_param:list,P_B,fechamento:list,altas_mes:list,baixas_mes:list,altas_param:list,baixas_param:list):
+    def _init_(self,ticker:str,negociacoes_mes:list,negociacoes_param:list,fechamento:list,sazonalidade_param:list,sazonalidade_mes:list):
     
         self.ticker = ticker
         self.negociacoes_mes = negociacoes_mes
         self.negociacoes_param = negociacoes_param
         self.fechamento = fechamento
-        self.altas_mes
-        self.baixas_mes
-        self.altas_param
-        self.baixas_param
+        self.sazonalidade_mes = sazonalidade_mes
+        self.sazonalidade_param = sazonalidade_param
         
         
     
@@ -415,11 +412,12 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             altas_mes_df = altas_mes_df.dropna()
             baixas_mes_df = baixas_mes_df.dropna()
             
-            acao.altas_mes = altas_mes_df
-            acao.baixas_mes = baixas_mes_df
+            altas_mes_df = altas_mes_df.rename({"Close":"Fechamento alta","Date":"Data alta"},axis=1)
+            baixas_mes_df = baixas_mes_df.rename({"Close":"Fechamento baixa","Date":"Data baixa"},axis=1)
             
-            #sazon_mensal = list(zip(altas_mes_df,baixas_mes_df))
-            #acao.sazonalidade_mensal = pd.DataFrame(altas_mes_df["Data"],altas_mes_df["Close"],baixas_mes_df["Data"],baixas_mes_df["Close"],columns=["Data alta","Valor alta","Data baixa","Valor baixa"])
+            
+            dados= list(zip(baixas_mes_df["Fechamento baixa"],baixas_mes_df["Data baixa"],altas_mes_df["Fechamento alta"],altas_mes_df["Data alta"]))
+            acao.sazonalidade_mes = pd.DataFrame(dados,columns=["Fechamento baixa","Data baixa","Fechamento alta","Data alta"])            
             
             acao.negociacoes_mes = dados_lucro(altas_mes_np,baixas_mes_np)
             acao.negociacoes_mes["Taxa retorno"] = np.log(acao.negociacoes_mes["Valor venda"]/acao.negociacoes_mes["Valor compra"])*100
@@ -436,16 +434,17 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             altas_param_np = altas_param_df.to_numpy()
             baixas_param_np = baixas_param_df.to_numpy()
             
-            acao.altas_param = altas_param_df
-            acao.baixas_param = baixas_param_df
+            altas_param_df = altas_param_df.rename({"Close":"Fechamento alta","Date":"Data alta"},axis=1)
+            baixas_param_df = baixas_param_df.rename({"Close":"Fechamento baixa","Date":"Data baixa"},axis=1)
             
+            dados= list(zip(baixas_param_df["Fechamento baixa"],baixas_param_df["Data baixa"],altas_param_df["Fechamento alta"],altas_param_df["Data alta"]))
+            acao.sazonalidade_param = pd.DataFrame(dados,columns=["Fechamento baixa","Data baixa","Fechamento alta","Data alta"])
+               
             acao.negociacoes_param = dados_lucro(altas_param_np,baixas_param_np)
             acao.negociacoes_param["Taxa retorno"] = np.log(acao.negociacoes_param["Valor venda"]/acao.negociacoes_param["Valor compra"])*100
             
             
-            
-            
-            
+        
             acao.fechamento = acao_df.set_index("Date")
             
             lista_de_acoes.append(acao)
