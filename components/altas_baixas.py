@@ -438,3 +438,68 @@ layout = dbc.Col([
 
 
 ])
+
+
+
+@app.callback(
+    Output('tabela_altas_baixas_param', 'children'),
+    Input('store-sazonalidade-param', 'data')
+)
+def imprimir_tabela (data):
+
+	df = pd.DataFrame(data)
+	
+	df = df.sort_index(ascending=False)
+
+	#df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
+	#df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
+
+	#df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
+	#df['Fechamento alta'] = round(df['Fechamento alta'],2)
+	
+	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+        sort_action="native",       
+        sort_mode="single",  
+        selected_columns=[],        
+        selected_rows=[],          
+        page_action="native",      
+        page_current=0,             
+        page_size=7,)
+
+
+	return tabela
+
+
+
+@app.callback(
+    Output('tabela_altas_baixas_mesla', 'children'),
+    Input('store-sazonalidade-mes', 'data')
+)
+def imprimir_tabela (data):
+
+	df = pd.DataFrame(data)
+
+	df.reset_index(inplace=True)
+
+	df = df.sort_index(ascending=False)
+
+	df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
+	df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
+
+	df['Fechamento baixa'] = round(df['Fechameno baixa'],2)
+	df['Fechamento alta'] = round(df['Fechamento ala'],2)
+	
+
+	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+        sort_action="native",       
+        sort_mode="single",  
+        selected_columns=[],        
+        selected_rows=[],          
+        page_action="native",      
+        page_current=0,             
+        page_size=7,)
+
+
+	return tabela

@@ -532,11 +532,7 @@ def PesquisarAcoes(lista_de_acoes):
 
 
     info = GetAcoes(lista_de_acoes,0)
-
     
-
-
-
     neg_param = pd.DataFrame()
     neg_mes = pd.DataFrame()
 
@@ -544,16 +540,7 @@ def PesquisarAcoes(lista_de_acoes):
     sazon_mes = pd.DataFrame()
 
     i = 0
-    while i< len(info):
-
-    
-        print("\n")
-        print("\n")
-        print("\n")
-        
-        print("\n")
-        print("\n")
-        print("\n")    
+    while i< len(info):   
         
         info[i].negociacoes_param["ticker"] = info[i].ticker
         info[i].negociacoes_mes["ticker"] = info[i].ticker
@@ -570,6 +557,6 @@ def PesquisarAcoes(lista_de_acoes):
         
         i+=1
 
-    print(info[1].negociacoes_param)
+
 
     return [neg_param,neg_mes,sazon_param,sazon_mes]

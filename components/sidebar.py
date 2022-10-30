@@ -97,7 +97,6 @@ def popula_dropdown(data):
 
 
 @app.callback(Output("div_acoes","children"),
-	
 	[Input("carregar_acoes","n_clicks"),
 	Input("dropdown-acoes","value"),
 	
@@ -112,11 +111,16 @@ def carregar_acoes(n,drop_data):
 
 		informacoes = funcoes.PesquisarAcoes(data)
 
-		
+
+		dcc.Store(id='store-negociacoes-param', data=informacoes[0]),
+		dcc.Store(id='store-negociacoes-mes', data=informacoes[1]),
+		dcc.Store(id='store-sazonalidade-param', data=informacoes[2]),
+		dcc.Store(id='store-sazonalidade-mes', data=informacoes[3]),
+
 		
 		return dbc.Select(options=[{'label':i,'value':i}for i in data],value=[data[0]])
 
-	
+		
 
 
 		

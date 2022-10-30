@@ -33,6 +33,7 @@ acoes_tickers = pd.read_csv("acoes_tickers.csv").to_dict()
 
 app.layout = dbc.Container(children=[
 
+	
 	dcc.Store(id='store-negociacoes-param', data=negociacoes_param),
 	dcc.Store(id='store-negociacoes-mes', data=negociacoes_mes),
 	dcc.Store(id='store-sazonalidade-param', data=sazonalidade_param),
