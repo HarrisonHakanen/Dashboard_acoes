@@ -7,12 +7,12 @@ import plotly.express as px
 
 # import from folders
 from app import *
-from components import dashboards
+
 
 import funcoes
 from app import *
 
-from components import dashboards, altas_baixas,sidebar,previsoes
+from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger
 
 
 ultimos_dias = 30
@@ -85,6 +85,14 @@ def render_page_content(pathname):
 	if pathname == "/previsoes":
 
 		return previsoes.layout
+
+	if pathname == "/macd":
+
+		return macd.layout
+
+	if pathname == "/bollinger":
+
+		return bollinger.layout
 
    
 if __name__ == '__main__':
