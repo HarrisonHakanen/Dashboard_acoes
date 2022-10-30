@@ -415,8 +415,24 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             altas_mes_df = altas_mes_df.rename({"Close":"Fechamento alta","Date":"Data alta"},axis=1)
             baixas_mes_df = baixas_mes_df.rename({"Close":"Fechamento baixa","Date":"Data baixa"},axis=1)
             
+            #print(type(baixas_mes_df["Data baixa"]))
+            datas_baixas_normalizadas_mes = list()
+            datas_altas_normalizadas_mes = list()
+    
+            j=0
+            while j< len(baixas_mes_df["Data baixa"]):
+                
+                #print(baixas_mes_df["Data baixa"].values[j][0])
+                datas_baixas_normalizadas_mes.append(baixas_mes_df["Data baixa"].values[j][0])
+                datas_altas_normalizadas_mes.append(altas_mes_df["Data alta"].values[j][0])
+                
+                j+=1
+        
+            baixas_mes_df["Data baixa"] = datas_baixas_normalizadas_mes 
+            altas_mes_df["Data alta"] = datas_altas_normalizadas_mes
             
-            dados= list(zip(baixas_mes_df["Fechamento baixa"],baixas_mes_df["Data baixa"],altas_mes_df["Fechamento alta"],altas_mes_df["Data alta"]))
+            
+            dados= list(zip(baixas_mes_df["Fechamento baixa"],baixas_mes_df["Data baixa"].values,altas_mes_df["Fechamento alta"],altas_mes_df["Data alta"].values))
             acao.sazonalidade_mes = pd.DataFrame(dados,columns=["Fechamento baixa","Data baixa","Fechamento alta","Data alta"])            
             
             acao.negociacoes_mes = dados_lucro(altas_mes_np,baixas_mes_np)
@@ -437,14 +453,38 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             altas_param_df = altas_param_df.rename({"Close":"Fechamento alta","Date":"Data alta"},axis=1)
             baixas_param_df = baixas_param_df.rename({"Close":"Fechamento baixa","Date":"Data baixa"},axis=1)
             
-            dados= list(zip(baixas_param_df["Fechamento baixa"],baixas_param_df["Data baixa"],altas_param_df["Fechamento alta"],altas_param_df["Data alta"]))
+            datas_baixas_normalizadas = list()
+            datas_altas_normalizadas = list()
+            
+            j=0
+            while j< len(baixas_param_df):
+                
+                
+                dia= baixas_param_df['Data baixa'][j][0].day
+                mes = baixas_param_df['Data baixa'][j][0].month
+                ano = baixas_param_df['Data baixa'][j][0].year
+                
+                datas_baixas_normalizadas.append(pd.to_datetime(str(ano)+"-"+str(mes)+"-"+str(dia),format='%Y-%m-%d'))
+                
+                dia = altas_param_df['Data alta'][j][0].day
+                mes = altas_param_df['Data alta'][j][0].month
+                ano = altas_param_df['Data alta'][j][0].year
+                
+                datas_altas_normalizadas.append(pd.to_datetime(str(ano)+"-"+str(mes)+"-"+str(dia),format='%Y-%m-%d'))
+                
+                j+=1
+                        
+            baixas_param_df['Data baixa'] = datas_baixas_normalizadas 
+            
+            altas_param_df['Data alta'] = datas_altas_normalizadas
+            
+            
+            dados= list(zip(baixas_param_df["Fechamento baixa"],baixas_param_df["Data baixa"].values,altas_param_df["Fechamento alta"],altas_param_df["Data alta"].values))
             acao.sazonalidade_param = pd.DataFrame(dados,columns=["Fechamento baixa","Data baixa","Fechamento alta","Data alta"])
                
             acao.negociacoes_param = dados_lucro(altas_param_np,baixas_param_np)
             acao.negociacoes_param["Taxa retorno"] = np.log(acao.negociacoes_param["Valor venda"]/acao.negociacoes_param["Valor compra"])*100
             
-            
-        
             acao.fechamento = acao_df.set_index("Date")
             
             lista_de_acoes.append(acao)
@@ -526,6 +566,7 @@ def Prever_negociacoes_media_param(ticker,info,dias_anteriores=10,tipo="compra_v
     
     
     return [compra_prevista_media,venda_prevista_media]
+
 
 
 def PesquisarAcoes(lista_de_acoes):

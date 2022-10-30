@@ -50,7 +50,7 @@ layout = dbc.Col([
 			#valor de compra
 			dbc.Col([
 
-				html.Legend("Informações compra"),
+				html.Legend("Informações baixa"),
 				html.Table([
 					html.Tr([
 						html.Td([
@@ -87,13 +87,13 @@ layout = dbc.Col([
 
 				]),
 
-			],width = 3),
+			],width = 6),
 
 
 
 			#valor de venda
 			dbc.Col([
-				html.Legend("Informações venda"),
+				html.Legend("Informações alta"),
 				html.Table([
 					html.Tr([
 						html.Td([
@@ -131,96 +131,8 @@ layout = dbc.Col([
 				]),
 
 
-			],width = 3),
-
-
-			#lucro
-			dbc.Col([
-
-				html.Legend("Informações lucro"),
-				html.Table([
-					html.Tr([
-						html.Td([
-							html.H5("Média")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_param_media"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Desvio padrão")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_param_std"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Mínima")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_param_min"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Máxima")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_param_max")
-						]),
-					]),
-
-				]),
-
-
-
-			],width=3),
-
-			#taxa de retorno
-			dbc.Col([
-				html.Legend("Informações taxa de retorno"),
-				html.Table([
-					html.Tr([
-						html.Td([
-							html.H5("Média")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_param_media"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Desvio padrão")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_param_std"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Mínima")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_param_min"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Máxima")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_param_max")
-						]),
-					]),
-
-				]),
-
-
-
-			],width=3),
-
+			],width = 6),
+			
 		],style={"padding": "25px"}),
 			
 	]),
@@ -261,7 +173,7 @@ layout = dbc.Col([
 			#valor de compra
 			dbc.Col([
 
-				html.Legend("Informações compra"),
+				html.Legend("Informações baixa"),
 				html.Table([
 					html.Tr([
 						html.Td([
@@ -298,13 +210,13 @@ layout = dbc.Col([
 
 				]),
 
-			],width = 3),
+			],width = 6),
 
 
 
 			#valor de venda
 			dbc.Col([
-				html.Legend("Informações venda"),
+				html.Legend("Informações alta"),
 				html.Table([
 					html.Tr([
 						html.Td([
@@ -342,95 +254,8 @@ layout = dbc.Col([
 				]),
 
 
-			],width = 3),
+			],width = 6),
 
-
-			#lucro
-			dbc.Col([
-
-				html.Legend("Informações lucro"),
-				html.Table([
-					html.Tr([
-						html.Td([
-							html.H5("Média")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_mes_media"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Desvio padrão")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_mes_std"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Mínima")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_mes_min"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Máxima")
-						]),
-						html.Td([
-							html.H5(id="vlr_lucro_altas_baixas_mes_max")
-						]),
-					]),
-
-				]),
-
-
-
-			],width=3),
-
-			#taxa de retorno
-			dbc.Col([
-				html.Legend("Informações taxa de retorno"),
-				html.Table([
-					html.Tr([
-						html.Td([
-							html.H5("Média")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_mes_media"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Desvio padrão")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_mes_std"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Mínima")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_mes_min"),
-						]),
-					]),
-					html.Tr([
-						html.Td([
-							html.H5("Máxima")
-						]),
-						html.Td([
-							html.H5(id="vlr_retorno_altas_baixas_mes_max")
-						]),
-					]),
-
-				]),
-
-
-
-			],width=3),
 
 		],style={"padding": "25px"}),
 			
@@ -438,6 +263,41 @@ layout = dbc.Col([
 
 
 ])
+
+
+@app.callback(
+
+	Output("vlr_venda_altas_baixas_param_media","children"),
+	Output("vlr_venda_altas_baixas_param_std","children"),
+	Output("vlr_venda_altas_baixas_param_min","children"),
+	Output("vlr_venda_altas_baixas_param_max","children"),
+	[Input('store-sazonalidade-param', 'data')]
+
+)
+
+def info_vendas_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
+
+
+
+@app.callback(
+
+	Output("vlr_compra_altas_baixas_param_media","children"),
+	Output("vlr_compra_altas_baixas_param_std","children"),
+	Output("vlr_compra_altas_baixas_param_min","children"),
+	Output("vlr_compra_altas_baixas_param_max","children"),
+	[Input('store-sazonalidade-param', 'data')]
+
+)
+
+def info_compra_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
 
 
 
@@ -454,8 +314,8 @@ def imprimir_tabela (data):
 	#df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
 	#df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
 
-	#df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
-	#df['Fechamento alta'] = round(df['Fechamento alta'],2)
+	df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
+	df['Fechamento alta'] = round(df['Fechamento alta'],2)
 	
 	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
 
@@ -473,22 +333,17 @@ def imprimir_tabela (data):
 
 
 @app.callback(
-    Output('tabela_altas_baixas_mesla', 'children'),
+    Output('tabela_altas_baixas_mes', 'children'),
     Input('store-sazonalidade-mes', 'data')
 )
 def imprimir_tabela (data):
 
 	df = pd.DataFrame(data)
 
-	df.reset_index(inplace=True)
-
 	df = df.sort_index(ascending=False)
 
-	df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
-	df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
-
-	df['Fechamento baixa'] = round(df['Fechameno baixa'],2)
-	df['Fechamento alta'] = round(df['Fechamento ala'],2)
+	df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
+	df['Fechamento alta'] = round(df['Fechamento alta'],2)
 	
 
 	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
@@ -503,3 +358,127 @@ def imprimir_tabela (data):
 
 
 	return tabela
+
+
+
+@app.callback(
+	Output('grafico_altas_baixas_param','figure'),
+	[Input('store-sazonalidade-param','data')]
+)
+
+def popula_grafico_altas_baixas_param(data):
+
+	df_compra = pd.DataFrame()
+	df_venda = pd.DataFrame()
+
+	df = pd.DataFrame(data)
+
+	#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
+	#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+
+	df['Fechamento baixa'] = round(df['Fechamento baixa'])
+	df['Fechamento alta'] = round(df['Fechamento alta'])
+
+	df_compra["Data"] = df['Data baixa']
+	df_compra["Valor"] = df['Fechamento baixa']
+	df_compra["Output"] = 'Baixa'
+
+	df_venda['Data'] = df['Data alta']
+	df_venda['Valor'] = df['Fechamento alta']
+	df_venda['Output'] = 'Alta'
+
+	dfs = [df_venda, df_compra]
+
+	df_final = pd.concat([df_compra,df_venda])
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
+	fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
+	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+	return fig
+
+
+
+
+
+
+#SAZONALIDADE POR MES------------------------------------------------------
+
+
+
+#INFO DAS NEGOCIAÇÕES POR MÊS
+@app.callback(
+
+	Output("vlr_venda_altas_baixas_mes_media","children"),
+	Output("vlr_venda_altas_baixas_mes_std","children"),
+	Output("vlr_venda_altas_baixas_mes_min","children"),
+	Output("vlr_venda_altas_baixas_mes_max","children"),
+	[Input('store-sazonalidade-mes', 'data')]
+
+)
+
+def info_vendas_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
+
+
+
+@app.callback(
+
+	Output("vlr_compra_altas_baixas_mes_media","children"),
+	Output("vlr_compra_altas_baixas_mes_std","children"),
+	Output("vlr_compra_altas_baixas_mes_min","children"),
+	Output("vlr_compra_altas_baixas_mes_max","children"),
+	[Input('store-sazonalidade-mes', 'data')]
+
+)
+
+def info_compra_mes(data):
+
+	df = pd.DataFrame(data)
+
+	return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
+
+
+@app.callback(
+
+	Output('grafico_altas_baixas_mes','figure'),
+	[Input('store-sazonalidade-mes','data')]
+
+)
+
+
+def popula_grafico_altas_baixas_mes(data):
+
+	df_compra = pd.DataFrame()
+	df_venda = pd.DataFrame()
+
+	df = pd.DataFrame(data)
+
+	#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
+	#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+
+	df['Fechamento baixa'] = round(df['Fechamento baixa'])
+	df['Fechamento alta'] = round(df['Fechamento alta'])
+
+	df_compra["Data"] = df['Data baixa']
+	df_compra["Valor"] = df['Fechamento baixa']
+	df_compra["Output"] = 'Baixa'
+
+	df_venda['Data'] = df['Data alta']
+	df_venda['Valor'] = df['Fechamento alta']
+	df_venda['Output'] = 'Alta'
+
+	dfs = [df_venda, df_compra]
+
+	df_final = pd.concat([df_compra,df_venda])
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
+	fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
+	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+	return fig
