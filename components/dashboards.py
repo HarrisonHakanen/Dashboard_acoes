@@ -11,6 +11,7 @@ from globals import *
 from app import app
 from dash import dash_table
 
+
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
 
@@ -709,12 +710,19 @@ def imprimir_tabela (data):
 
 def popula_grafico_negocios_param(acao_selecionada):
 
+
+	
+
 	if len(acao_selecionada)>0:
+
+
 
 		Quantidade_dias_anteriores = 30
 
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
+
+
 		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")		
 		
 		df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -724,12 +732,14 @@ def popula_grafico_negocios_param(acao_selecionada):
 		df['Valor compra'] = round(df['Valor compra'])
 		df['Valor venda'] = round(df['Valor venda'])
 
+
+		
 		fig = go.Figure()
 		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
 		fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		
+
 		return fig
 
 
