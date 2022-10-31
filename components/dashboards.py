@@ -446,17 +446,22 @@ layout = dbc.Col([
 	Output("vlr_venda_neg_param_std","children"),
 	Output("vlr_venda_neg_param_min","children"),
 	Output("vlr_venda_neg_param_max","children"),
-	[Input('store-negociacoes-param', 'data')]
+	[Input('store-negociacoes-param', 'data'),
+	Input('select_acao_selecionada','value')]
 
 )
 
-def info_vendas_param(data):
-
-	df = pd.DataFrame(data)
-
-	return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
+def info_vendas_param(data,select):
 
 
+	if data != None:
+		df = pd.DataFrame(data)
+
+
+
+		return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
+
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -470,10 +475,13 @@ def info_vendas_param(data):
 
 def info_compra_param(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+		df = pd.DataFrame(data)
 
+		return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -487,9 +495,16 @@ def info_compra_param(data):
 
 def info_lucro_param(data):
 
-	df = pd.DataFrame(data)
 
-	return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+	if data != None:
+
+		df = pd.DataFrame(data)
+
+		return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+
+	return[[],[],[],[]]
+
+
 
 @app.callback(
 
@@ -503,11 +518,14 @@ def info_lucro_param(data):
 
 def info_taxa_retorno_param(data):
 
-	df = pd.DataFrame(data)
 
-	return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
+	if data != None:
 
+		df = pd.DataFrame(data)
 
+		return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
+
+	return[[],[],[],[]]
 
 
 
@@ -526,11 +544,13 @@ def info_taxa_retorno_param(data):
 
 def info_vendas_mes(data):
 
-	df = pd.DataFrame(data)
+	if data!= None:
 
-	return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
+		df = pd.DataFrame(data)
 
+		return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
 
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -544,10 +564,15 @@ def info_vendas_mes(data):
 
 def info_compra_mes(data):
 
-	df = pd.DataFrame(data)
 
-	return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+	if data != None:
 
+		df = pd.DataFrame(data)
+
+		return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
+
+
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -561,9 +586,13 @@ def info_compra_mes(data):
 
 def info_lucro_mes(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+		df = pd.DataFrame(data)
+
+		return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
+
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -577,17 +606,14 @@ def info_lucro_mes(data):
 
 def info_taxa_retorno_mes(data):
 
-	df = pd.DataFrame(data)
 
-	return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
+	if data != None:
 
+		df = pd.DataFrame(data)
 
+		return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
 
-
-
-
-
-
+	return[[],[],[],[]]
 
 
 @app.callback(
@@ -596,31 +622,35 @@ def info_taxa_retorno_mes(data):
 )
 def imprimir_tabela (data):
 
-	df = pd.DataFrame(data)
-	
-	df = df.sort_index(ascending=False)
+	if data != None:
+		df = pd.DataFrame(data)
+		
+		df.reset_index(inplace=True)
 
-	df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-	df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		df = df.sort_index(ascending=False)
 
-	df['Valor compra'] = round(df['Valor compra'],2)
-	df['Valor venda'] = round(df['Valor venda'],2)
-	df['Lucro'] = round(df['Lucro'],2)
-	df['Taxa retorno'] = round(df['Taxa retorno'],2)
+		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
 
-	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+		df['Valor compra'] = round(df['Valor compra'],2)
+		df['Valor venda'] = round(df['Valor venda'],2)
+		df['Lucro'] = round(df['Lucro'],2)
+		df['Taxa retorno'] = round(df['Taxa retorno'],2)
 
-        sort_action="native",       
-        sort_mode="single",  
-        selected_columns=[],        
-        selected_rows=[],          
-        page_action="native",      
-        page_current=0,             
-        page_size=7,)
+		tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=7,)
 
 
-	return tabela
+		return tabela
 
+	return []
 
 @app.callback(
     Output('tabela_negociacoes_mes', 'children'),
@@ -628,34 +658,37 @@ def imprimir_tabela (data):
 )
 def imprimir_tabela (data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	df.reset_index(inplace=True)
+		df = pd.DataFrame(data)
 
-	df = df.sort_index(ascending=False)
+		df.reset_index(inplace=True)
 
-	df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-	df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		df = df.sort_index(ascending=False)
 
-	df['Valor compra'] = round(df['Valor compra'],2)
-	df['Valor venda'] = round(df['Valor venda'],2)
-	df['Lucro'] = round(df['Lucro'],2)
-	df['Taxa retorno'] = round(df['Taxa retorno'],2)
-	
+		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
 
-	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+		df['Valor compra'] = round(df['Valor compra'],2)
+		df['Valor venda'] = round(df['Valor venda'],2)
+		df['Lucro'] = round(df['Lucro'],2)
+		df['Taxa retorno'] = round(df['Taxa retorno'],2)
+		
 
-        sort_action="native",       
-        sort_mode="single",  
-        selected_columns=[],        
-        selected_rows=[],          
-        page_action="native",      
-        page_current=0,             
-        page_size=7,)
+		tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=7,)
 
 
-	return tabela
+		return tabela
 
+	return []
 
 @app.callback(
 	Output('grafico_negociacoes_param','figure'),
@@ -666,39 +699,42 @@ def imprimir_tabela (data):
 
 def popula_grafico_negocios_param(data):
 
-	df_compra = pd.DataFrame()
-	df_venda = pd.DataFrame()
+	if data != None:
+		df_compra = pd.DataFrame()
+		df_venda = pd.DataFrame()
 
-	df = pd.DataFrame(data)
-	df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
+		df = pd.DataFrame(data)
+		df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
 
-	df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-	df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
 
-	df['Valor compra'] = round(df['Valor compra'])
-	df['Valor venda'] = round(df['Valor venda'])
+		df['Valor compra'] = round(df['Valor compra'])
+		df['Valor venda'] = round(df['Valor venda'])
 
 
-	df_compra["Data"] = df['Data compra']
-	df_compra["Valor"] = df['Valor compra']
-	df_compra["Output"] = 'Compra'
+		df_compra["Data"] = df['Data compra']
+		df_compra["Valor"] = df['Valor compra']
+		df_compra["Output"] = 'Compra'
 
-	df_venda['Data'] = df['Data venda']
-	df_venda['Valor'] = df['Valor venda']
-	df_venda['Output'] = 'Venda'
+		df_venda['Data'] = df['Data venda']
+		df_venda['Valor'] = df['Valor venda']
+		df_venda['Output'] = 'Venda'
 
-	dfs = [df_venda, df_compra]
+		dfs = [df_venda, df_compra]
 
-	df_final = pd.concat([df_compra,df_venda])
+		df_final = pd.concat([df_compra,df_venda])
 
+
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
+		fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
-	fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
-	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-
 	return fig
-
 
 
 @app.callback(
@@ -708,33 +744,39 @@ def popula_grafico_negocios_param(data):
 
 def popula_grafico_negocios_mes(data):
 
-	df_compra = pd.DataFrame()
-	df_venda = pd.DataFrame()
 
-	df = pd.DataFrame(data)
-	df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
+	if data != None:
 
-	df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-	df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		df_compra = pd.DataFrame()
+		df_venda = pd.DataFrame()
 
-	df['Valor compra'] = round(df['Valor compra'])
-	df['Valor venda'] = round(df['Valor venda'])
+		df = pd.DataFrame(data)
+		df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
 
-	df_compra["Data"] = df['Data compra']
-	df_compra["Valor"] = df['Valor compra']
-	df_compra["Output"] = 'Compra'
+		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
 
-	df_venda['Data'] = df['Data venda']
-	df_venda['Valor'] = df['Valor venda']
-	df_venda['Output'] = 'Venda'
+		df['Valor compra'] = round(df['Valor compra'])
+		df['Valor venda'] = round(df['Valor venda'])
 
-	dfs = [df_venda, df_compra]
+		df_compra["Data"] = df['Data compra']
+		df_compra["Valor"] = df['Valor compra']
+		df_compra["Output"] = 'Compra'
 
-	df_final = pd.concat([df_compra,df_venda])
+		df_venda['Data'] = df['Data venda']
+		df_venda['Valor'] = df['Valor venda']
+		df_venda['Output'] = 'Venda'
+
+		dfs = [df_venda, df_compra]
+
+		df_final = pd.concat([df_compra,df_venda])
+
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
+		fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
-	fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
-	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-
 	return fig

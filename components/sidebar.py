@@ -53,7 +53,7 @@ layout = dbc.Col([
 
 		html.H3("Ações selecionadas"),
 		
-		html.Div(id="div_acoes"),
+		dbc.Select(id="select_acao_selecionada"),
 
 	],style={"padding": "25px"}),
 
@@ -98,14 +98,29 @@ def popula_dropdown(data):
 	return [([{"label": x, "value": x} for x in df.Acoes.unique()])]
 
 
-@app.callback(Output("div_acoes","children"),
-	[Input("carregar_acoes","n_clicks"),
-	Input("dropdown-acoes","value"),
+@app.callback(Output("select_acao_selecionada","options"),
+	Output("select_acao_selecionada","value"),
+
+	Output("store-negociacoes-param","data"),
+	Output("store-negociacoes-mes","data"),
+
+	Output("store-sazonalidade-param","data"),
+	Output("store-sazonalidade-mes","data"),
+
+	[
 	
+	Input("carregar_acoes","n_clicks"),
+	Input("dropdown-acoes","value"),
+
+	Input("store-negociacoes-param","data"),
+	Input("store-negociacoes-mes","data"),
+
+	Input("store-sazonalidade-param","data"),
+	Input("store-sazonalidade-mes","data"),
 
 	])
 
-def carregar_acoes(n,drop_data):
+def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 	
 	if("carregar_acoes"==ctx.triggered_id):
 		
@@ -113,16 +128,26 @@ def carregar_acoes(n,drop_data):
 
 		informacoes = funcoes.PesquisarAcoes(data)
 
-
+		'''
 		dcc.Store(id='store-negociacoes-param', data=informacoes[0]),
 		dcc.Store(id='store-negociacoes-mes', data=informacoes[1]),
 		dcc.Store(id='store-sazonalidade-param', data=informacoes[2]),
 		dcc.Store(id='store-sazonalidade-mes', data=informacoes[3]),
+		'''
 
 		
-		return dbc.Select(options=[{'label':i,'value':i}for i in data],value=[data[0]])
+		#TESTANDO RETORNO DE NEGOCIAÇÕES POR PARAMETRO
 
+
+
+		value = [data[0]]
+		options = [{'label':i,'value':i}for i in data]
+
+		ultimos_dias = 30
 		
+		return options,value,informacoes[0].tail(ultimos_dias).to_dict(),informacoes[1].tail(ultimos_dias).to_dict(),informacoes[2].tail(ultimos_dias).to_dict(),informacoes[3].tail(ultimos_dias).to_dict()
+
+	return [[],[],neg_param,neg_mes,sazon_param,sazon_mes]
 
 
 		

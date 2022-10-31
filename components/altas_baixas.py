@@ -277,11 +277,13 @@ layout = dbc.Col([
 
 def info_vendas_mes(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
+		df = pd.DataFrame(data)
 
+		return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
 
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -295,9 +297,13 @@ def info_vendas_mes(data):
 
 def info_compra_mes(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
+		df = pd.DataFrame(data)
+
+		return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
+
+	return[[],[],[],[]]
 
 
 
@@ -307,29 +313,32 @@ def info_compra_mes(data):
 )
 def imprimir_tabela (data):
 
-	df = pd.DataFrame(data)
-	
-	df = df.sort_index(ascending=False)
+	if data != None:
 
-	#df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
-	#df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
+		df = pd.DataFrame(data)
+		
+		df = df.sort_index(ascending=False)
 
-	df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
-	df['Fechamento alta'] = round(df['Fechamento alta'],2)
-	
-	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+		#df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
+		#df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
 
-        sort_action="native",       
-        sort_mode="single",  
-        selected_columns=[],        
-        selected_rows=[],          
-        page_action="native",      
-        page_current=0,             
-        page_size=7,)
+		df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
+		df['Fechamento alta'] = round(df['Fechamento alta'],2)
+		
+		tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=7,)
 
 
-	return tabela
+		return tabela
 
+	return []
 
 
 @app.callback(
@@ -338,28 +347,30 @@ def imprimir_tabela (data):
 )
 def imprimir_tabela (data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	df = df.sort_index(ascending=False)
+		df = pd.DataFrame(data)
 
-	df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
-	df['Fechamento alta'] = round(df['Fechamento alta'],2)
-	
+		df = df.sort_index(ascending=False)
 
-	tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+		df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
+		df['Fechamento alta'] = round(df['Fechamento alta'],2)
+		
 
-        sort_action="native",       
-        sort_mode="single",  
-        selected_columns=[],        
-        selected_rows=[],          
-        page_action="native",      
-        page_current=0,             
-        page_size=7,)
+		tabela = dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=7,)
 
 
-	return tabela
+		return tabela
 
-
+	return []
 
 @app.callback(
 	Output('grafico_altas_baixas_param','figure'),
@@ -368,37 +379,41 @@ def imprimir_tabela (data):
 
 def popula_grafico_altas_baixas_param(data):
 
-	df_compra = pd.DataFrame()
-	df_venda = pd.DataFrame()
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
-	#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+		df_compra = pd.DataFrame()
+		df_venda = pd.DataFrame()
 
-	df['Fechamento baixa'] = round(df['Fechamento baixa'])
-	df['Fechamento alta'] = round(df['Fechamento alta'])
+		df = pd.DataFrame(data)
 
-	df_compra["Data"] = df['Data baixa']
-	df_compra["Valor"] = df['Fechamento baixa']
-	df_compra["Output"] = 'Baixa'
+		#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
 
-	df_venda['Data'] = df['Data alta']
-	df_venda['Valor'] = df['Fechamento alta']
-	df_venda['Output'] = 'Alta'
+		df['Fechamento baixa'] = round(df['Fechamento baixa'])
+		df['Fechamento alta'] = round(df['Fechamento alta'])
 
-	dfs = [df_venda, df_compra]
+		df_compra["Data"] = df['Data baixa']
+		df_compra["Valor"] = df['Fechamento baixa']
+		df_compra["Output"] = 'Baixa'
 
-	df_final = pd.concat([df_compra,df_venda])
+		df_venda['Data'] = df['Data alta']
+		df_venda['Valor'] = df['Fechamento alta']
+		df_venda['Output'] = 'Alta'
+
+		dfs = [df_venda, df_compra]
+
+		df_final = pd.concat([df_compra,df_venda])
+
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
+		fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
-	fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
-	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-
 	return fig
-
-
 
 
 
@@ -420,10 +435,13 @@ def popula_grafico_altas_baixas_param(data):
 
 def info_vendas_mes(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
+	
+		df = pd.DataFrame(data)
 
-	return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
+		return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
 
+	return[[],[],[],[]]
 
 
 @app.callback(
@@ -438,10 +456,13 @@ def info_vendas_mes(data):
 
 def info_compra_mes(data):
 
-	df = pd.DataFrame(data)
+	if data != None:
 
-	return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
+		df = pd.DataFrame(data)
 
+		return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
+
+	return[[],[],[],[]]
 
 @app.callback(
 
@@ -453,32 +474,37 @@ def info_compra_mes(data):
 
 def popula_grafico_altas_baixas_mes(data):
 
-	df_compra = pd.DataFrame()
-	df_venda = pd.DataFrame()
+	if data != None:
 
-	df = pd.DataFrame(data)
+		df_compra = pd.DataFrame()
+		df_venda = pd.DataFrame()
 
-	#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
-	#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+		df = pd.DataFrame(data)
 
-	df['Fechamento baixa'] = round(df['Fechamento baixa'])
-	df['Fechamento alta'] = round(df['Fechamento alta'])
+		#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
+		#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
 
-	df_compra["Data"] = df['Data baixa']
-	df_compra["Valor"] = df['Fechamento baixa']
-	df_compra["Output"] = 'Baixa'
+		df['Fechamento baixa'] = round(df['Fechamento baixa'])
+		df['Fechamento alta'] = round(df['Fechamento alta'])
 
-	df_venda['Data'] = df['Data alta']
-	df_venda['Valor'] = df['Fechamento alta']
-	df_venda['Output'] = 'Alta'
+		df_compra["Data"] = df['Data baixa']
+		df_compra["Valor"] = df['Fechamento baixa']
+		df_compra["Output"] = 'Baixa'
 
-	dfs = [df_venda, df_compra]
+		df_venda['Data'] = df['Data alta']
+		df_venda['Valor'] = df['Fechamento alta']
+		df_venda['Output'] = 'Alta'
 
-	df_final = pd.concat([df_compra,df_venda])
+		dfs = [df_venda, df_compra]
+
+		df_final = pd.concat([df_compra,df_venda])
+
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
+		fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(name='Altas', x=df['Data alta'], y=df['Fechamento alta'], mode='lines'))
-	fig.add_trace(go.Scatter(name='Baixas', x=df['Data baixa'], y=df['Fechamento baixa'], mode='lines'))
-	fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-
 	return fig

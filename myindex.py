@@ -5,6 +5,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 
+
 # import from folders
 from app import *
 
@@ -29,15 +30,13 @@ sazonalidade_mes = Acoes_lista[0].sazonalidade_mes.tail(ultimos_dias).to_dict()
 acoes_tickers = pd.read_csv("acoes_tickers.csv").to_dict()
 
 
-#print(info)
-
 app.layout = dbc.Container(children=[
 
 	
-	dcc.Store(id='store-negociacoes-param', data=negociacoes_param),
-	dcc.Store(id='store-negociacoes-mes', data=negociacoes_mes),
-	dcc.Store(id='store-sazonalidade-param', data=sazonalidade_param),
-	dcc.Store(id='store-sazonalidade-mes', data=sazonalidade_mes),
+	dcc.Store(id='store-negociacoes-param'),
+	dcc.Store(id='store-negociacoes-mes'),
+	dcc.Store(id='store-sazonalidade-param'),
+	dcc.Store(id='store-sazonalidade-mes'),
 
 
 	dcc.Store(id='tickers', data=acoes_tickers),
