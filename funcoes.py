@@ -598,6 +598,11 @@ def PesquisarAcoes(lista_de_acoes):
         
         i+=1
 
+    '''
+    neg_param.to_csv("ng_param.csv")
+    neg_mes.to_csv("ng_mes.csv")
+    sazon_param.to_csv("sazon_param.csv")
+    sazon_mes.to_csv("sazon_mes.csv")
+    '''
 
-
-    return [neg_param,neg_mes,sazon_param,sazon_mes]
+    return neg_param,neg_mes,sazon_param,sazon_mes

@@ -128,24 +128,21 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 
 		informacoes = funcoes.PesquisarAcoes(data)
 
-		'''
-		dcc.Store(id='store-negociacoes-param', data=informacoes[0]),
-		dcc.Store(id='store-negociacoes-mes', data=informacoes[1]),
-		dcc.Store(id='store-sazonalidade-param', data=informacoes[2]),
-		dcc.Store(id='store-sazonalidade-mes', data=informacoes[3]),
-		'''
-
-		
-		#TESTANDO RETORNO DE NEGOCIAÇÕES POR PARAMETRO
-
-
 
 		value = [data[0]]
 		options = [{'label':i,'value':i}for i in data]
 
 		ultimos_dias = 30
+
 		
-		return options,value,informacoes[0].tail(ultimos_dias).to_dict(),informacoes[1].tail(ultimos_dias).to_dict(),informacoes[2].tail(ultimos_dias).to_dict(),informacoes[3].tail(ultimos_dias).to_dict()
+		informacoes[0].to_csv("Arquivos/negociacoes_param.csv")
+		informacoes[1].to_csv("Arquivos/negociacoes_mes.csv")
+		informacoes[2].to_csv("Arquivos/sazonalidade_param.csv")
+		informacoes[3].to_csv("Arquivos/sazonalidade_mes.csv")
+
+
+		
+		return options,value,informacoes[0].to_dict(),informacoes[1].to_dict(),informacoes[2].to_dict(),informacoes[3].to_dict()
 
 	return [[],[],neg_param,neg_mes,sazon_param,sazon_mes]
 

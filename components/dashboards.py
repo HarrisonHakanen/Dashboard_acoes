@@ -447,7 +447,8 @@ layout = dbc.Col([
 	Output("vlr_venda_neg_param_min","children"),
 	Output("vlr_venda_neg_param_max","children"),
 	[Input('store-negociacoes-param', 'data'),
-	Input('select_acao_selecionada','value')]
+	Input('select_acao_selecionada','value'),
+	]
 
 )
 
@@ -455,7 +456,10 @@ def info_vendas_param(data,select):
 
 
 	if data != None:
+
 		df = pd.DataFrame(data)
+
+
 
 
 
@@ -618,12 +622,20 @@ def info_taxa_retorno_mes(data):
 
 @app.callback(
     Output('tabela_negociacoes_param', 'children'),
-    Input('store-negociacoes-param', 'data')
+    Input('store-negociacoes-param', 'data'),
+    Input("select_acao_selecionada","value"),
 )
-def imprimir_tabela (data):
+def imprimir_tabela (data,acao_selecionada):
+
+
 
 	if data != None:
+
 		df = pd.DataFrame(data)
+		
+
+		
+
 		
 		df.reset_index(inplace=True)
 
@@ -692,46 +704,34 @@ def imprimir_tabela (data):
 
 @app.callback(
 	Output('grafico_negociacoes_param','figure'),
-	[Input('store-negociacoes-param','data')]
-
-
+	[Input("select_acao_selecionada","value")]
 )
 
-def popula_grafico_negocios_param(data):
+def popula_grafico_negocios_param(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
+
+		Quantidade_dias_anteriores = 30
+
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")		
+		
+		df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
 
-		df = pd.DataFrame(data)
-		df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
-
-		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		df = df.tail(Quantidade_dias_anteriores)
 
 		df['Valor compra'] = round(df['Valor compra'])
 		df['Valor venda'] = round(df['Valor venda'])
-
-
-		df_compra["Data"] = df['Data compra']
-		df_compra["Valor"] = df['Valor compra']
-		df_compra["Output"] = 'Compra'
-
-		df_venda['Data'] = df['Data venda']
-		df_venda['Valor'] = df['Valor venda']
-		df_venda['Output'] = 'Venda'
-
-		dfs = [df_venda, df_compra]
-
-		df_final = pd.concat([df_compra,df_venda])
-
 
 		fig = go.Figure()
 		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
 		fig.add_trace(go.Scatter(name='Baixas', x=df['Data compra'], y=df['Valor compra'], mode='lines'))
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
+		
 		return fig
+
 
 	fig = go.Figure()
 	return fig

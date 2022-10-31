@@ -18,6 +18,7 @@ from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger
 
 ultimos_dias = 30
 
+'''
 Acoes_lista = funcoes.GetAcoes(["YDUQ3.SA"],0)
 negociacoes_param = Acoes_lista[0].negociacoes_param.tail(ultimos_dias).to_dict()
 negociacoes_mes = Acoes_lista[0].negociacoes_mes.tail(ultimos_dias).to_dict()
@@ -25,7 +26,7 @@ negociacoes_mes = Acoes_lista[0].negociacoes_mes.tail(ultimos_dias).to_dict()
 
 sazonalidade_param = Acoes_lista[0].sazonalidade_param.tail(ultimos_dias).to_dict()
 sazonalidade_mes = Acoes_lista[0].sazonalidade_mes.tail(ultimos_dias).to_dict()
-
+'''
 
 acoes_tickers = pd.read_csv("acoes_tickers.csv").to_dict()
 
