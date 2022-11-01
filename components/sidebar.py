@@ -51,7 +51,7 @@ layout = dbc.Col([
 		html.Hr(),
 	dbc.Row([
 
-		html.H3("Ações selecionadas"),
+		html.H3("Ação selecionada"),
 		
 		dbc.Select(id="select_acao_selecionada"),
 
