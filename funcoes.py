@@ -52,7 +52,7 @@ def prever_valor_media(array,dias_anteriores):
     ate = media-diferenca_pelo_max
     
     
-    return [media,ate]
+    return media
         
         
 
