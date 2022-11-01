@@ -212,13 +212,17 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 				
 				df_param = df_param.loc[df_param["ticker"] == acao_selecionada[0]]
 				df_mes = df_sazon.loc[df_sazon["ticker"] == acao_selecionada[0]]
+				arquivo = "Previsoes/"+acao_selecionada[0]+"previsoes.csv"
+
 
 			else:
 				
 				df_param = df_param.loc[df_param["ticker"] == acao_selecionada]
 				df_mes = df_sazon.loc[df_sazon["ticker"] == acao_selecionada]
+				arquivo = "Previsoes/"+acao_selecionada+"previsoes.csv"
 
 
+			
 
 			#Previsões por dados divididos pelo parâmetro
 			prev_compra_param_LSTM = prever_valor_lstm(df_param["Valor compra"],Quantidade_dias_anteriores,1,180)
@@ -235,6 +239,22 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 			prev_venda_mes_LSTM = prever_valor_lstm(df_mes["Valor venda"],Quantidade_dias_anteriores,1,180)
 			prev_venda_mes_MM = prever_valor_media(df_mes["Valor venda"],Quantidade_dias_anteriores)
 
+			dicionario_previsões={
+			"Compra param LSTM":prev_compra_param_LSTM,
+			"Compra param MM":prev_compra_param_MM,
+			"Venda param LSTM":prev_venda_param_LSTM,
+			"Venda param MM":prev_venda_param_MM,
+
+			"Compra mes LSTM":prev_compra_mes_LSTM,
+			"Compra mes MM":prev_compra_mes_MM,
+			"Venda mes LSTM":prev_venda_mes_LSTM,
+			"Venda mes MM":prev_venda_mes_MM
+			}
+
+			df_previsoes = pd.DataFrame(dicionario_previsões)
+
+
+			df_previsoes.to_csv(arquivo)
 
 
 	return [[],[],[],[],[],[],[],[]]
