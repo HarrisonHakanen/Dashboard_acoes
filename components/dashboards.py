@@ -447,21 +447,28 @@ layout = dbc.Col([
 	Output("vlr_venda_neg_param_std","children"),
 	Output("vlr_venda_neg_param_min","children"),
 	Output("vlr_venda_neg_param_max","children"),
-	[Input('store-negociacoes-param', 'data'),
-	Input('select_acao_selecionada','value'),
+	[Input("select_acao_selecionada","value")
 	]
 
 )
 
-def info_vendas_param(data,select):
+def info_vendas_param(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
 
 
-
+		df = df.tail(Quantidade_dias_anteriores)
 
 
 		return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
@@ -474,15 +481,26 @@ def info_vendas_param(data,select):
 	Output("vlr_compra_neg_param_std","children"),
 	Output("vlr_compra_neg_param_min","children"),
 	Output("vlr_compra_neg_param_max","children"),
-	[Input('store-negociacoes-param', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_compra_param(data):
+def info_compra_param(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
 
 		return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
 
@@ -494,16 +512,27 @@ def info_compra_param(data):
 	Output("vlr_lucro_neg_param_std","children"),
 	Output("vlr_lucro_neg_param_min","children"),
 	Output("vlr_lucro_neg_param_max","children"),
-	[Input('store-negociacoes-param', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_lucro_param(data):
+def info_lucro_param(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
 
 		return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
 
@@ -517,16 +546,27 @@ def info_lucro_param(data):
 	Output("vlr_retorno_neg_param_std","children"),
 	Output("vlr_retorno_neg_param_min","children"),
 	Output("vlr_retorno_neg_param_max","children"),
-	[Input('store-negociacoes-param', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_taxa_retorno_param(data):
+def info_taxa_retorno_param(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
 
 		return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
 
@@ -543,15 +583,27 @@ def info_taxa_retorno_param(data):
 	Output("vlr_venda_neg_mes_std","children"),
 	Output("vlr_venda_neg_mes_min","children"),
 	Output("vlr_venda_neg_mes_max","children"),
-	[Input('store-negociacoes-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_vendas_mes(data):
+def info_vendas_mes(acao_selecionada):
 
-	if data!= None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		return [round(df["Valor venda"].mean(),2),round(df["Valor venda"].std(),2),round(df["Valor venda"].min(),2),round(df["Valor venda"].max(),2)]
 
@@ -563,16 +615,28 @@ def info_vendas_mes(data):
 	Output("vlr_compra_neg_mes_std","children"),
 	Output("vlr_compra_neg_mes_min","children"),
 	Output("vlr_compra_neg_mes_max","children"),
-	[Input('store-negociacoes-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_compra_mes(data):
+def info_compra_mes(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		return [round(df["Valor compra"].mean(),2),round(df["Valor compra"].std(),2),round(df["Valor compra"].min(),2),round(df["Valor compra"].max(),2)]
 
@@ -585,15 +649,28 @@ def info_compra_mes(data):
 	Output("vlr_lucro_neg_mes_std","children"),
 	Output("vlr_lucro_neg_mes_min","children"),
 	Output("vlr_lucro_neg_mes_max","children"),
-	[Input('store-negociacoes-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_lucro_mes(data):
+def info_lucro_mes(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+		
 
 		return [round(df["Lucro"].mean(),2),round(df["Lucro"].std(),2),round(df["Lucro"].min(),2),round(df["Lucro"].max(),2)]
 
@@ -605,16 +682,28 @@ def info_lucro_mes(data):
 	Output("vlr_retorno_neg_mes_std","children"),
 	Output("vlr_retorno_neg_mes_min","children"),
 	Output("vlr_retorno_neg_mes_max","children"),
-	[Input('store-negociacoes-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_taxa_retorno_mes(data):
+def info_taxa_retorno_mes(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		return [round(df["Taxa retorno"].mean(),2),round(df["Taxa retorno"].std(),2),round(df["Taxa retorno"].min(),2),round(df["Taxa retorno"].max(),2)]
 
@@ -623,27 +712,33 @@ def info_taxa_retorno_mes(data):
 
 @app.callback(
     Output('tabela_negociacoes_param', 'children'),
-    Input('store-negociacoes-param', 'data'),
     Input("select_acao_selecionada","value"),
 )
-def imprimir_tabela (data,acao_selecionada):
+def imprimir_tabela_negociacoes_param (acao_selecionada):
 
 
 
-	if data != None:
+	if len(acao_selecionada) >0:
 
-		df = pd.DataFrame(data)
+
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+
 		
-
-		
-
-		
-		df.reset_index(inplace=True)
+		df.reset_index(inplace=False)
 
 		df = df.sort_index(ascending=False)
-
-		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
 
 		df['Valor compra'] = round(df['Valor compra'],2)
 		df['Valor venda'] = round(df['Valor venda'],2)
@@ -667,21 +762,31 @@ def imprimir_tabela (data,acao_selecionada):
 
 @app.callback(
     Output('tabela_negociacoes_mes', 'children'),
-    Input('store-negociacoes-mes', 'data')
+    [Input("select_acao_selecionada","value")]
 )
-def imprimir_tabela (data):
+def imprimir_tabela_negociacoes_mes (acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
 
-		df.reset_index(inplace=True)
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+
+		df.reset_index(inplace=False)
 
 		df = df.sort_index(ascending=False)
 
-		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
-
+		
 		df['Valor compra'] = round(df['Valor compra'],2)
 		df['Valor venda'] = round(df['Valor venda'],2)
 		df['Lucro'] = round(df['Lucro'],2)
@@ -710,12 +815,7 @@ def imprimir_tabela (data):
 
 def popula_grafico_negocios_param(acao_selecionada):
 
-
-	
-
 	if len(acao_selecionada)>0:
-
-
 
 		Quantidade_dias_anteriores = 30
 
@@ -725,7 +825,12 @@ def popula_grafico_negocios_param(acao_selecionada):
 
 		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")		
 		
-		df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
 
 		df = df.tail(Quantidade_dias_anteriores)
 
@@ -749,37 +854,31 @@ def popula_grafico_negocios_param(acao_selecionada):
 
 @app.callback(
 	Output('grafico_negociacoes_mes','figure'),
-	[Input('store-negociacoes-mes','data')]
+	[Input("select_acao_selecionada","value")]
 )
 
-def popula_grafico_negocios_mes(data):
+def popula_grafico_negocios_mes(acao_selecionada):
 
+	Quantidade_dias_anteriores = 30
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
 
-		df = pd.DataFrame(data)
-		df.drop(['Lucro','Taxa retorno'], axis=1, inplace=True)
+		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")		
 
-		#df['Data compra'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data venda'] = pd.to_datetime(df['Data venda']).dt.date
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+		df = df.tail(Quantidade_dias_anteriores)
 
 		df['Valor compra'] = round(df['Valor compra'])
 		df['Valor venda'] = round(df['Valor venda'])
 
-		df_compra["Data"] = df['Data compra']
-		df_compra["Valor"] = df['Valor compra']
-		df_compra["Output"] = 'Compra'
-
-		df_venda['Data'] = df['Data venda']
-		df_venda['Valor'] = df['Valor venda']
-		df_venda['Output'] = 'Venda'
-
-		dfs = [df_venda, df_compra]
-
-		df_final = pd.concat([df_compra,df_venda])
 
 		fig = go.Figure()
 		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))
