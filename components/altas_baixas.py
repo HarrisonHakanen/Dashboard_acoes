@@ -271,15 +271,30 @@ layout = dbc.Col([
 	Output("vlr_venda_altas_baixas_param_std","children"),
 	Output("vlr_venda_altas_baixas_param_min","children"),
 	Output("vlr_venda_altas_baixas_param_max","children"),
-	[Input('store-sazonalidade-param', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_vendas_mes(data):
+def info_vendas_mes(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_param.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+
+
 
 		return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
 
@@ -291,15 +306,28 @@ def info_vendas_mes(data):
 	Output("vlr_compra_altas_baixas_param_std","children"),
 	Output("vlr_compra_altas_baixas_param_min","children"),
 	Output("vlr_compra_altas_baixas_param_max","children"),
-	[Input('store-sazonalidade-param', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_compra_mes(data):
+def info_compra_mes(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_param.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
 
@@ -309,19 +337,30 @@ def info_compra_mes(data):
 
 @app.callback(
     Output('tabela_altas_baixas_param', 'children'),
-    Input('store-sazonalidade-param', 'data')
+    [Input("select_acao_selecionada","value")]
 )
-def imprimir_tabela (data):
+def imprimir_tabela (acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_param.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 		
 		df = df.sort_index(ascending=False)
 
-		#df['Data baixa'] = pd.to_datetime(df['Data baixa']).dt.date
-		#df['Data alta'] = pd.to_datetime(df['Data alta']).dt.date
-
+		
 		df['Fechamento baixa'] = round(df['Fechamento baixa'],2)
 		df['Fechamento alta'] = round(df['Fechamento alta'],2)
 		
@@ -343,13 +382,26 @@ def imprimir_tabela (data):
 
 @app.callback(
     Output('tabela_altas_baixas_mes', 'children'),
-    Input('store-sazonalidade-mes', 'data')
+    [Input("select_acao_selecionada","value")]
 )
-def imprimir_tabela (data):
+def imprimir_tabela (acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		df = df.sort_index(ascending=False)
 
@@ -374,21 +426,31 @@ def imprimir_tabela (data):
 
 @app.callback(
 	Output('grafico_altas_baixas_param','figure'),
-	[Input('store-sazonalidade-param','data')]
+	[Input("select_acao_selecionada","value")]
 )
 
-def popula_grafico_altas_baixas_param(data):
+def popula_grafico_altas_baixas_param(acao_selecionada):
 
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
 
-		#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		df['Fechamento baixa'] = round(df['Fechamento baixa'])
 		df['Fechamento alta'] = round(df['Fechamento alta'])
@@ -429,15 +491,30 @@ def popula_grafico_altas_baixas_param(data):
 	Output("vlr_venda_altas_baixas_mes_std","children"),
 	Output("vlr_venda_altas_baixas_mes_min","children"),
 	Output("vlr_venda_altas_baixas_mes_max","children"),
-	[Input('store-sazonalidade-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_vendas_mes(data):
+def info_vendas_mes(acao_selecionada):
 
-	if data != None:
-	
-		df = pd.DataFrame(data)
+	if len(acao_selecionada)>0:
+
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+
+
 
 		return [round(df["Fechamento alta"].mean(),2),round(df["Fechamento alta"].std(),2),round(df["Fechamento alta"].min(),2),round(df["Fechamento alta"].max(),2)]
 
@@ -450,15 +527,28 @@ def info_vendas_mes(data):
 	Output("vlr_compra_altas_baixas_mes_std","children"),
 	Output("vlr_compra_altas_baixas_mes_min","children"),
 	Output("vlr_compra_altas_baixas_mes_max","children"),
-	[Input('store-sazonalidade-mes', 'data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
-def info_compra_mes(data):
+def info_compra_mes(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
-		df = pd.DataFrame(data)
+		Quantidade_dias_anteriores = 30
+
+		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
 
 		return [round(df["Fechamento baixa"].mean(),2),round(df["Fechamento baixa"].std(),2),round(df["Fechamento baixa"].min(),2),round(df["Fechamento baixa"].max(),2)]
 
@@ -467,23 +557,35 @@ def info_compra_mes(data):
 @app.callback(
 
 	Output('grafico_altas_baixas_mes','figure'),
-	[Input('store-sazonalidade-mes','data')]
+	[Input("select_acao_selecionada","value")]
 
 )
 
 
-def popula_grafico_altas_baixas_mes(data):
+def popula_grafico_altas_baixas_mes(acao_selecionada):
 
-	if data != None:
+	if len(acao_selecionada)>0:
 
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
 
-		df = pd.DataFrame(data)
 
-		#df['Data baixa'] = pd.to_datetime(df['Data compra']).dt.date
-		#df['Data alta'] = pd.to_datetime(df['Data venda']).dt.date
+		Quantidade_dias_anteriores = 30
 
+		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+
+
+		if isinstance(acao_selecionada,list):
+			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
+
+		else:
+			df = df_original.loc[df_original["ticker"] == acao_selecionada]
+
+
+		df = df.tail(Quantidade_dias_anteriores)
+
+
+		
 		df['Fechamento baixa'] = round(df['Fechamento baixa'])
 		df['Fechamento alta'] = round(df['Fechamento alta'])
 
