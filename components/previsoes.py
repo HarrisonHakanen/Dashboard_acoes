@@ -263,6 +263,8 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 				Quantidade_dias_anteriores = 30
 
+
+
 				df_param = pd.read_csv("Arquivos/negociacoes_param.csv")	
 
 				df_mes = pd.read_csv("Arquivos/negociacoes_mes.csv")
@@ -291,20 +293,20 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 					arquivo = "Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"	
 
 
-				
-					
+
 				#Previsões por dados divididos pelo parâmetro
 				prev_compra_param_LSTM = funcoes.prever_valor_lstm(pd.DataFrame(df_param["Valor compra"]),Quantidade_dias_anteriores,1,180)
 				prev_compra_param_MM = funcoes.prever_valor_media(df_param["Valor compra"],Quantidade_dias_anteriores)
+
 
 				prev_venda_param_LSTM = funcoes.prever_valor_lstm(pd.DataFrame(df_param["Valor venda"]),Quantidade_dias_anteriores,1,180)
 				prev_venda_param_MM = funcoes.prever_valor_media(df_param["Valor venda"],Quantidade_dias_anteriores)
 
 
-
 				#Previsões por dados divididos mensalmente
 				prev_compra_mes_LSTM = funcoes.prever_valor_lstm(pd.DataFrame(df_mes["Valor compra"]),Quantidade_dias_anteriores,1,180)
 				prev_compra_mes_MM = funcoes.prever_valor_media(df_mes["Valor compra"],Quantidade_dias_anteriores)
+				
 
 				prev_venda_mes_LSTM = funcoes.prever_valor_lstm(pd.DataFrame(df_mes["Valor venda"]),Quantidade_dias_anteriores,1,180)
 				prev_venda_mes_MM = funcoes.prever_valor_media(df_mes["Valor venda"],Quantidade_dias_anteriores)

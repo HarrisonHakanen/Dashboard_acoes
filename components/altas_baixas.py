@@ -439,7 +439,7 @@ def popula_grafico_altas_baixas_param(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/sazonalidade_mes.csv")	
+		df_original = pd.read_csv("Arquivos/sazonalidade_param.csv")	
 
 
 		if isinstance(acao_selecionada,list):

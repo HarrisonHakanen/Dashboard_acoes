@@ -58,6 +58,10 @@ def prever_valor_media(array,dias_anteriores):
 
 #PREVE O VALOR DA PRÓXIMA ALTA OU DA PRÓXIMA BAIXA, DEPENDE DO ARRAY QUE SERÁ PASSADO        
 def prever_valor_lstm(array,dias_anteriores,dias_previsao,epocas):
+
+    if len(array) < 130:
+        dias_anteriores = 10
+        
     
     dias_retorno = dias_anteriores
     
