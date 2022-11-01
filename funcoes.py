@@ -60,7 +60,7 @@ def prever_valor_media(array,dias_anteriores):
 def prever_valor_lstm(array,dias_anteriores,dias_previsao,epocas):
     
     dias_retorno = dias_anteriores
-
+    
     dias_previsao = dias_previsao
     
 

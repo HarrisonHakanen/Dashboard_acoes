@@ -4,12 +4,7 @@ from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
-
-
-# import from folders
 from app import *
-
-
 import funcoes
 from app import *
 
@@ -22,8 +17,6 @@ ultimos_dias = 30
 Acoes_lista = funcoes.GetAcoes(["YDUQ3.SA"],0)
 negociacoes_param = Acoes_lista[0].negociacoes_param.tail(ultimos_dias).to_dict()
 negociacoes_mes = Acoes_lista[0].negociacoes_mes.tail(ultimos_dias).to_dict()
-
-
 sazonalidade_param = Acoes_lista[0].sazonalidade_param.tail(ultimos_dias).to_dict()
 sazonalidade_mes = Acoes_lista[0].sazonalidade_mes.tail(ultimos_dias).to_dict()
 '''
