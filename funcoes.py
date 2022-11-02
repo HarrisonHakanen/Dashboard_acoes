@@ -584,6 +584,8 @@ def PesquisarAcoes(lista_de_acoes):
     sazon_param = pd.DataFrame()
     sazon_mes = pd.DataFrame()
 
+    fechamento = pd.DataFrame()
+
     i = 0
     while i< len(info):   
         
@@ -591,6 +593,7 @@ def PesquisarAcoes(lista_de_acoes):
         info[i].negociacoes_mes["ticker"] = info[i].ticker
         info[i].sazonalidade_param["ticker"] = info[i].ticker
         info[i].sazonalidade_mes["ticker"] = info[i].ticker
+        info[i].fechamento["ticker"] = info[i].ticker
         
         
         neg_param=pd.concat([neg_param,info[i].negociacoes_param])
@@ -599,7 +602,9 @@ def PesquisarAcoes(lista_de_acoes):
         sazon_param = pd.concat([sazon_param,info[i].sazonalidade_param])
         sazon_mes = pd.concat([sazon_mes,info[i].sazonalidade_mes])
         
-        
+        fechamento = pd.concat([fechamento,info[i].fechamento])
+
+
         i+=1
 
     '''
@@ -609,4 +614,4 @@ def PesquisarAcoes(lista_de_acoes):
     sazon_mes.to_csv("sazon_mes.csv")
     '''
 
-    return neg_param,neg_mes,sazon_param,sazon_mes
+    return neg_param,neg_mes,sazon_param,sazon_mes,fechamento
