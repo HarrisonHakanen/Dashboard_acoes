@@ -459,7 +459,7 @@ def info_vendas_param(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -491,7 +491,7 @@ def info_compra_param(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -523,7 +523,7 @@ def info_lucro_param(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -557,7 +557,7 @@ def info_taxa_retorno_param(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -593,7 +593,7 @@ def info_vendas_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -626,7 +626,7 @@ def info_compra_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -659,7 +659,7 @@ def info_lucro_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -693,7 +693,7 @@ def info_taxa_retorno_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -723,7 +723,7 @@ def imprimir_tabela_negociacoes_param (acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -770,7 +770,7 @@ def imprimir_tabela_negociacoes_mes (acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")	
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")	
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -823,7 +823,7 @@ def popula_grafico_negocios_param(acao_selecionada):
 		df_venda = pd.DataFrame()
 
 
-		df_original = pd.read_csv("Arquivos/negociacoes_param.csv")		
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_param.csv")		
 		
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]
@@ -866,7 +866,7 @@ def popula_grafico_negocios_mes(acao_selecionada):
 		df_compra = pd.DataFrame()
 		df_venda = pd.DataFrame()
 
-		df_original = pd.read_csv("Arquivos/negociacoes_mes.csv")		
+		df_original = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")		
 
 		if isinstance(acao_selecionada,list):
 			df = df_original.loc[df_original["ticker"] == acao_selecionada[0]]

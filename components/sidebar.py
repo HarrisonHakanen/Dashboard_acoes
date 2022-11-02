@@ -135,11 +135,11 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 		ultimos_dias = 30
 
 
-		informacoes[0].to_csv("Arquivos/negociacoes_param.csv")
-		informacoes[1].to_csv("Arquivos/negociacoes_mes.csv")
-		informacoes[2].to_csv("Arquivos/sazonalidade_param.csv")
-		informacoes[3].to_csv("Arquivos/sazonalidade_mes.csv")
-		informacoes[4].to_csv("Arquivos/fechamento.csv")
+		informacoes[0].to_csv("Arquivos/Info/negociacoes_param.csv")
+		informacoes[1].to_csv("Arquivos/Info/negociacoes_mes.csv")
+		informacoes[2].to_csv("Arquivos/Info/sazonalidade_param.csv")
+		informacoes[3].to_csv("Arquivos/Info/sazonalidade_mes.csv")
+		informacoes[4].to_csv("Arquivos/Info/fechamento.csv")
 
 
 		

@@ -94,7 +94,6 @@ layout = dbc.Col([
 def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_superior,acao_selecionada,btn_carregar_bollinger):
 
 	if("carregar_bollinger"==ctx.triggered_id):
-		
 
 
 		if len(acao_selecionada)>0:
@@ -123,7 +122,7 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 				
 
 
-				fechamento_acao = pd.read_csv("Arquivos/fechamento.csv")
+				fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
 
 
 				if isinstance(acao_selecionada,list):

@@ -212,7 +212,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 			dia_mes = str(data_atual.day)+str(data_atual.month)
 
-			arquivo = "Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
+			arquivo = "Arquivos/Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
 
 		else:
 
@@ -220,7 +220,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 			dia_mes = str(data_atual.day)+str(data_atual.month)
 
-			arquivo = "Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"
+			arquivo = "Arquivos/Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"
 
 		if os.path.exists(arquivo):
 
@@ -241,7 +241,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 				dia_mes = str(data_atual.day)+str(data_atual.month)
 
-				arquivo = "Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
+				arquivo = "Arquivos/Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
 
 			else:
 
@@ -249,7 +249,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 				dia_mes = str(data_atual.day)+str(data_atual.month)
 
-				arquivo = "Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"
+				arquivo = "Arquivos/Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"
 
 
 
@@ -265,9 +265,9 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 
 
-				df_param = pd.read_csv("Arquivos/negociacoes_param.csv")	
+				df_param = pd.read_csv("Arquivos/Info/negociacoes_param.csv")	
 
-				df_mes = pd.read_csv("Arquivos/negociacoes_mes.csv")
+				df_mes = pd.read_csv("Arquivos/Info/negociacoes_mes.csv")
 
 
 				if isinstance(acao_selecionada,list):
@@ -279,7 +279,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 					dia_mes = str(data_atual.day)+str(data_atual.month)
 
-					arquivo = "Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
+					arquivo = "Arquivos/Previsoes/"+acao_selecionada[0]+dia_mes+"previsoes.csv"	
 
 				else:
 					
@@ -290,7 +290,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 					dia_mes = str(data_atual.day)+str(data_atual.month)
 
-					arquivo = "Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"	
+					arquivo = "Arquivos/Previsoes/"+acao_selecionada+dia_mes+"previsoes.csv"	
 
 
 
