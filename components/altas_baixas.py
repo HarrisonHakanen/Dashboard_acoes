@@ -279,7 +279,7 @@ def info_vendas_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Info/Arquivos/Info/sazonalidade_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/sazonalidade_param.csv")	
 
 
 		if isinstance(acao_selecionada,list):
@@ -314,7 +314,7 @@ def info_compra_mes(acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Info/Arquivos/Info/sazonalidade_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/sazonalidade_param.csv")	
 
 
 		if isinstance(acao_selecionada,list):
@@ -343,7 +343,7 @@ def imprimir_tabela (acao_selecionada):
 
 		Quantidade_dias_anteriores = 30
 
-		df_original = pd.read_csv("Info/Arquivos/Info/sazonalidade_param.csv")	
+		df_original = pd.read_csv("Arquivos/Info/sazonalidade_param.csv")	
 
 
 		if isinstance(acao_selecionada,list):

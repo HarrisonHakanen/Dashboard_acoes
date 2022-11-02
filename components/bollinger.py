@@ -10,6 +10,8 @@ import calendar
 from globals import *
 from app import app
 from dash import dash_table
+import os
+
 
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
@@ -45,11 +47,11 @@ layout = dbc.Col([
 		]),
 
 		dbc.Col([
-			html.H5("MM Superior"),
+			html.H5("Quantidade de desvio padrão superior"),
 			dcc.Input(id="mm_superior", type="number",className="form-control form-control-lg"),
 		]),
 		dbc.Col([
-			html.H5("MM Inferior"),
+			html.H5("Quantidade de desvio padrão inferior"),
 			dcc.Input(id="mm_inferior", type="number",className="form-control form-control-lg"),
 		]),
 	],style={"padding": "25px"}),
@@ -93,9 +95,17 @@ layout = dbc.Col([
 
 def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_superior,acao_selecionada,btn_carregar_bollinger):
 
+	'''
+	if isinstance(acao_selecionada,list):
+		df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+	else:
+		df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+	'''
+
 	if("carregar_bollinger"==ctx.triggered_id):
-
-
+		
 		if len(acao_selecionada)>0:
 
 			if isinstance(acao_selecionada,list):
@@ -117,10 +127,9 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 
 
 
-			if(data_inicial != '' or data_inicial != None) and (data_final != '' or data_final != None):
+			if(data_inicial != '' or data_inicial != None) or (data_final != '' or data_final != None):
 
 				
-
 
 				fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
 
@@ -128,16 +137,18 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 				if isinstance(acao_selecionada,list):
 					df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
 
+					
 				else:
 					df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
 
+				
 				df.set_index("Date",inplace=True)
 
 
 				df = pd.DataFrame(df[data_inicial:data_final]['Close'])
 
 
-				print(df)
+				
 
 				#Médias móveis de 20 em 20 dias
 				mm = df.rolling(10).mean()
@@ -164,6 +175,31 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 
 				compras = compras.rename(columns={"Close":"Compras"})
 				vendas = vendas.rename(columns={"Close":"Vendas"})
+
+
+				sup_band["ticker"] = acao
+				inf_band["ticker"] = acao
+				mm["ticker"] = acao
+				std["ticker"] = acao
+				compras["ticker"] = acao
+				vendas["ticker"] = acao
+				bandas_bollinger["ticker"] = acao
+				df["ticker"] = acao
+
+				arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
+
+
+
+				sup_band.to_csv("Arquivos/Bollinger/"+arquivo+"sup_band.csv")
+				inf_band.to_csv("Arquivos/Bollinger/"+arquivo+"inf_band.csv")
+				mm.to_csv("Arquivos/Bollinger/"+arquivo+"mm.csv")
+				std.to_csv("Arquivos/Bollinger/"+arquivo+"std.csv")
+				compras.to_csv("Arquivos/Bollinger/"+arquivo+"compras.csv")
+				vendas.to_csv("Arquivos/Bollinger/"+arquivo+"vendas.csv")
+				bandas_bollinger.to_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
+				df.to_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
+
+
 
 				fig = go.Figure()
 
@@ -213,5 +249,111 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 				))
 
 			return fig
+
+
+
+
+
 	
+	if len(acao_selecionada) > 0:
+
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+		
+
+		if(os.path.exists("Arquivos/Bollinger/"+arquivo+"inf_band.csv")):
+				
+
+			Banda_inferior_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"inf_band.csv")
+			Banda_superior_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"sup_band.csv")
+
+			Compras_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"compras.csv")
+			Vendas_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"vendas.csv")
+
+			Medias_moveis_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"mm.csv")
+			Desvio_padrao_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"std.csv")
+
+			Bandas_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
+
+			Fechamento_original = pd.read_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
+
+			
+
+			#Split no tiker correto________________________________________________
+			
+			Banda_inferior = Banda_inferior_original.loc[Banda_inferior_original["ticker"] == ticker]
+			Banda_superior = Banda_superior_original.loc[Banda_superior_original["ticker"] == ticker]
+
+			Compras_ = Compras_original.loc[Compras_original["ticker"] == ticker]
+			Vendas_ = Vendas_original.loc[Vendas_original["ticker"] == ticker]
+
+			Medias_moveis = Medias_moveis_original.loc[Medias_moveis_original["ticker"] == ticker]
+			Desvio_padrao = Desvio_padrao_original.loc[Desvio_padrao_original["ticker"] == ticker]
+
+			Bandas = Bandas_original.loc[Bandas_original["ticker"] == ticker]
+
+			Fechamento = Fechamento_original.loc[Fechamento_original["ticker"] == ticker]
+
+
+			fig = go.Figure()
+
+			fig.add_trace(go.Scatter(
+			    x = Banda_inferior["Date"],
+			    y = Banda_inferior['Inferior'],
+			    name = "Banda inferior",
+			    line_color = "rgba(173,204,255,0.2)"
+			))
+
+			fig.add_trace(go.Scatter(
+			    x = Banda_superior["Date"],
+			    y = Banda_superior["Superior"],
+			    name = "Banda superior",
+			    fill="tonexty",
+			    line_color = "rgba(173,204,255,0.2)"
+			))
+
+			fig.add_trace(go.Scatter(
+			    x = Fechamento["Date"],
+			    y = Fechamento["Close"],
+			    name = "Preço de fechamento",
+			    line_color = "#636EFA"
+			))
+
+			fig.add_trace(go.Scatter(
+			    x = Medias_moveis["Date"],
+			    y = Medias_moveis["Medias"],
+			    name = "Média móvel",
+			    line_color = "#FECB52"
+			))
+
+			fig.add_trace(go.Scatter(
+			    x = Compras_["Date"],
+			    y = Compras_["Compras"],
+			    name = "Compra",
+			    mode = "markers",
+			    marker = dict(color="#00CC96",size=8)
+			))
+
+			fig.add_trace(go.Scatter(
+			    x = Vendas_["Date"],
+			    y = Vendas_["Vendas"],
+			    name = "Venda",
+			    mode = "markers",
+			    marker = dict(color="#EF553B",size = 8)
+			))
+
+			return fig
+
+
 	return {}
