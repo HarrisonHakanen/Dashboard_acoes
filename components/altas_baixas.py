@@ -260,8 +260,6 @@ layout = dbc.Col([
 		],style={"padding": "25px"}),
 			
 	]),
-
-
 ])
 
 
