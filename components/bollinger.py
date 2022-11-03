@@ -42,16 +42,16 @@ layout = dbc.Col([
 		]),
 
 		dbc.Col([
-			html.H5("Dias anteriores"),
+			html.H5("Dias anteriores (padrão 10)"),
 			dcc.Input(id="dias_anteriores", type="number",className="form-control form-control-lg"),
 		]),
 
 		dbc.Col([
-			html.H5("Quantidade de desvio padrão superior"),
+			html.H5("Quantidade de desvio padrão superior (padrão 1.5)"),
 			dcc.Input(id="mm_superior", type="number",className="form-control form-control-lg"),
 		]),
 		dbc.Col([
-			html.H5("Quantidade de desvio padrão inferior"),
+			html.H5("Quantidade de desvio padrão inferior (padrão 1.5)"),
 			dcc.Input(id="mm_inferior", type="number",className="form-control form-control-lg"),
 		]),
 	],style={"padding": "25px"}),

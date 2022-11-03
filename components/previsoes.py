@@ -261,7 +261,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 
 				
 
-				Quantidade_dias_anteriores = 30
+				Quantidade_dias_anteriores = 7
 
 
 

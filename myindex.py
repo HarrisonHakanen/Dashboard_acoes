@@ -58,7 +58,7 @@ app.layout = dbc.Container(children=[
 
 @app.callback(
 
-	Output("page-content", "children"), 
+	Output("page-content", "children"),
 	[Input("url", "pathname")])
 
 
