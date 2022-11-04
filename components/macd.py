@@ -206,13 +206,13 @@ def popula_macd(data_inicial,data_final,sinal,rapida,lenta,acao_selecionada,btn_
 			sinal = pd.read_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
 
 			
-			df.set_index("Date",inplace=True)
+			df.set_index("Date")
 
 			fig = go.Figure()
 
-			fig.add_trace(go.Scatter(x = df.index,y = MACD,name = "MACD", line_color = "blue"))
+			fig.add_trace(go.Scatter(x = df.index,y = MACD["Close"],name = "MACD", line_color = "blue"))
 
-			fig.add_trace(go.Scatter(x = df.index,y = sinal,name = "Sinal", line_color = "yellow"))
+			fig.add_trace(go.Scatter(x = df.index,y = sinal["Close"],name = "Sinal", line_color = "yellow"))
 
 			fig2 = go.Figure()
 
