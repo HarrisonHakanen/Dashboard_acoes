@@ -10,6 +10,7 @@ import calendar
 from globals import *
 from app import app
 from dash import dash_table
+import os
 
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
@@ -160,7 +161,6 @@ def popula_macd(data_inicial,data_final,sinal,rapida,lenta,acao_selecionada,btn_
 				sinal = MACD.ewm(span=sinal).mean()
 
 
-				print("chegou aqui")
 				fig = go.Figure()
 
 				fig.add_trace(go.Scatter(x = df.index,y = MACD,name = "MACD", line_color = "blue"))
@@ -171,6 +171,56 @@ def popula_macd(data_inicial,data_final,sinal,rapida,lenta,acao_selecionada,btn_
 
 				fig2.add_trace(go.Scatter(x = df.index,y = df["Close"],name = "Fechamento",line_color = "blue"))
 
+
+				arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
+
+				df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
+				pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
+				pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
+
+
+
 				return fig,fig2
+
+
+	if len(acao_selecionada) > 0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+
+
+		if(os.path.exists("Arquivos/Macd/"+arquivo+"macd.csv")):
+
+			MACD = pd.read_csv("Arquivos/Macd/"+arquivo+"macd.csv")
+			df = pd.read_csv("Arquivos/Macd/"+arquivo+"close.csv")
+			sinal = pd.read_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
+
+			
+			df.set_index("Date",inplace=True)
+
+			fig = go.Figure()
+
+			fig.add_trace(go.Scatter(x = df.index,y = MACD,name = "MACD", line_color = "blue"))
+
+			fig.add_trace(go.Scatter(x = df.index,y = sinal,name = "Sinal", line_color = "yellow"))
+
+			fig2 = go.Figure()
+
+			fig2.add_trace(go.Scatter(x = df["Date"],y = df["Close"],name = "Fechamento",line_color = "blue"))
+
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			return fig,fig2
 
 	return [{},{}]

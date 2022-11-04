@@ -8,7 +8,7 @@ from app import *
 import funcoes
 from app import *
 
-from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger
+from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento
 
 
 ultimos_dias = 30
@@ -87,7 +87,11 @@ def render_page_content(pathname):
 
 		return bollinger.layout
 
-   
+	if pathname == "/fechamento":
+
+		return fechamento.layout
+
+  
 if __name__ == '__main__':
     app.run_server(debug=True)
 
