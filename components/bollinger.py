@@ -85,8 +85,8 @@ layout = dbc.Col([
 	[Input("periodo_analise","start_date"),
 	Input("periodo_analise","end_date"),
 	Input("dias_anteriores","children"),
-	Input("mm_inferior","value"),
-	Input("mm_superior","value"),
+	Input("mm_inferior","children"),
+	Input("mm_superior","children"),
 	Input("select_acao_selecionada","value"),
 	Input("carregar_bollinger","n_clicks"),]
 
@@ -140,6 +140,9 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 					
 				else:
 					df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+				
+
 
 				
 				df.set_index("Date",inplace=True)
