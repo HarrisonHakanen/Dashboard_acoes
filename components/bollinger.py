@@ -189,6 +189,7 @@ def popula_boolinger(data_inicial,data_final,dias_anteriores,mm_inferior,mm_supe
 				bandas_bollinger["ticker"] = acao
 				df["ticker"] = acao
 
+				print(sup_band)
 				arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
 
 

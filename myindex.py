@@ -8,7 +8,7 @@ from app import *
 import funcoes
 from app import *
 
-from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento
+from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento,informacoes,configuracoes
 
 
 ultimos_dias = 30
@@ -79,18 +79,33 @@ def render_page_content(pathname):
 
 		return previsoes.layout
 
-	if pathname == "/macd":
 
-		return macd.layout
 
-	if pathname == "/bollinger":
 
-		return bollinger.layout
+	#if pathname == "/macd":
+
+		#return macd.layout
+
+	#if pathname == "/bollinger":
+
+		#return bollinger.layout
+
+
+
+
 
 	if pathname == "/fechamento":
 
 		return fechamento.layout
 
+
+	if pathname == "/informacoes":
+
+		return informacoes.layout
+
+	if pathname == "/configuracoes":
+
+		return configuracoes.layout
   
 if __name__ == '__main__':
     app.run_server(debug=True)
