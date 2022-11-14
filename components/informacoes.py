@@ -64,6 +64,20 @@ layout = dbc.Col([
 				html.Hr(),
 
 				dbc.Col([
+					dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+				]),
+			]),
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+
+			dbc.Col([
+				html.H5("Fechamentos"),
+				html.Hr(),
+
+				dbc.Col([
 					dbc.Card(dcc.Graph(id="grafico_fechamento_info"))
 				]),
 			]),
@@ -412,10 +426,6 @@ def popula_macd(acao_selecionada):
 			df = pd.DataFrame(df[str(data_inicial):str(data_final)]['Close'])
 			
 
-
-			
-
-
 			#Calcula a média móvel exponencial rápida e lenta
 			rapidaMME=df.Close.ewm(span=rapida).mean()
 
@@ -448,3 +458,92 @@ def popula_macd(acao_selecionada):
 			return fig,fig2
 
 	return [{},{}]
+
+
+
+@app.callback(
+	Output('grafico_rsi_info','figure'),
+	Output('grafico_fechamento_info','figure'),
+	Input("select_acao_selecionada","value"),
+	
+)
+
+def popula_rsi(acao_selecionada):
+
+
+	if len(acao_selecionada) > 0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		
+
+		#ATRIBUTOS---------------------------
+		data_final = datetime.now()
+
+		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-4)
+
+		superior = 0.7
+		inferior = 0.3
+		dias_anteriores = 14
+
+
+		#------------------------------------
+
+
+		df.set_index("Date",inplace=True)
+		
+		df = pd.DataFrame(df[str(data_inicial):str(data_final)]['Close'])
+
+
+		df = df[df.index > str(data_inicial)]
+
+		change = acao["Close"].diff()
+		change.dropna(inplace=True)
+
+
+		change_up = change.copy()
+		change_down = change.copy()
+		 
+		change_up[change_up<0] = 0
+		change_down[change_down>0] = 0
+
+
+		change.equals(change_up+change_down)
+
+		# Calculate the rolling average of average up and average down
+		avg_up = change_up.rolling(dias_anteriores).mean()
+		avg_down = change_down.rolling(dias_anteriores).mean().abs()
+
+		rsi = 100 * avg_up / (avg_up + avg_down)
+
+		rsi =pd.DataFrame(rsi)
+		rsi["Date"] = rsi.index
+		rsi.to_csv("rsi"+ticker+".csv")
+
+		fig = px.line(rsi, x=rsi["Date"], y=rsi["Close"])
+		fig.add_hline(y=rsi["Close"].max()*inferior,line_color="blue")
+		fig.add_hline(y=rsi["Close"].max()*superior,line_color="red")
+
+		return fig
+
+	return {}
