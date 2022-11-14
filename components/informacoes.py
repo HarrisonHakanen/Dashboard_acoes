@@ -126,7 +126,7 @@ def popula_candlestick(acao_selecionada):
 		#Atributos--------------------------------
 		data_final = datetime.now()
 
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-6)
+		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
 
 		#-----------------------------------------
 
@@ -155,6 +155,9 @@ def popula_candlestick(acao_selecionada):
 		    high=df["High"],
 		    low=df["Low"],
 		    close=df["Close"]))
+
+		fig.update_layout(height=900)
+
 
 		return fig
 
@@ -201,7 +204,7 @@ def popula_boolinger(acao_selecionada):
 			Fechamento = pd.read_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
 
 			
-			print(Compras_)
+			
 			
 
 			fig = go.Figure()
@@ -250,7 +253,7 @@ def popula_boolinger(acao_selecionada):
 			    mode = "markers",
 			    marker = dict(color="#EF553B",size = 8)
 			))
-			print(fig)
+			
 			return fig
 
 		else:
@@ -332,9 +335,7 @@ def popula_boolinger(acao_selecionada):
 			bandas_bollinger["ticker"] = acao
 			df["ticker"] = acao
 
-			print("Std")
-			print(len(std))
-			print(std)
+			
 
 			arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
 
@@ -349,24 +350,7 @@ def popula_boolinger(acao_selecionada):
 			bandas_bollinger.to_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
 			df.to_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
 		
-			'''
-			print("banda inferior\n")
-			print(inf_band.head(10))
-			print("banda superior\n")
-			print(sup_band.head(10))
-			print("compras\n")
-			print(compras.head(10))
-			print("vendas\n")
-			print(vendas.head(10))
-			print("medias moveis\n")
-			print(mm.head(10))
-			print("desvio padrão\n")
-			print(std.head(10))
-			print("bandas\n")
-			print(bandas_bollinger.head(10))
-			print("fechamento\n")
-			print(df.head(10))
-			'''
+			
 
 			fig = go.Figure()
 

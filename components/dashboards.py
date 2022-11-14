@@ -84,6 +84,7 @@ layout = dbc.Col([
 							html.H5(id="vlr_compra_neg_param_max")
 						]),
 					]),
+					
 
 				]),
 
