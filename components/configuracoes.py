@@ -52,6 +52,7 @@ layout = dbc.Col([
 		]),
 	],style={"padding": "25px"}),
 
+	html.Hr(),
 
 	dbc.Row([
 
@@ -81,6 +82,71 @@ layout = dbc.Col([
 			html.H5("Sinal (padrão 9)"),
 			dcc.Input(id="sinal", type="number",className="form-control form-control-lg"),
 		]),
-		],style={"padding": "25px"}),
+	],style={"padding": "25px"}),
+
+	html.Hr(),
+
+	dbc.Row([
+
+		html.H5("RSI"),
+
+		dbc.Col([
+			
+			html.H5("Período de análise"),
+
+			dcc.DatePickerRange(
+				id="periodo_analise_rsi",
+				start_date_placeholder_text="Data inicial",
+				end_date_placeholder_text="Data final",   
+				calendar_orientation='vertical')
+		]),
+
+		dbc.Col([
+			html.H5("Inferior (padrão 0.3)"),
+			dcc.Input(id="inferior_rsi", type="number",className="form-control form-control-lg"),
+		]),
+
+		dbc.Col([
+			html.H5("Superior (padrão 0.7)"),
+			dcc.Input(id="superior_rsi", type="number",className="form-control form-control-lg"),
+		]),
+		dbc.Col([
+			html.H5("Dias anteriores (padrão 14)"),
+			dcc.Input(id="dias_anteriores_rsi", type="number",className="form-control form-control-lg"),
+		]),
+	],style={"padding": "25px"}),
+
+	
+	html.Hr(),
+
+	dbc.Row([
+
+		html.H5("Candlestick"),
+
+		dbc.Col([
+			
+			html.H5("Período de análise"),
+
+			dcc.DatePickerRange(
+				id="periodo_analise_candlestick",
+				start_date_placeholder_text="Data inicial",
+				end_date_placeholder_text="Data final",   
+				calendar_orientation='vertical')
+		]),
+	],style={"padding": "25px"}),
+
+
+	html.Hr(),
+
+
+	dbc.Row([
+
+		dbc.Col([
+			dbc.Button("Aplicar", color="error", id="aplicar", value="acoes", className="btn btn-success"),
+		],width=2),
+		dbc.Col([
+			dbc.Button("Restaurar padrões", color="error", id="restaurar", value="acoes", className="btn btn-success"),
+		],width=2),
+	],style={"padding": "25px"}),
 
 ])

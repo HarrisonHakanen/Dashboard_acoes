@@ -60,11 +60,25 @@ layout = dbc.Col([
 		dbc.Row([
 
 			dbc.Col([
-				html.H5("Fechamentos"),
+				html.H5("RSI"),
 				html.Hr(),
 
 				dbc.Col([
 					dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+				]),
+			]),
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+
+			dbc.Col([
+				html.H5("Candlestick"),
+				html.Hr(),
+
+				dbc.Col([
+					dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
 				]),
 			]),
 
@@ -85,6 +99,67 @@ layout = dbc.Col([
 		],style={"padding": "25px"}),
 
 ])
+
+
+@app.callback(
+	Output('grafico_candlestick_info','figure'),
+	[Input("select_acao_selecionada","value")]
+
+
+)
+
+def popula_candlestick(acao_selecionada):
+
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		#Atributos--------------------------------
+		data_final = datetime.now()
+
+		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-6)
+
+		#-----------------------------------------
+
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+
+		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
+
+		fig = go.Figure()
+		fig.add_trace(go.Candlestick(
+		    name='Fechamento', 
+		    x=df.index, 
+		    open=df["Open"], 
+		    high=df["High"],
+		    low=df["Low"],
+		    close=df["Close"]))
+
+		return fig
+
+
+	return {}
 
 @app.callback(
 	Output('grafico_boolinger_info','figure'),
@@ -463,7 +538,6 @@ def popula_macd(acao_selecionada):
 
 @app.callback(
 	Output('grafico_rsi_info','figure'),
-	Output('grafico_fechamento_info','figure'),
 	Input("select_acao_selecionada","value"),
 	
 )
@@ -517,7 +591,7 @@ def popula_rsi(acao_selecionada):
 
 		df = df[df.index > str(data_inicial)]
 
-		change = acao["Close"].diff()
+		change = df["Close"].diff()
 		change.dropna(inplace=True)
 
 

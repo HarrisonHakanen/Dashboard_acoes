@@ -398,7 +398,7 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             acao_df = acao.rename_axis('Date').reset_index()
             
             
-            acao_df = acao_df[['Date','Close']]
+            acao_df = acao_df[['Date','Close','Open','High','Low']]
             
             '''OBJETO AÇÃO'''
             acao = Acao()
