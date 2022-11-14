@@ -102,69 +102,6 @@ layout = dbc.Col([
 
 
 @app.callback(
-	Output('grafico_candlestick_info','figure'),
-	[Input("select_acao_selecionada","value")]
-
-
-)
-
-def popula_candlestick(acao_selecionada):
-
-
-	if len(acao_selecionada)>0:
-
-		if isinstance(acao_selecionada,list):
-			
-			ticker = acao_selecionada[0]
-
-
-		else:
-			
-			ticker = acao_selecionada
-
-
-		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
-
-		#-----------------------------------------
-
-		
-		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
-
-
-		if isinstance(acao_selecionada,list):
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
-
-			
-		else:
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
-
-
-		df.set_index("Date",inplace=True)
-
-
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
-
-		fig = go.Figure()
-		fig.add_trace(go.Candlestick(
-		    name='Fechamento', 
-		    x=df.index, 
-		    open=df["Open"], 
-		    high=df["High"],
-		    low=df["Low"],
-		    close=df["Close"]))
-
-		fig.update_layout(height=900)
-
-
-		return fig
-
-
-	return {}
-
-@app.callback(
 	Output('grafico_boolinger_info','figure'),
 	[Input("select_acao_selecionada","value")]
 
@@ -204,9 +141,6 @@ def popula_boolinger(acao_selecionada):
 			Fechamento = pd.read_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
 
 			
-			
-			
-
 			fig = go.Figure()
 
 			fig.add_trace(go.Scatter(
@@ -603,5 +537,69 @@ def popula_rsi(acao_selecionada):
 		fig.add_hline(y=rsi["Close"].max()*superior,line_color="red")
 
 		return fig
+
+	return {}
+
+
+@app.callback(
+	Output('grafico_candlestick_info','figure'),
+	[Input("select_acao_selecionada","value")]
+
+
+)
+
+def popula_candlestick(acao_selecionada):
+
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		#Atributos--------------------------------
+		data_final = datetime.now()
+
+		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
+
+		#-----------------------------------------
+
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+
+		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
+
+		fig = go.Figure()
+		fig.add_trace(go.Candlestick(
+		    name='Fechamento', 
+		    x=df.index, 
+		    open=df["Open"], 
+		    high=df["High"],
+		    low=df["Low"],
+		    close=df["Close"]))
+
+		fig.update_layout(height=900)
+
+
+		return fig
+
 
 	return {}

@@ -3,8 +3,8 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM, Dropout
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import Dense, LSTM, Dropout
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import datetime
