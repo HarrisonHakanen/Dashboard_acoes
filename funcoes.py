@@ -11,6 +11,8 @@ import datetime
 import dateutil.parser
 import math
 import plotly.express as px
+import dateutil.relativedelta
+from datetime import datetime
 
 class Acao:
     
@@ -398,7 +400,7 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             acao_df = acao.rename_axis('Date').reset_index()
             
             
-            acao_df = acao_df[['Date','Close','Open','High','Low']]
+            acao_df = acao_df[['Date','Close','Open','High','Low',"Volume"]]
             
             '''OBJETO AÇÃO'''
             acao = Acao()
@@ -594,15 +596,13 @@ def PesquisarAcoes(lista_de_acoes):
         info[i].sazonalidade_param["ticker"] = info[i].ticker
         info[i].sazonalidade_mes["ticker"] = info[i].ticker
         info[i].fechamento["ticker"] = info[i].ticker
-        
-        
+                
         neg_param=pd.concat([neg_param,info[i].negociacoes_param])
-        neg_mes = pd.concat([neg_mes,info[i].negociacoes_mes])
-                             
+        neg_mes = pd.concat([neg_mes,info[i].negociacoes_mes])                             
         sazon_param = pd.concat([sazon_param,info[i].sazonalidade_param])
-        sazon_mes = pd.concat([sazon_mes,info[i].sazonalidade_mes])
-        
+        sazon_mes = pd.concat([sazon_mes,info[i].sazonalidade_mes])        
         fechamento = pd.concat([fechamento,info[i].fechamento])
+
 
 
         i+=1
@@ -674,3 +674,29 @@ def psar(barsdata, iaf = 0.02, maxaf = 0.2):
         else:
             psarbear[i] = psar[i]
     return {"dates":dates, "high":high, "low":low, "close":close, "psar":psar, "psarbear":psarbear, "psarbull":psarbull}
+
+
+def ForceIndex(data, ndays): 
+    FI = pd.Series(data['Close'].diff(ndays) * data['Volume'], name = 'ForceIndex') 
+    data = data.join(FI) 
+    return data
+
+
+def data_slicer(tempo_slice):
+
+    inicial_diferente = 0
+
+    if tempo_slice[0]==4:
+        data_final = datetime.now()
+        inicial_diferente = 0
+    else:
+        data_final = datetime.now() + dateutil.relativedelta.relativedelta(months=-tempo_slice[0])
+        inicial_diferente = 1
+
+
+    if inicial_diferente == 0:
+        data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-tempo_slice[1])
+    else:
+        data_inicial = datetime.now() + dateutil.relativedelta.relativedelta(months=-tempo_slice[1])
+
+    return [data_inicial,data_final]

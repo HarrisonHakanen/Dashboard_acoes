@@ -27,17 +27,6 @@ layout = dbc.Col([
 	dbc.Row([
 		html.H5("Bollinger"),
 		dbc.Col([
-			
-			html.H5("Período de análise"),
-
-			dcc.DatePickerRange(
-				id="periodo_analise",
-				start_date_placeholder_text="Data inicial",
-				end_date_placeholder_text="Data final",   
-				calendar_orientation='vertical')
-		]),
-
-		dbc.Col([
 			html.H5("Dias anteriores (padrão 10)"),
 			dcc.Input(id="dias_anteriores", type="number",className="form-control form-control-lg"),
 		]),
@@ -57,17 +46,6 @@ layout = dbc.Col([
 	dbc.Row([
 
 		html.H5("MACD"),
-
-		dbc.Col([
-			
-			html.H5("Período de análise"),
-
-			dcc.DatePickerRange(
-				id="periodo_analise_MACD",
-				start_date_placeholder_text="Data inicial",
-				end_date_placeholder_text="Data final",   
-				calendar_orientation='vertical')
-		]),
 
 		dbc.Col([
 			html.H5("Rápida MM (padrão 12)"),
@@ -91,17 +69,6 @@ layout = dbc.Col([
 		html.H5("RSI"),
 
 		dbc.Col([
-			
-			html.H5("Período de análise"),
-
-			dcc.DatePickerRange(
-				id="periodo_analise_rsi",
-				start_date_placeholder_text="Data inicial",
-				end_date_placeholder_text="Data final",   
-				calendar_orientation='vertical')
-		]),
-
-		dbc.Col([
 			html.H5("Inferior (padrão 0.3)"),
 			dcc.Input(id="inferior_rsi", type="number",className="form-control form-control-lg"),
 		]),
@@ -116,28 +83,7 @@ layout = dbc.Col([
 		]),
 	],style={"padding": "25px"}),
 
-	
 	html.Hr(),
-
-	dbc.Row([
-
-		html.H5("Candlestick"),
-
-		dbc.Col([
-			
-			html.H5("Período de análise"),
-
-			dcc.DatePickerRange(
-				id="periodo_analise_candlestick",
-				start_date_placeholder_text="Data inicial",
-				end_date_placeholder_text="Data final",   
-				calendar_orientation='vertical')
-		]),
-	],style={"padding": "25px"}),
-
-
-	html.Hr(),
-
 
 	dbc.Row([
 

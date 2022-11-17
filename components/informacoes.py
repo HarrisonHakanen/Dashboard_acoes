@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from   sklearn.linear_model import LinearRegression
 from   sklearn.metrics import r2_score
 import statsmodels.api as sm
-
+from dash import dcc
 
 
 import pdb
@@ -37,25 +37,74 @@ layout = dbc.Col([
 
 
 		dbc.Row([
-
-			dbc.Col([
+			dbc.Row([
+				
 				html.H5("MACD"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_macd_info"))
-				]),
+					dcc.Slider(4, 48,
+					    step=None,id="macd_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
 			]),
 
-		],style={"padding": "25px"}),
-		dbc.Row([
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="macd_marker_slice")
+				
+				],width=12),
+			]),
 
-			dbc.Col([
+			dbc.Row([
+				dbc.Col([
+					
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_macd_info"))
+					]),
+				],width=12),
+			]),
+			
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+			dbc.Row([
+				
 				html.H5("Bollinger"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
+					dcc.Slider(4, 48,
+					    step=None,id="bollinger_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="bollinger_marker_slice")
+				
+				],width=12),
+			]),			
+
+			dbc.Row([
+				dbc.Col([
+					
+					html.Hr(),
+
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
+					]),
 				]),
 			]),
 
@@ -63,13 +112,33 @@ layout = dbc.Col([
 
 
 		dbc.Row([
-
-			dbc.Col([
+			dbc.Row([
+				
 				html.H5("RSI"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+					dcc.Slider(4, 48,
+					    step=None,id="rsi_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="rsi_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+					]),
 				]),
 			]),
 
@@ -78,12 +147,35 @@ layout = dbc.Col([
 
 		dbc.Row([
 
-			dbc.Col([
+			dbc.Row([
+				
 				html.H5("Candlestick"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
+					dcc.Slider(4, 48,
+					    step=None,id="candle_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="candle_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
+					]),
 				]),
 			]),
 
@@ -92,14 +184,35 @@ layout = dbc.Col([
 
 		dbc.Row([
 
-			dbc.Col([
+			dbc.Row([
+				
 				html.H5("Regressão linear"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_regressao_info"))
-				]),
+					dcc.Slider(4, 48,
+					    step=None,id="regressao_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
 			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="regressao_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_regressao_info"))
+					]),
+				]),
+			])
 
 		],style={"padding": "25px"}),
 
@@ -107,14 +220,70 @@ layout = dbc.Col([
 		
 		dbc.Row([
 
-			dbc.Col([
+			dbc.Row([
+				
 				html.H5("SAR"),
 				html.Hr(),
 
 				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_sar_info"))
+					dcc.Slider(4, 48,
+					    step=None,id="sar_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="sar_marker_slice")
+				
+				],width=12),
+			]),
+			dbc.Row([
+				dbc.Col([
+					
+
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_sar_info"))
+					]),
 				]),
 			]),
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+			dbc.Row([
+				
+				html.H5("Force index"),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="force_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="force_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_ForceIndex_info"))
+					]),
+				]),
+			])
 
 		],style={"padding": "25px"}),
 
@@ -123,11 +292,15 @@ layout = dbc.Col([
 
 @app.callback(
 	Output('grafico_boolinger_info','figure'),
-	[Input("select_acao_selecionada","value")]
+	Output("bollinger_marker_slice","min"),
+	Output("bollinger_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("bollinger_marker","value"),
+	Input("bollinger_marker_slice","value")]
 )
 
 
-def popula_boolinger(acao_selecionada):
+def popula_boolinger(acao_selecionada,tempo,tempo_slice):
 
 	if len(acao_selecionada)>0:
 
@@ -156,11 +329,7 @@ def popula_boolinger(acao_selecionada):
 
 
 		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
-
-		dias_anteriores = 10
+		datas = funcoes.data_slicer(tempo_slice)
 
 		mm_superior = 1.5
 
@@ -182,7 +351,7 @@ def popula_boolinger(acao_selecionada):
 		df.set_index("Date",inplace=True)
 
 
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)]['Close'])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 
 
 
@@ -229,7 +398,7 @@ def popula_boolinger(acao_selecionada):
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
 
 
-
+		'''
 		sup_band.to_csv("Arquivos/Bollinger/"+arquivo+"sup_band.csv")
 		inf_band.to_csv("Arquivos/Bollinger/"+arquivo+"inf_band.csv")
 		mm.to_csv("Arquivos/Bollinger/"+arquivo+"mm.csv")
@@ -238,7 +407,7 @@ def popula_boolinger(acao_selecionada):
 		vendas.to_csv("Arquivos/Bollinger/"+arquivo+"vendas.csv")
 		bandas_bollinger.to_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
 		df.to_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
-
+		'''
 		
 
 		fig = go.Figure()
@@ -288,26 +457,36 @@ def popula_boolinger(acao_selecionada):
 		    marker = dict(color="#EF553B",size = 8)
 		))
 
-		fig.update_layout(xaxis_rangeslider_visible=True)
 
-		return fig
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
 			
-	return {}
+	return [{},4,tempo]
 
 @app.callback(
 	Output('grafico_macd_info','figure'),
+	Output("macd_marker_slice","min"),
+	Output("macd_marker_slice","max"),
 	Input("select_acao_selecionada","value"),
+	Input("macd_marker","value"),
+	Input("macd_marker_slice","value")
 	
 )
 
-def popula_macd(acao_selecionada):
+
+
+def popula_macd(acao_selecionada,tempo,tempo_slice):
+
+
+	
 
 	if len(acao_selecionada) > 0:
 
 		if isinstance(acao_selecionada,list):
 			
 			ticker = acao_selecionada[0]
-
 
 		else:
 			
@@ -322,10 +501,9 @@ def popula_macd(acao_selecionada):
 
 
 		#ATRIBUTOS---------------------------
-		data_final = datetime.now()
 
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
-
+		datas = funcoes.data_slicer(tempo_slice)
+		
 		rapida = 12
 		lenta = 26
 		sinal = 9
@@ -344,7 +522,7 @@ def popula_macd(acao_selecionada):
 		df.set_index("Date",inplace=True)
 
 		
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)]['Close'])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 		
 
 		#Calcula a média móvel exponencial rápida e lenta
@@ -368,29 +546,32 @@ def popula_macd(acao_selecionada):
 
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
+		'''
 		df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
 		pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
 		pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
+		'''
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 		
 
-		return fig
+		return [fig,4,tempo]
 
-	return {}
-
-
-
-
+	return [{},4,tempo]
 
 
 
 @app.callback(
 	Output('grafico_rsi_info','figure'),
+	Output("rsi_marker_slice","min"),
+	Output("rsi_marker_slice","max"),
 	Input("select_acao_selecionada","value"),
+	Input("rsi_marker","value"),
+	Input("rsi_marker_slice","value")
 )
 
-def popula_rsi(acao_selecionada):
+def popula_rsi(acao_selecionada,tempo,tempo_slice):
 
 
 	if len(acao_selecionada) > 0:
@@ -420,9 +601,7 @@ def popula_rsi(acao_selecionada):
 		
 
 		#ATRIBUTOS---------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
+		datas = funcoes.data_slicer(tempo_slice)
 
 		superior = 0.7
 		inferior = 0.3
@@ -434,10 +613,10 @@ def popula_rsi(acao_selecionada):
 
 		df.set_index("Date",inplace=True)
 		
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)]['Close'])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 
 
-		df = df[df.index > str(data_inicial)]
+		df = df[df.index > str(datas[0])]
 
 		change = df["Close"].diff()
 		change.dropna(inplace=True)
@@ -467,18 +646,23 @@ def popula_rsi(acao_selecionada):
 		fig.add_hline(y=rsi["Close"].max()*superior,line_color="red")
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return fig
+		return [fig,4,tempo]
 
-	return {}
+	return [{},4,tempo]
 
 
 @app.callback(
 	Output('grafico_candlestick_info','figure'),
-	[Input("select_acao_selecionada","value")]
+	Output("candle_marker_slice","min"),
+	Output("candle_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("candle_marker","value"),
+	Input("candle_marker_slice","value")]
 )
 
-def popula_candlestick(acao_selecionada):
+def popula_candlestick(acao_selecionada,tempo,tempo_slice):
 
 
 	if len(acao_selecionada)>0:
@@ -494,9 +678,7 @@ def popula_candlestick(acao_selecionada):
 
 
 		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
+		datas = funcoes.data_slicer(tempo_slice)
 
 		#-----------------------------------------
 
@@ -515,7 +697,7 @@ def popula_candlestick(acao_selecionada):
 		df.set_index("Date",inplace=True)
 
 
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
 		fig = go.Figure()
 		fig.add_trace(go.Candlestick(
@@ -527,154 +709,26 @@ def popula_candlestick(acao_selecionada):
 		    close=df["Close"]))
 
 		fig.update_layout(height=700)
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
 
 
-		return fig
-
-
-	return {}
-
-
-
-
-
-'''
-@app.callback(
-	Output('grafico_candlestick_bollinger_info','figure'),
-	[Input("select_acao_selecionada","value")]
-)
-
-def popula_can_bollinger(acao_selecionada):
-
-
-	if len(acao_selecionada)>0:
-
-		if isinstance(acao_selecionada,list):
-			
-			ticker = acao_selecionada[0]
-
-
-		else:
-			
-			ticker = acao_selecionada
-
-
-		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-24)
-
-		dias_anteriores = 10
-
-		mm_superior = 1.5
-
-		mm_inferior = 1.5
-
-		#-----------------------------------------
-
-		
-		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
-
-
-		if isinstance(acao_selecionada,list):
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
-
-			
-		else:
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
-
-
-
-		df_bollinger = pd.DataFrame()
-
-		df_bollinger["Close"] = df["Close"]
-		df_bollinger["Date"] = df["Date"]
-
-		
-
-		df.set_index("Date",inplace=True)
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
-
-		df_bollinger.set_index("Date",inplace=True)
-		df_bollinger = pd.DataFrame(df_bollinger[str(data_inicial):str(data_final)])
-		
-		#Médias móveis de 20 em 20 dias
-		mm = df.rolling(10).mean()
-
-		#Desvio padrão de 20 em 20 dias
-		std = df.rolling(10).std()
-
-		
-
-		sup_band = mm + mm_superior * std
-		inf_band = mm - mm_inferior * std
-
-		sup_band = sup_band.rename(columns={"Close":"Superior"})
-		inf_band = inf_band.rename(columns={"Close":"Inferior"})
-		mm = mm.rename(columns={"Close":"Medias"})
-		std = std.rename(columns={"Close":"Desvio padrao"})
-
-
-		bandas_bollinger = pd.DataFrame()
-		bandas_bollinger["Close"] = df_bollinger["Close"]
-		bandas_bollinger["Superior"] = sup_band["Superior"]
-		bandas_bollinger["Inferior"] = inf_band["Inferior"]
-
-		bandas_bollinger.dropna(inplace=True)
-
-		compras = bandas_bollinger[bandas_bollinger["Close"]<=bandas_bollinger["Inferior"]]
-		vendas = bandas_bollinger[bandas_bollinger["Close"]>=bandas_bollinger["Superior"]]
-
-		compras = compras.rename(columns={"Close":"Compras"})
-		vendas = vendas.rename(columns={"Close":"Vendas"})
-		
-
-
-
-		fig = go.Figure()
-		fig.add_trace(go.Candlestick(
-		    name='Fechamento', 
-		    x=df.index, 
-		    open=df["Open"], 
-		    high=df["High"],
-		    low=df["Low"],
-		    close=df["Close"]))
-
-		
-		fig.add_trace(go.Scatter(
-		    x = compras.index,
-		    y = compras["Compras"],
-		    name = "Compra",
-		    mode = "markers",
-		    marker = dict(color="#00CC96",size=8)
-		))
-
-		fig.add_trace(go.Scatter(
-		    x = vendas.index,
-		    y = vendas["Vendas"],
-		    name = "Venda",
-		    mode = "markers",
-		    marker = dict(color="#EF553B",size = 8)
-		))
-		
-		fig.update_layout(height=700)
-
-
-		return fig
-
-
-	return {}
-
-'''
+	return [{},4,tempo]
 
 
 @app.callback(
 	Output('grafico_regressao_info','figure'),
+	Output("regressao_marker_slice","min"),
+	Output("regressao_marker_slice","max"),
 	Input("select_acao_selecionada","value"),
+	Input("regressao_marker","value"),
+	Input("regressao_marker_slice","value")
 )
 
 
-def popula_regressao(acao_selecionada):
+def popula_regressao(acao_selecionada,tempo,tempo_slice):
 
 	if len(acao_selecionada)>0:
 
@@ -690,9 +744,7 @@ def popula_regressao(acao_selecionada):
 		
 
 		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-4)
+		datas = funcoes.data_slicer(tempo_slice)
 
 		#-----------------------------------------
 
@@ -711,7 +763,7 @@ def popula_regressao(acao_selecionada):
 		df.set_index("Date",inplace=True)
 
 
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
 
 		df.reset_index(inplace=True)
@@ -756,21 +808,26 @@ def popula_regressao(acao_selecionada):
 		        line=dict(color='red', width=1))
 		)
 
+		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return fig
+		return [fig,4,tempo]
 
 
-	return {}
+	return [{},4,tempo]
 
 
 @app.callback(
 	Output('grafico_sar_info','figure'),
-	[Input("select_acao_selecionada","value")]
+	Output("sar_marker_slice","min"),
+	Output("sar_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("sar_marker","value"),
+	Input("sar_marker_slice","value")]
 )
 
 
-def popula_sar(acao_selecionada):
+def popula_sar(acao_selecionada,tempo,tempo_slice):
 	
 	if len(acao_selecionada)>0:
 
@@ -786,9 +843,7 @@ def popula_sar(acao_selecionada):
 		
 
 		#Atributos--------------------------------
-		data_final = datetime.now()
-
-		data_inicial = data_final + dateutil.relativedelta.relativedelta(months=-4)
+		datas = funcoes.data_slicer(tempo_slice)
 
 		iaf = 0.2
 
@@ -812,7 +867,7 @@ def popula_sar(acao_selecionada):
 
 		df["Date"] = df.index
 
-		df = pd.DataFrame(df[str(data_inicial):str(data_final)])
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
 		SAR = funcoes.psar(df,iaf,maxaf)
 
@@ -844,8 +899,79 @@ def popula_sar(acao_selecionada):
 		        line=dict(color='blue', width=1))
 		)
 
+		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return fig
+		return [fig,4,tempo]
 
-	return {}
+	return [{},4,tempo]
+
+
+
+@app.callback(
+	Output('grafico_ForceIndex_info','figure'),
+	Output("force_marker_slice","min"),
+	Output("force_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("force_marker","value"),
+	Input("force_marker_slice","value")]
+)
+
+def popula_forceIndex(acao_selecionada,tempo,tempo_slice):
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		#Atributos--------------------------------
+		datas = funcoes.data_slicer(tempo_slice)
+
+		n = 21
+
+		#-----------------------------------------
+
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df["Date"] = df.index
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		AAPL_ForceIndex = funcoes.ForceIndex(df,n)
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Fechamento",
+		        x=AAPL_ForceIndex.index,
+		        y=AAPL_ForceIndex["ForceIndex"],
+		        line=dict(color='blue', width=1))
+		)
+		fig.add_hline(y=AAPL_ForceIndex["Close"].max(),line_color="red")
+
+
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
+
+
+	return [{},4,tempo]
