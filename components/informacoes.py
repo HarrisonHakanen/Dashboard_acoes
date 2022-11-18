@@ -38,8 +38,14 @@ layout = dbc.Col([
 
 		dbc.Row([
 			dbc.Row([
-				
-				html.H5("MACD"),
+				dbc.Row([				
+					dbc.Col([
+						html.H5("MACD"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_macd",children=["Configurações"])
+					],width=2),
+				]),
 				html.Hr(),
 
 				dbc.Col([
@@ -75,10 +81,15 @@ layout = dbc.Col([
 
 		dbc.Row([
 			dbc.Row([
-				
-				html.H5("Bollinger"),
+				dbc.Row([				
+					dbc.Col([
+						html.H5("Bollinger"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_bollinger",children=["Configurações"])
+					],width=2),
+				]),
 				html.Hr(),
-
 				dbc.Col([
 					dcc.Slider(4, 48,
 					    step=None,id="bollinger_marker",
@@ -113,10 +124,15 @@ layout = dbc.Col([
 
 		dbc.Row([
 			dbc.Row([
-				
-				html.H5("RSI"),
+				dbc.Row([				
+					dbc.Col([
+						html.H5("RSI"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_rsi",children=["Configurações"])
+					],width=2),
+				]),
 				html.Hr(),
-
 				dbc.Col([
 					dcc.Slider(4, 48,
 					    step=None,id="rsi_marker",
@@ -221,8 +237,14 @@ layout = dbc.Col([
 		dbc.Row([
 
 			dbc.Row([
-				
-				html.H5("SAR"),
+				dbc.Row([				
+					dbc.Col([
+						html.H5("SAR"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_sar",children=["Configurações"])
+					],width=2),
+				]),
 				html.Hr(),
 
 				dbc.Col([
@@ -257,7 +279,14 @@ layout = dbc.Col([
 		dbc.Row([
 			dbc.Row([
 				
-				html.H5("Force index"),
+				dbc.Row([				
+					dbc.Col([
+						html.H5("Force Index"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_force_index",children=["Configurações"])
+					],width=2),
+				]),
 				html.Hr(),
 
 				dbc.Col([
@@ -287,6 +316,177 @@ layout = dbc.Col([
 
 		],style={"padding": "25px"}),
 
+
+
+
+		#Modal MACD------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações MACD")),
+
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("Rápida MM (padrão 12)"),
+						dcc.Input(id="rapida_mm", type="number",className="form-control form-control-lg"),
+					]),
+
+					dbc.Col([
+						html.H5("Lenta MM (padrão 26)"),
+						dcc.Input(id="lenta_mm", type="number",className="form-control form-control-lg"),
+					]),
+					dbc.Col([
+						html.H5("Sinal (padrão 9)"),
+						dcc.Input(id="sinal", type="number",className="form-control form-control-lg"),
+					]),
+
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_macd",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_macd",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+        #Modal Bollinger------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações Bollinger")),
+
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("Dias anteriores (padrão 10)"),
+						dcc.Input(id="dias_anteriores_bollinger", type="number",className="form-control form-control-lg"),
+					]),
+
+					dbc.Col([
+						html.H5("Quantidade de desvio padrão superior (padrão 1.5)"),
+						dcc.Input(id="mm_superior", type="number",className="form-control form-control-lg"),
+					]),
+					dbc.Col([
+						html.H5("Quantidade de desvio padrão inferior (padrão 1.5)"),
+						dcc.Input(id="mm_inferior", type="number",className="form-control form-control-lg"),
+					]),
+
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_bollinger",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_bollinger",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_bollinger",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+        #Modal RSI------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações RSI")),
+
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("Inferior (padrão 0.3)"),
+						dcc.Input(id="inferior_rsi", type="number",className="form-control form-control-lg"),
+					]),
+
+					dbc.Col([
+						html.H5("Superior (padrão 0.7)"),
+						dcc.Input(id="superior_rsi", type="number",className="form-control form-control-lg"),
+					]),
+					dbc.Col([
+						html.H5("Dias anteriores (padrão 14)"),
+						dcc.Input(id="dias_anteriores_rsi", type="number",className="form-control form-control-lg"),
+					]),
+
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_rsi",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_rsi",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_rsi",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+        #Modal SAR------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações SAR")),
+
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("IAF (padrão 0.2)"),
+						dcc.Input(id="iax", type="number",className="form-control form-control-lg"),
+					]),
+
+					dbc.Col([
+						html.H5("MAX AF (padrão 0.2)"),
+						dcc.Input(id="max_af", type="number",className="form-control form-control-lg"),
+					]),
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_sar",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_sar",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_sar",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+		#Modal Force Index------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações Force Index")),
+
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("Dias anteriores (padrão 21)"),
+						dcc.Input(id="dias_anteriores_force_index", type="number",className="form-control form-control-lg"),
+					]),
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_force_index",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_force_index",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_force_index",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
 ])
 
 
@@ -975,3 +1175,65 @@ def popula_forceIndex(acao_selecionada,tempo,tempo_slice):
 
 
 	return [{},4,tempo]
+
+
+
+
+
+
+#Modais
+
+@app.callback(
+    Output('modal_macd','is_open'),
+    Input('config_macd','n_clicks'),
+    State('modal_macd','is_open'),
+)
+def open_modal_macd(n1,is_open):
+
+	if n1:
+		return not is_open
+
+
+@app.callback(
+    Output('modal_bollinger','is_open'),
+    Input('config_bollinger','n_clicks'),
+    State('modal_bollinger','is_open'),
+)
+def open_modal_bollinger(n1,is_open):
+
+	if n1:
+		return not is_open
+
+
+@app.callback(
+    Output('modal_rsi','is_open'),
+    Input('config_rsi','n_clicks'),
+    State('modal_rsi','is_open'),
+)
+def open_modal_rsi(n1,is_open):
+
+	if n1:
+		return not is_open
+
+
+
+@app.callback(
+    Output('modal_sar','is_open'),
+    Input('config_sar','n_clicks'),
+    State('modal_sar','is_open'),
+)
+def open_modal_sar(n1,is_open):
+
+	if n1:
+		return not is_open
+
+
+@app.callback(
+    Output('modal_force_index','is_open'),
+    Input('config_force_index','n_clicks'),
+    State('modal_force_index','is_open'),
+)
+def open_modal_force_index(n1,is_open):
+
+	if n1:
+		return not is_open
