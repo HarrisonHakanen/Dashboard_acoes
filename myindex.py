@@ -8,8 +8,7 @@ from app import *
 import funcoes
 from app import *
 
-from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento,informacoes,configuracoes
-
+from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento,indicadores,configuracoes
 
 ultimos_dias = 30
 
@@ -23,10 +22,15 @@ sazonalidade_mes = Acoes_lista[0].sazonalidade_mes.tail(ultimos_dias).to_dict()
 
 acoes_tickers = pd.read_csv("acoes_tickers.csv").to_dict()
 
-
 app.layout = dbc.Container(children=[
 
-	
+	dcc.Store(id='Macd_store',data=[12,26,9]),
+	dcc.Store(id='Bollinger_store',data=[10,1.5,1.5]),
+	dcc.Store(id='Rsi_store',data=[0.3,0.7,14]),
+	dcc.Store(id='CandleStick_store',data=[0,0]),
+	dcc.Store(id='Sar_store',data=[0.2,0.2]),
+	dcc.Store(id='ForceIndex_store',data=[21]),
+
 	dcc.Store(id='store-negociacoes-param'),
 	dcc.Store(id='store-negociacoes-mes'),
 	dcc.Store(id='store-sazonalidade-param'),
@@ -99,9 +103,9 @@ def render_page_content(pathname):
 		return fechamento.layout
 
 
-	if pathname == "/informacoes":
+	if pathname == "/indicadores":
 
-		return informacoes.layout
+		return indicadores.layout
 
 	if pathname == "/configuracoes":
 
