@@ -392,7 +392,10 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             print(ticker)
             
             acao = yf.download(ticker)
-            
+            acao["Diferenca"] = acao["Close"].diff()
+            acao["Diferenca_percentual"] = (acao["Close"]*100) /(acao["Close"] + (acao["Diferenca"])*-1)-100
+            acao["Fechamento_minima"] = acao["Close"] - acao["Low"]        
+            acao["High-Low"] = acao["High"] - acao["Low"]
             if(not data_inicio != 0 and data_fim != 0):
                 print("oi")
                 acao = acao[data_inicio:data_fim]
@@ -400,7 +403,8 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             acao_df = acao.rename_axis('Date').reset_index()
             
             
-            acao_df = acao_df[['Date','Close','Open','High','Low',"Volume"]]
+            acao_df = acao_df[['Date','Close','Open','High','Low',"Volume","Diferenca","Diferenca_percentual","Fechamento_minima","High-Low"]]
+            
             
             '''OBJETO AÇÃO'''
             acao = Acao()

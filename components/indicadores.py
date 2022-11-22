@@ -31,7 +31,7 @@ layout = dbc.Col([
 
 		dbc.Row([
 			dbc.Col([
-				html.H1("Gráficos", className="text-primary"),
+				html.H1("Indicadores", className="text-primary"),
 			]),
 		],style={"padding": "25px"}),
 
@@ -160,101 +160,6 @@ layout = dbc.Col([
 
 		],style={"padding": "25px"}),
 
-
-		dbc.Row([
-
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Candlestick"),
-					],width=10),
-					dbc.Col([
-						dbc.Button(id="config_candlestick",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="candle_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
-				
-				dbc.Col([
-					dcc.Slider(4, 240,
-					    step=None,id="candle_marker_full",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48',52:'52',56:'56',60:'60',64:'64',
-					        68:'68',72:'72',76:'76',80:'80',84:'84',88:'88',92:'92',96:'96',
-					        100:'100',104:'104',108:'108',112:'112',116:'116',120:'120',124:'124',
-					        128:'128',132:'132',136:'136',140:'140',144:'144',148:'148',152:'152',
-					        154:'154',156:'156',160:'160',164:'164',168:'168',172:'172',176:'176',
-					        180:'180',184:'184',188:'188',192:'192',196:'196',180:'180',184:'184',
-					        188:'188',192:'192',196:'196',200:'200',204:'204',208:'208',212:'212',
-					        216:'216',220:'220',224:'224',228:'228',232:'232',236:'236',240:'240'},value=8,
-
-					)
-				],width=12,style={'display':'none'}),
-				
-			]),
-
-			dbc.Row([
-				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="candle_marker_slice")
-				
-				],width=12),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
-					]),
-				]),
-			]),
-
-		],style={"padding": "25px"}),
-
-
-		dbc.Row([
-
-			dbc.Row([
-				
-				html.H5("Regressão linear"),
-				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="regressao_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="regressao_marker_slice")
-				
-				],width=12),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_regressao_info"))
-					]),
-				]),
-			])
-
-		],style={"padding": "25px"}),
-
-
 		
 		dbc.Row([
 
@@ -338,7 +243,66 @@ layout = dbc.Col([
 
 		],style={"padding": "25px"}),
 
+		dbc.Row([
 
+			dbc.Row([
+				dbc.Row([				
+					dbc.Col([
+						html.H5("Candlestick"),
+					],width=10),
+					dbc.Col([
+						dbc.Button(id="config_candlestick",children=["Configurações"])
+					],width=2),
+				]),
+				html.Hr(),
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="candle_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12,style={'visibility':'visible'}),
+
+				
+				dbc.Col([
+					dcc.Slider(4, 240,
+					    step=None,id="candle_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48',52:'52',56:'56',60:'60',64:'64',
+					        68:'68',72:'72',76:'76',80:'80',84:'84',88:'88',92:'92',96:'96',
+					        100:'100',104:'104',108:'108',112:'112',116:'116',120:'120',124:'124',
+					        128:'128',132:'132',136:'136',140:'140',144:'144',148:'148',152:'152',
+					        154:'154',156:'156',160:'160',164:'164',168:'168',172:'172',176:'176',
+					        180:'180',184:'184',188:'188',192:'192',196:'196',180:'180',184:'184',
+					        188:'188',192:'192',196:'196',200:'200',204:'204',208:'208',212:'212',
+					        216:'216',220:'220',224:'224',228:'228',232:'232',236:'236',240:'240'},value=8,
+
+					)
+				],width=12,style={'visibility':'hidden'}),
+				
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="candle_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
+					]),
+				]),
+			]),
+
+		],style={"padding": "25px"}),
+
+
+		
 
 
 		#Modal MACD------------------------------------------
@@ -778,14 +742,15 @@ def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 		df.set_index("Date",inplace=True)
 
 		
+		
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
-		
-		
 
 		#Calcula a média móvel exponencial rápida e lenta
 		rapidaMME=df.Close.ewm(span=rapida).mean()
 
 		lentaMME=df.Close.ewm(span=lenta).mean()
+		
+		
 
 		MACD = rapidaMME - lentaMME
 
@@ -985,7 +950,7 @@ def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
 
 	return [{},4,tempo]
 
-
+'''
 @app.callback(
 	Output('grafico_regressao_info','figure'),
 	Output("regressao_marker_slice","min"),
@@ -1029,35 +994,33 @@ def popula_regressao(acao_selecionada,tempo,tempo_slice):
 
 
 		df.set_index("Date",inplace=True)
-
-
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
-
-
 		df.reset_index(inplace=True)
+
+		df.dropna()
 
 		X = df.index.values.reshape(-1,1)
 		y = df['Close'].values.reshape(-1,1)
 
+		X = [X[~np.isnan(X)]]
+		y = [y[~np.isnan(y)]]
+
+
 
 		reg = LinearRegression()
 		reg.fit(X, y)
-
-
 		f_previsoes = reg.predict(X)
-
-
 
 		previsoes_lista = list()
 		i = 0
 
-		while i < len(f_previsoes):
+		while i < len(f_previsoes[0]):
 		    
-		    previsoes_lista.append(f_previsoes[i][0])
+		    previsoes_lista.append(f_previsoes[0][i])
 		    
 		    i+=1
 
-
+		
 		fig = go.Figure()
 
 		fig.add_trace(
@@ -1083,7 +1046,7 @@ def popula_regressao(acao_selecionada,tempo,tempo_slice):
 
 
 	return [{},4,tempo]
-
+'''
 
 @app.callback(
 	Output('grafico_sar_info','figure'),
@@ -1466,3 +1429,41 @@ def aplicar_candlestick(n1,primeira_mm,segunda_mm):
 
 	return [0,0]
 #-----------------------------------------------------------
+
+
+
+'''
+dbc.Row([
+
+			dbc.Row([
+				
+				html.H5("Regressão linear"),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="regressao_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="regressao_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_regressao_info"))
+					]),
+				]),
+			])
+
+		],style={"padding": "25px"}),
+'''

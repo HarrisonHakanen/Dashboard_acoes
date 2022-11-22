@@ -57,6 +57,7 @@ layout = dbc.Col([
 
 	],style={"padding": "25px"}),
 
+
 	html.Hr(),
 
 	dbc.Row([
