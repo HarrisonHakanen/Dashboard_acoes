@@ -228,7 +228,7 @@ def realizar_previsoes(btn_realizarPrevisoes,acao_selecionada):
 			#Compra param LSTM,Compra param MM,Venda param LSTM,Venda param MM,Compra mes LSTM,Compra mes MM,Venda mes LSTM,Venda mes MM
 			return df_previsoes["Compra param LSTM"][0],df_previsoes["Compra param MM"][0],df_previsoes["Venda param LSTM"][0],df_previsoes["Venda param MM"][0],df_previsoes["Compra mes LSTM"][0],	df_previsoes["Compra mes MM"][0],df_previsoes["Venda mes LSTM"][0],	df_previsoes["Venda mes MM"][0]
 
-
+				
 
 
 	if("realizar_previsoes" == ctx.triggered_id):	

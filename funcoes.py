@@ -119,7 +119,7 @@ def prever_valor_lstm(array,dias_anteriores,dias_previsao,epocas):
         model.compile(optimizer='adam',loss='mse')
         #model.summary()
 
-        validation = model.fit(X_train,Y_train,validation_data=(X_teste,Y_teste),epochs=epocas,batch_size=dias_retorno,verbose=0)
+        validation = model.fit(X_train,Y_train,validation_data=(X_teste,Y_teste),epochs=epocas,batch_size=dias_retorno,verbose=1)
         
         length_test = len(test)
 

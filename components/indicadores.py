@@ -40,6 +40,53 @@ layout = dbc.Col([
 			dbc.Row([
 				dbc.Row([				
 					dbc.Col([
+						html.H5("Aroon"),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_aroon",children=["Negociações"])
+					],width=2),
+					dbc.Col([
+						dbc.Button(id="config_aroon",children=["Configurações"])
+					],width=2),
+				]),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="aroon_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="aroon_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_aroon_info"))
+					]),
+				],width=12),
+			]),
+			
+
+		],style={"padding": "25px"}),
+
+
+
+		dbc.Row([
+			dbc.Row([
+				dbc.Row([				
+					dbc.Col([
 						html.H5("MACD"),
 					],width=10),
 					dbc.Col([
@@ -257,11 +304,11 @@ layout = dbc.Col([
 				html.Hr(),
 				dbc.Col([
 					dcc.Slider(4, 48,
-					    step=None,id="candle_marker",
+					    step=None,id="candle_marker2",
 					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
 					        36:'36',40:'40',44:'44',48:'48'},value=8
 					)
-				],width=12,style={'visibility':'visible'}),
+				],width=12,style={'display':'none'}),
 
 				
 				dbc.Col([
@@ -278,7 +325,7 @@ layout = dbc.Col([
 					        216:'216',220:'220',224:'224',228:'228',232:'232',236:'236',240:'240'},value=8,
 
 					)
-				],width=12,style={'visibility':'hidden'}),
+				],width=12,style={'display':''}),
 				
 			]),
 
@@ -301,8 +348,71 @@ layout = dbc.Col([
 
 		],style={"padding": "25px"}),
 
+		#Modal Aroon------------------------------------------
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Configurações aroon")),
 
-		
+			dbc.ModalBody([
+				dbc.Row([
+                    dbc.Col([
+						html.H5("Dias anteriores (padrão 25)"),
+						dcc.Input(id="dias_anteriores_aroon", type="number",className="form-control form-control-lg"),
+					]),
+
+					
+
+                ]),
+
+			]),
+
+			dbc.ModalFooter([
+				dbc.Button("Aplicar",id="aplicar_aroon",color="success"),
+				dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
+			])
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_aroon",
+        size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações aroon")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_aroon", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_aroon", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_aroon",
+        size="xl",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
 
 
 		#Modal MACD------------------------------------------
@@ -509,6 +619,124 @@ layout = dbc.Col([
 
 
 @app.callback(
+	Output('grafico_aroon_info','figure'),
+	Output("aroon_marker_slice","min"),
+	Output("aroon_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("aroon_marker","value"),
+	Input("aroon_marker_slice","value"),
+	Input("Aroon_store","data")]
+
+)
+
+def popula_aroon(acao_selecionada,tempo,tempo_slice,aroon_store):
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+		
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+
+		
+
+		if isinstance(acao_selecionada,list):
+			acao = acao_selecionada[0]
+
+		else:
+			acao = acao_selecionada	
+
+
+
+		#Atributos--------------------------------
+		
+		datas = funcoes.data_slicer(tempo_slice)
+		dias_anteriores_aroon = aroon_store[0]
+
+		#-----------------------------------------
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		date=df.index.to_list()
+		highp=df["High"].to_list() # converter tudo pra lista facilita as coisas
+		lowp=df["Low"].to_list()
+		tf=dias_anteriores_aroon# 25 days to analyse
+		AroonUp=[] 
+		AroonDown=[]
+		AroonDate=[]
+		x=tf # ele temque comecar no ponto 25 (vulgo ignora-se os 25 primeiros dados)
+		while x<len(date): # ele vai do ponto 25 até o tamanho máximo da lista
+		    Aroon_up=((highp[x-tf:x].index(max(highp[x-tf:x])))/float(tf))*100 # ele pega tf periodos anteriores e olha até o ponto atual da análise, buscando o indice que está o ponto máximo dentre as máximas do ativo 
+		    Aroon_down=((lowp[x-tf:x].index(min(lowp[x-tf:x])))/float(tf))*100# ele pega tf periodos anteriores e olha até o ponto atual da análise, buscando o indice que está o ponto minimo dentre o low do ativo
+		    AroonUp.append(Aroon_up) 
+		    AroonDown.append(Aroon_down) 
+		    AroonDate.append(date[x])
+		    x+=1
+		df_teste=pd.DataFrame()
+		AroonDown=pd.Series(AroonDown)
+		df_teste["Aroon_Down"]=AroonDown
+		AroonUp=pd.Series(AroonUp)
+		df_teste["Aroon_Up"]=AroonUp
+		AroonDate=pd.Series(AroonDate)
+		df_teste["Aroon_Date"]=AroonDate
+		df_teste=df_teste.set_index("Aroon_Date")
+
+
+		df_teste.to_csv("Arquivos/Aroon/aroon"+arquivo+".csv")
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Aroon Up - Venda",
+		        x=df_teste.index,
+		        y=df_teste["Aroon_Up"],
+		        line=dict(color='green', width=2))
+		)
+		fig.add_trace(
+		    go.Scatter(
+		        name="Aroon Down- Compra",
+		        x=df_teste.index,
+		        y=df_teste["Aroon_Down"],
+		        line=dict(color='red', width=2))
+		)
+
+		fig.add_hline(y=7,line_color="blue",line_width=1, line_dash="dash")
+		fig.add_hline(y=30,line_color="blue",line_width=1, line_dash="dash")
+		fig.add_hline(y=50,line_color="blue",line_width=1, line_dash="dash")
+		fig.add_hline(y=70,line_color="blue",line_width=1, line_dash="dash")
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return[fig,4,tempo]
+
+	return [{},4,tempo]
+
+@app.callback(
 	Output('grafico_boolinger_info','figure'),
 	Output("bollinger_marker_slice","min"),
 	Output("bollinger_marker_slice","max"),
@@ -617,16 +845,16 @@ def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + acao
 
 
-		'''
-		sup_band.to_csv("Arquivos/Bollinger/"+arquivo+"sup_band.csv")
-		inf_band.to_csv("Arquivos/Bollinger/"+arquivo+"inf_band.csv")
-		mm.to_csv("Arquivos/Bollinger/"+arquivo+"mm.csv")
-		std.to_csv("Arquivos/Bollinger/"+arquivo+"std.csv")
+		
+		#sup_band.to_csv("Arquivos/Bollinger/"+arquivo+"sup_band.csv")
+		#inf_band.to_csv("Arquivos/Bollinger/"+arquivo+"inf_band.csv")
+		#mm.to_csv("Arquivos/Bollinger/"+arquivo+"mm.csv")
+		#std.to_csv("Arquivos/Bollinger/"+arquivo+"std.csv")
 		compras.to_csv("Arquivos/Bollinger/"+arquivo+"compras.csv")
 		vendas.to_csv("Arquivos/Bollinger/"+arquivo+"vendas.csv")
-		bandas_bollinger.to_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
-		df.to_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
-		'''
+		#bandas_bollinger.to_csv("Arquivos/Bollinger/"+arquivo+"bandas_bollinger.csv")
+		#df.to_csv("Arquivos/Bollinger/"+arquivo+"fechamentos.csv")
+		
 		
 
 		fig = go.Figure()
@@ -768,11 +996,11 @@ def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
-		'''
-		df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
+		
+		#df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
 		pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
 		pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
-		'''
+		
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
@@ -822,6 +1050,7 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 
 
 		
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 		#ATRIBUTOS---------------------------
 		datas = funcoes.data_slicer(tempo_slice)
@@ -862,7 +1091,7 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 		rsi =pd.DataFrame(rsi)
 		rsi["Date"] = rsi.index
 		
-		#rsi.to_csv("rsi"+ticker+".csv")
+		rsi.to_csv("Arquivos/RSI/rsi"+arquivo+".csv")
 
 		fig = px.line(rsi, x=rsi["Date"], y=rsi["Close"])
 		fig.add_hline(y=rsi["Close"].max()*inferior,line_color="blue")
@@ -1082,7 +1311,7 @@ def popula_sar(acao_selecionada,tempo,tempo_slice,sar_config):
 		maxaf = sar_config[1]
 
 		#-----------------------------------------
-
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 		
 		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
 
@@ -1104,6 +1333,9 @@ def popula_sar(acao_selecionada,tempo,tempo_slice,sar_config):
 		SAR = funcoes.psar(df,iaf,maxaf)
 
 		SAR_df = pd.DataFrame(SAR)
+
+		SAR_df.to_csv("Arquivos/Sar/sar"+arquivo+".csv")
+
 
 		fig = go.Figure()
 
@@ -1161,6 +1393,7 @@ def popula_forceIndex(acao_selecionada,tempo,tempo_slice,forceIndex_config):
 			
 			ticker = acao_selecionada
 
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 		#Atributos--------------------------------
 		datas = funcoes.data_slicer(tempo_slice)
@@ -1187,6 +1420,8 @@ def popula_forceIndex(acao_selecionada,tempo,tempo_slice,forceIndex_config):
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
 		AAPL_ForceIndex = funcoes.ForceIndex(df,n)
+
+		AAPL_ForceIndex.to_csv("Arquivos/ForceIndex/forceIndex"+arquivo+".csv")
 
 		fig = go.Figure()
 
@@ -1390,6 +1625,94 @@ def aplicar_force_index(n1,dias_anteriores):
 		return [dias_anteriores]
 
 	return[21]
+
+
+#Modal aroon--------------------------------------------
+@app.callback(
+    Output('modal_aroon','is_open'),
+    Input('config_aroon','n_clicks'),
+    State('modal_aroon','is_open'),
+)
+def open_modal_aroon(n1,is_open):
+
+	if 'config_aroon'==ctx.triggered_id:
+		return not is_open
+
+@app.callback(
+	Output("Aroon_store","data"),
+	Input("aplicar_aroon","n_clicks"),
+	Input("dias_anteriores_aroon","value"),
+)
+def aplicar_aroon(n1,dias_anteriores):
+
+	if "aplicar_aroon" == ctx.triggered_id:
+		
+		if dias_anteriores == None or dias_anteriores == "":
+			dias_anteriores = 25
+
+		return [dias_anteriores]
+
+	return[25]
+
+
+
+@app.callback(
+    Output('modal_negociacoes_aroon','is_open'),
+    Output('tabela_compras_aroon','children'),
+    Output('tabela_vendas_aroon','children'),
+    Input('negociacoes_aroon','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_aroon','is_open'),
+)
+def open_modal_aroon(n1,acao_selecionada,is_open):
+
+	if 'negociacoes_aroon'==ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+			
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			df_aroon = pd.read_csv("Arquivos/Aroon/aroon"+arquivo+".csv")
+			
+			df_aroon_down = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Down"] >= 96])
+			df_aroon_up = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Up"] >= 96])
+
+			#df_aroon_down = df_aroon.loc[df_aroon["Aroon_Down"] >= 96]
+			#df_aroon_up = df_aroon.loc[df_aroon["Aroon_Up"] >= 96]
+
+			tabela_venda = dash_table.DataTable(df_aroon_up.to_dict('records'), [{"name": i, "id": i} for i in df_aroon_up.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)	
+
+
+			tabela_compra = dash_table.DataTable(df_aroon_down.to_dict('records'), [{"name": i, "id": i} for i in df_aroon_down.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+		return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
+
 
 #-----------------------------------------------------------
 

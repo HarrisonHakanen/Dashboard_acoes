@@ -30,6 +30,7 @@ app.layout = dbc.Container(children=[
 	dcc.Store(id='CandleStick_store',data=[0,0]),
 	dcc.Store(id='Sar_store',data=[0.2,0.2]),
 	dcc.Store(id='ForceIndex_store',data=[21]),
+	dcc.Store(id='Aroon_store',data=[25]),
 
 	dcc.Store(id='store-negociacoes-param'),
 	dcc.Store(id='store-negociacoes-mes'),
@@ -75,15 +76,18 @@ def render_page_content(pathname):
 
 		return dashboards.layout
 
+	'''
 	if pathname == "/altas_baixas":
 
 		return altas_baixas.layout
 
+	'''
+	
 	if pathname == "/previsoes":
 
 		return previsoes.layout
 
-
+	
 
 
 	#if pathname == "/macd":
