@@ -180,7 +180,10 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("RSI"),
-					],width=10),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_rsi",children=["Negociações"])
+					],width=2),
 					dbc.Col([
 						dbc.Button(id="config_rsi",children=["Configurações"])
 					],width=2),
@@ -220,7 +223,10 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("SAR"),
-					],width=10),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_sar",children=["Negociações"])
+					],width=2),
 					dbc.Col([
 						dbc.Button(id="config_sar",children=["Configurações"])
 					],width=2),
@@ -262,7 +268,10 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("Force Index"),
-					],width=10),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_force_index",children=["Negociações"])
+					],width=2),
 					dbc.Col([
 						dbc.Button(id="config_force_index",children=["Configurações"])
 					],width=2),
@@ -605,6 +614,43 @@ layout = dbc.Col([
         backdrop=True),
 
 
+
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações RSI")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_rsi", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_rsi", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_rsi",
+        size="xl",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
         #Modal SAR------------------------------------------
 		dbc.Modal([
 			dbc.ModalHeader(dbc.ModalTitle("Configurações SAR")),
@@ -636,6 +682,42 @@ layout = dbc.Col([
         centered=True,
         backdrop=True),
 
+
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações SAR")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_sar", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_sar", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_sar",
+        size="xl",
+        is_open=False,
+        centered=True,
+        backdrop=True),
 
 		#Modal Force Index------------------------------------------
 		dbc.Modal([
@@ -691,6 +773,43 @@ layout = dbc.Col([
 		],style={"background-color":"rgba(17,140,79,0.05)"},
         id="modal_candlestick",
         size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+        dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações force index")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_force_index", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_force_index", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_force_index",
+        size="xl",
         is_open=False,
         centered=True,
         backdrop=True),
@@ -1529,8 +1648,8 @@ def open_negociacoes_macd(n1,acao_selecionada,is_open):
 			compras = pd.DataFrame(compras,columns=["Date"])			
 			vendas = pd.DataFrame(vendas,columns=["Date"])
 
-			compras["Valor"] = getMACDValues(compras,df_fechamento)
-			vendas["Valor"] = getMACDValues(vendas,df_fechamento)
+			compras["Compras"] = getMACDValues(compras,df_fechamento)
+			vendas["Vendas"] = getMACDValues(vendas,df_fechamento)
 
 			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
 
@@ -1552,7 +1671,7 @@ def open_negociacoes_macd(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 
-		return not is_open,tabela_compra,tabela_venda
+			return not is_open,tabela_compra,tabela_venda
 
 	return is_open,[],[]
 
@@ -1728,6 +1847,92 @@ def aplicar_rsi(inferior,superior,dias_anteriores,n1):
 		return [inferior,superior,dias_anteriores]
 
 	return [0.3,0.7,14]
+
+
+@app.callback(
+    Output('modal_negociacoes_rsi','is_open'),
+    Output('tabela_compras_rsi','children'),
+    Output('tabela_vendas_rsi','children'),
+    Input('negociacoes_rsi','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_rsi','is_open'),
+    Input("Rsi_store","data")
+)
+def open_negociacoes_rsi(n1,acao_selecionada,is_open,rsi_config):
+	if "negociacoes_rsi" == ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+				
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			rsi_df = pd.read_csv("Arquivos/RSI/rsi"+arquivo+".csv")
+
+			fechamento_df = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+			rsi_df.drop(rsi_df.columns[2],inplace=True,axis=1)
+
+			inferior = rsi_config[0]
+			superior = rsi_config[1]
+
+			vendas = rsi_df.loc[rsi_df["Close"]>=rsi_df["Close"].max()*superior]
+			compras = rsi_df.loc[rsi_df["Close"]<=rsi_df["Close"].max()*inferior]
+
+			vendas.drop(vendas.columns[1],inplace=True,axis=1)
+			compras.drop(compras.columns[1],inplace=True,axis=1)
+
+			vendas["Vendas"] = getRSIValues(vendas,fechamento_df)
+			compras["Compras"] = getRSIValues(compras,fechamento_df)
+
+			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+
+			tabela_venda = dash_table.DataTable(vendas.to_dict('records'), [{"name": i, "id": i} for i in vendas.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
+
+def getRSIValues(rsi,fechamento):
+
+	valores_rsi = list()
+
+	i = 0
+	while i < len(rsi):
+
+		j = 0
+
+		while j < len(fechamento):
+
+			if rsi["Date"].values[i] == fechamento["Date"].values[j]:
+				valores_rsi.append(round(fechamento["Close"].values[j],2))
+
+			j+=1
+
+		i+=1
+
+	return valores_rsi
 #-----------------------------------------------------------
 
 
@@ -1762,6 +1967,65 @@ def aplicar_sar(iax,maxaf,n1):
 
 		return[iax,maxaf]
 	return[0.2,0.2]
+
+
+@app.callback(
+    Output('modal_negociacoes_sar','is_open'),
+    Output('tabela_compras_sar','children'),
+    Output('tabela_vendas_sar','children'),
+    Input('negociacoes_sar','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_macd','is_open'),
+)
+def open_negociacoes_sar(n1,acao_selecionada,is_open):
+	
+	if "negociacoes_sar" == ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+				
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			SAR_df = pd.read_csv("Arquivos/Sar/sar"+arquivo+".csv")
+			fechamento_df = pd.read_csv("Arquivos/Info/fechamento.csv")
+			
+			
+			compras = SAR_df.drop(SAR_df.columns[[0,2,3,4,5,6]],axis=1)
+			vendas = SAR_df.drop(SAR_df.columns[[0,2,3,4,5,7]],axis=1)
+
+			compras.dropna(inplace=True)
+			vendas.dropna(inplace=True)
+
+			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			tabela_venda = dash_table.DataTable(vendas.to_dict('records'), [{"name": i, "id": i} for i in vendas.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+			
+
+			return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
 #-----------------------------------------------------------
 
 
@@ -1793,6 +2057,88 @@ def aplicar_force_index(n1,dias_anteriores):
 
 	return[21]
 
+
+@app.callback(
+    Output('modal_negociacoes_force_index','is_open'),
+    Output('tabela_compras_force_index','children'),
+    Output('tabela_vendas_force_index','children'),
+    Input('negociacoes_force_index','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_macd','is_open'),
+)
+def open_negociacoes_force_index(n1,acao_selecionada,is_open):
+	
+	if "negociacoes_force_index" == ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+				
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			forceIndex_df = pd.read_csv("Arquivos/ForceIndex/forceIndex"+arquivo+".csv")
+			fechamento_df = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+			forceIndex_df = forceIndex_df.drop(forceIndex_df.columns[[1,2,3,4,5,6,7,8,9,10,11]],axis=1)
+			
+			vendas = forceIndex_df.loc[forceIndex_df["ForceIndex"]>0]
+			compras = forceIndex_df.loc[forceIndex_df["ForceIndex"]<0]
+
+			vendas["Vendas"] = getForceIndexValues(vendas,fechamento_df)
+			compras["Compras"] = getForceIndexValues(compras,fechamento_df)
+			
+			vendas.drop("ForceIndex",inplace=True,axis=1)
+			compras.drop("ForceIndex",inplace=True,axis=1)
+
+			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			tabela_venda = dash_table.DataTable(vendas.to_dict('records'), [{"name": i, "id": i} for i in vendas.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
+
+
+def getForceIndexValues(forceIndex,fechamento):
+
+	valores_forceIndex = list()
+
+	i = 0
+	while i < len(forceIndex):
+
+		j = 0
+
+		while j < len(fechamento):
+
+			if forceIndex["Date"].values[i] == fechamento["Date"].values[j]:
+				valores_forceIndex.append(round(fechamento["Close"].values[j],2))
+
+			j+=1
+
+		i+=1
+
+	return valores_forceIndex
 
 #Modal aroon--------------------------------------------
 @app.callback(
@@ -1862,8 +2208,8 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 			df_aroon_up = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Up"] >= 96])
 
 
-			df_aroon_down["Valores"] = getAroonValues(df_aroon_down,df_fechamento)
-			df_aroon_up["Valores"] = getAroonValues(df_aroon_up,df_fechamento)
+			df_aroon_down["Compras"] = getAroonValues(df_aroon_down,df_fechamento)
+			df_aroon_up["Vendas"] = getAroonValues(df_aroon_up,df_fechamento)
 
 
 			df_aroon_down.drop("Aroon_Up",inplace=True,axis=1)
