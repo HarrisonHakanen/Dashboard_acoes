@@ -88,7 +88,10 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("MACD"),
-					],width=10),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_macd",children=["Negociações"])
+					],width=2),
 					dbc.Col([
 						dbc.Button(id="config_macd",children=["Configurações"])
 					],width=2),
@@ -131,7 +134,10 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("Bollinger"),
-					],width=10),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_bollinger",children=["Negociações"])
+					],width=2),
 					dbc.Col([
 						dbc.Button(id="config_bollinger",children=["Configurações"])
 					],width=2),
@@ -240,10 +246,10 @@ layout = dbc.Col([
 			dbc.Row([
 				dbc.Col([
 					
-
 					dbc.Col([
 						dbc.Card(dcc.Graph(id="grafico_sar_info"))
 					]),
+
 				]),
 			]),
 
@@ -451,6 +457,42 @@ layout = dbc.Col([
         centered=True,
         backdrop=True),
 
+		dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações macd")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_macd", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_macd", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_macd",
+        size="xl",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
 
         #Modal Bollinger------------------------------------------
 		dbc.Modal([
@@ -484,6 +526,43 @@ layout = dbc.Col([
 		],style={"background-color":"rgba(17,140,79,0.05)"},
         id="modal_bollinger",
         size="lg",
+        is_open=False,
+        centered=True,
+        backdrop=True),
+
+
+        dbc.Modal([
+			dbc.ModalHeader(dbc.ModalTitle("Negociações bollinger")),
+
+			dbc.ModalBody([
+				dbc.Row([
+               		dbc.Col([
+               			dbc.Row([
+               				html.H5("Tabela de compras"),
+               			]),
+               			dbc.Row([
+               				html.Div(id="tabela_compras_bollinger", className="dbc"),
+               			]),
+
+               		],width=6),
+
+					dbc.Col([
+						dbc.Row([
+							html.H5("Tabela de vendas"),
+						]),
+
+						dbc.Row([
+							html.Div(id="tabela_vendas_bollinger", className="dbc"),
+						]),
+
+					],width=6),
+                ]),
+
+			]),
+
+		],style={"background-color":"rgba(17,140,79,0.05)"},
+        id="modal_negociacoes_bollinger",
+        size="xl",
         is_open=False,
         centered=True,
         backdrop=True),
@@ -912,6 +991,7 @@ def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
 			
 	return [{},4,tempo]
 
+
 @app.callback(
 	Output('grafico_macd_info','figure'),
 	Output("macd_marker_slice","min"),
@@ -922,8 +1002,6 @@ def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
 	Input("Macd_store","data")
 	
 )
-
-
 
 def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 
@@ -1024,13 +1102,11 @@ def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 
 def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 
-
 	if len(acao_selecionada) > 0:
 
 		if isinstance(acao_selecionada,list):
 			
 			ticker = acao_selecionada[0]
-
 
 		else:
 			
@@ -1179,103 +1255,6 @@ def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
 
 	return [{},4,tempo]
 
-'''
-@app.callback(
-	Output('grafico_regressao_info','figure'),
-	Output("regressao_marker_slice","min"),
-	Output("regressao_marker_slice","max"),
-	Input("select_acao_selecionada","value"),
-	Input("regressao_marker","value"),
-	Input("regressao_marker_slice","value")
-)
-
-
-def popula_regressao(acao_selecionada,tempo,tempo_slice):
-
-	if len(acao_selecionada)>0:
-
-		if isinstance(acao_selecionada,list):
-			
-			ticker = acao_selecionada[0]
-
-
-		else:
-			
-			ticker = acao_selecionada
-
-		
-
-		#Atributos--------------------------------
-		datas = funcoes.data_slicer(tempo_slice)
-
-		#-----------------------------------------
-
-		
-		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
-
-
-		if isinstance(acao_selecionada,list):
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
-
-			
-		else:
-			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
-
-
-		df.set_index("Date",inplace=True)
-		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
-		df.reset_index(inplace=True)
-
-		df.dropna()
-
-		X = df.index.values.reshape(-1,1)
-		y = df['Close'].values.reshape(-1,1)
-
-		X = [X[~np.isnan(X)]]
-		y = [y[~np.isnan(y)]]
-
-
-
-		reg = LinearRegression()
-		reg.fit(X, y)
-		f_previsoes = reg.predict(X)
-
-		previsoes_lista = list()
-		i = 0
-
-		while i < len(f_previsoes[0]):
-		    
-		    previsoes_lista.append(f_previsoes[0][i])
-		    
-		    i+=1
-
-		
-		fig = go.Figure()
-
-		fig.add_trace(
-		    go.Scatter(
-		        name="Fechamento",
-		        x=df["Date"],
-		        y=df["Close"],
-		        line=dict(color='blue', width=1))
-		)
-
-		fig.add_trace(
-		    go.Scatter(
-		        name="Regressão",
-		        x=df["Date"],
-		        y=previsoes_lista,
-		        line=dict(color='red', width=1))
-		)
-
-		fig.update_layout(xaxis_rangeslider_visible=True)
-		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-
-		return [fig,4,tempo]
-
-
-	return [{},4,tempo]
-'''
 
 @app.callback(
 	Output('grafico_sar_info','figure'),
@@ -1481,6 +1460,123 @@ def aplicar_macd(n1,rapida,lenta,sinal):
 		return [rapida,lenta,sinal]
 
 	return [12,26,9]
+
+
+@app.callback(
+    Output('modal_negociacoes_macd','is_open'),
+    Output('tabela_compras_macd','children'),
+    Output('tabela_vendas_macd','children'),
+    Input('negociacoes_macd','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_macd','is_open'),
+)
+def open_negociacoes_macd(n1,acao_selecionada,is_open):
+	
+	if "negociacoes_macd" == ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+				
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+			sinal = pd.read_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
+			macd = pd.read_csv("Arquivos/Macd/"+arquivo+"macd.csv")
+
+
+			fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+			if isinstance(acao_selecionada,list):
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+				
+			else:
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+
+			maior = 0
+			compras = list()
+			vendas = list()
+
+			i = 0
+			
+			while i < len(sinal):
+
+				if maior == 0:
+					if macd["Close"].values[i] > sinal["Close"].values[i]:
+
+						compras.append(macd["Date"].values[i])
+
+						maior = 1
+
+				else:
+
+					if macd["Close"].values[i] < sinal["Close"].values[i]:
+						
+						vendas.append(macd["Date"].values[i])
+
+						maior = 0
+				i+=1
+
+			
+			compras = pd.DataFrame(compras,columns=["Date"])			
+			vendas = pd.DataFrame(vendas,columns=["Date"])
+
+			compras["Valor"] = getMACDValues(compras,df_fechamento)
+			vendas["Valor"] = getMACDValues(vendas,df_fechamento)
+
+			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			tabela_venda = dash_table.DataTable(vendas.to_dict('records'), [{"name": i, "id": i} for i in vendas.columns],
+
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+		return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
+
+
+
+def getMACDValues(macd,fechamento):
+
+	valores_macd = list()
+
+	i = 0
+	while i < len(macd):
+
+		j = 0
+
+		while j < len(fechamento):
+
+			if macd["Date"].values[i] == fechamento["Date"].values[j]:
+				valores_macd.append(round(fechamento["Close"].values[j],2))
+
+			j+=1
+
+		i+=1
+
+	return valores_macd
 #-----------------------------------------------------------
 
 
@@ -1520,6 +1616,77 @@ def aplicar_bollinger(n1,dias_anteriores,mm_inferior,mm_superior):
 		return [dias_anteriores,mm_inferior,mm_superior]
 
 	return [10,1.5,1.5]
+
+
+@app.callback(
+    Output('modal_negociacoes_bollinger','is_open'),
+    Output('tabela_compras_bollinger','children'),
+    Output('tabela_vendas_bollinger','children'),
+    Input('negociacoes_bollinger','n_clicks'),
+    Input("select_acao_selecionada","value"),
+    State('modal_negociacoes_macd','is_open'),
+)
+def open_modal_bollinger(n1,acao_selecionada,is_open):
+	if "negociacoes_bollinger" == ctx.triggered_id:
+
+		if len(acao_selecionada)>0:
+
+			if isinstance(acao_selecionada,list):
+				
+				ticker = acao_selecionada[0]
+
+			else:
+				
+				ticker = acao_selecionada
+
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+
+			compras = pd.read_csv("Arquivos/Bollinger/"+arquivo+"compras.csv")
+			vendas = pd.read_csv("Arquivos/Bollinger/"+arquivo+"vendas.csv")
+
+
+			compras.drop("Superior",inplace=True,axis="columns")
+			compras.drop("Inferior",inplace=True,axis="columns")
+			compras.drop("ticker",inplace=True,axis="columns")
+
+			vendas.drop("Superior",inplace=True,axis="columns")
+			vendas.drop("Inferior",inplace=True,axis="columns")
+			vendas.drop("ticker",inplace=True,axis="columns")
+
+
+
+			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+			tabela_venda = dash_table.DataTable(vendas.to_dict('records'), [{"name": i, "id": i} for i in vendas.columns],
+	        sort_action="native",       
+	        sort_mode="single",  
+	        selected_columns=[],        
+	        selected_rows=[],          
+	        page_action="native",      
+	        page_current=0,             
+	        page_size=10,)
+
+
+			'''
+			if isinstance(acao_selecionada,list):
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+				
+			else:
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+			'''
+			return not is_open,tabela_compra,tabela_venda
+
+	return is_open,[],[]
 #-----------------------------------------------------------
 
 
@@ -1681,12 +1848,26 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 			df_aroon = pd.read_csv("Arquivos/Aroon/aroon"+arquivo+".csv")
+
+			fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+			if isinstance(acao_selecionada,list):
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+				
+			else:
+				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
 			
+
 			df_aroon_down = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Down"] >= 96])
 			df_aroon_up = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Up"] >= 96])
 
-			#df_aroon_down = df_aroon.loc[df_aroon["Aroon_Down"] >= 96]
-			#df_aroon_up = df_aroon.loc[df_aroon["Aroon_Up"] >= 96]
+
+			df_aroon_down["Valores"] = getAroonValues(df_aroon_down,df_fechamento)
+			df_aroon_up["Valores"] = getAroonValues(df_aroon_up,df_fechamento)
+
+
+			df_aroon_down.drop("Aroon_Up",inplace=True,axis=1)
+			df_aroon_up.drop("Aroon_Down",inplace=True,axis=1)
 
 			tabela_venda = dash_table.DataTable(df_aroon_up.to_dict('records'), [{"name": i, "id": i} for i in df_aroon_up.columns],
 
@@ -1714,6 +1895,25 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 	return is_open,[],[]
 
 
+def getAroonValues(aroon,fechamento):
+
+	valores_aroon = list()
+
+	i = 0
+	while i < len(aroon):
+
+		j = 0
+
+		while j < len(fechamento):
+
+			if aroon["Aroon_Date"].values[i] == fechamento["Date"].values[j]:
+				valores_aroon.append(round(fechamento["Close"].values[j],2))
+
+			j+=1
+
+		i+=1
+
+	return valores_aroon
 #-----------------------------------------------------------
 
 
