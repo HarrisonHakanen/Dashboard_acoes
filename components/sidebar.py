@@ -211,7 +211,7 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 
 
 def carregar_acoes_func(data):
-
+	
 	informacoes = funcoes.PesquisarAcoes(data)
 
 	value = [data[0]]

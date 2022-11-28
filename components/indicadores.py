@@ -18,7 +18,7 @@ from   sklearn.linear_model import LinearRegression
 from   sklearn.metrics import r2_score
 import statsmodels.api as sm
 from dash import dcc
-
+import math
 
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
@@ -1648,8 +1648,8 @@ def open_negociacoes_macd(n1,acao_selecionada,is_open):
 			compras = pd.DataFrame(compras,columns=["Date"])			
 			vendas = pd.DataFrame(vendas,columns=["Date"])
 
-			compras["Compras"] = getMACDValues(compras,df_fechamento)
-			vendas["Vendas"] = getMACDValues(vendas,df_fechamento)
+			compras["Valor"] = getMACDValues(compras,df_fechamento)
+			vendas["Valor"] = getMACDValues(vendas,df_fechamento)
 
 			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
 
@@ -1670,6 +1670,8 @@ def open_negociacoes_macd(n1,acao_selecionada,is_open):
 	        page_action="native",      
 	        page_current=0,             
 	        page_size=10,)
+
+			#print(calculaConfiabilidade(compras,vendas))
 
 			return not is_open,tabela_compra,tabela_venda
 
@@ -1775,7 +1777,6 @@ def open_modal_bollinger(n1,acao_selecionada,is_open):
 			vendas.drop("ticker",inplace=True,axis="columns")
 
 
-
 			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
 	        sort_action="native",       
 	        sort_mode="single",  
@@ -1794,15 +1795,8 @@ def open_modal_bollinger(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 
-
-			'''
-			if isinstance(acao_selecionada,list):
-				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
-				
-			else:
-				df_fechamento = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
-
-			'''
+			#print(calculaConfiabilidade(compras,vendas))
+			
 			return not is_open,tabela_compra,tabela_venda
 
 	return is_open,[],[]
@@ -1909,6 +1903,8 @@ def open_negociacoes_rsi(n1,acao_selecionada,is_open,rsi_config):
 	        page_action="native",      
 	        page_current=0,             
 	        page_size=10,)
+
+			#print(calculaConfiabilidade(compras,vendas))
 
 			return not is_open,tabela_compra,tabela_venda
 
@@ -2022,6 +2018,11 @@ def open_negociacoes_sar(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 			
+			compras.rename(columns={"dates":"Date"},inplace=True)
+			vendas.rename(columns={"dates":"Date"},inplace=True)
+
+			#print(calculaConfiabilidade(compras,vendas))
+
 
 			return not is_open,tabela_compra,tabela_venda
 
@@ -2114,6 +2115,9 @@ def open_negociacoes_force_index(n1,acao_selecionada,is_open):
 	        page_action="native",      
 	        page_current=0,             
 	        page_size=10,)
+
+
+			#print(calculaConfiabilidade(vendas,compras))
 
 			return not is_open,tabela_compra,tabela_venda
 
@@ -2208,12 +2212,15 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 			df_aroon_up = pd.DataFrame(df_aroon.loc[df_aroon["Aroon_Up"] >= 96])
 
 
-			df_aroon_down["Compras"] = getAroonValues(df_aroon_down,df_fechamento)
-			df_aroon_up["Vendas"] = getAroonValues(df_aroon_up,df_fechamento)
+			df_aroon_down["Valor"] = getAroonValues(df_aroon_down,df_fechamento)
+			df_aroon_up["Valor"] = getAroonValues(df_aroon_up,df_fechamento)
 
 
-			df_aroon_down.drop("Aroon_Up",inplace=True,axis=1)
-			df_aroon_up.drop("Aroon_Down",inplace=True,axis=1)
+			df_aroon_down.drop(["Aroon_Down","Aroon_Up"],inplace=True,axis=1) #compra
+			df_aroon_up.drop(["Aroon_Up","Aroon_Down"],inplace=True,axis=1) #venda
+
+			df_aroon_down.rename(columns={"Aroon_Date":"Date"},inplace=True)
+			df_aroon_up.rename(columns={"Aroon_Date":"Date"},inplace=True)
 
 			tabela_venda = dash_table.DataTable(df_aroon_up.to_dict('records'), [{"name": i, "id": i} for i in df_aroon_up.columns],
 
@@ -2235,11 +2242,93 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 	        page_action="native",      
 	        page_current=0,             
 	        page_size=10,)
+			
+
+			print(calculaConfiabilidade(df_aroon_down,df_aroon_up))
+
 
 		return not is_open,tabela_compra,tabela_venda
 
 	return is_open,[],[]
 
+def calculaConfiabilidade(lista_compra,lista_venda):
+
+	lista_compra["Tipo"] = "Compra"
+	lista_venda["Tipo"] = "Venda"
+
+	df_aroon_all = pd.concat([lista_compra,lista_venda]).sort_values(by='Date')
+
+	df_aroon_all.reset_index(inplace=True)
+
+	df_aroon_all = normalizaAroonAll(df_aroon_all)
+	
+	i = 0
+	compras = list()
+	vendas = list()
+	resultado_list = list()
+	recomeca = 0
+	lote = 100
+	
+	while i < len(df_aroon_all):
+
+
+
+		if(df_aroon_all["Tipo"]._get_value(i) == "Compra"):
+
+			if recomeca == 1:
+
+				total_compras=0
+				total_vendas=0
+				
+				for x in range(len(compras)):
+					total_compras += compras[x] * lote
+
+				divisao = math.floor((len(compras) * 100)/len(vendas))
+
+				for x in range(len(vendas)):
+					total_vendas += vendas[x] * divisao
+
+				resultado_list.append(round((round(total_vendas - total_compras,2)*100)/total_compras,2))
+
+				recomeca = 0
+				compras = list()
+				vendas = list()
+
+				compras.append(df_aroon_all["Valor"]._get_value(i))
+
+			else:
+				compras.append(df_aroon_all["Valor"]._get_value(i))
+
+		else:
+			recomeca = 1
+			vendas.append(df_aroon_all["Valor"]._get_value(i))
+
+
+		i+=1
+	
+	return resultado_list
+
+def normalizaAroonAll(df_aroon_all):
+
+	#Normaliza os dados para começar nas compras
+	i=0
+	primeiros = 0
+
+	while i < len(df_aroon_all):
+
+		if(primeiros == 0):
+
+			if df_aroon_all["Tipo"]._get_value(i) == "Venda":
+
+				df_aroon_all.drop([i],inplace=True)
+
+			else:
+				primeiros = 1
+
+		i+=1
+	df_aroon_all.reset_index(inplace=True)
+
+	return df_aroon_all
 
 def getAroonValues(aroon,fechamento):
 

@@ -392,6 +392,10 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
             print(ticker)
             
             acao = yf.download(ticker)
+
+            #Remover a primeira linha dos dados, por que as vezes o yahoo buga o ultimo valor
+            #acao = acao[:-1]
+
             acao["Diferenca"] = acao["Close"].diff()
             acao["Diferenca_percentual"] = (acao["Close"]*100) /(acao["Close"] + (acao["Diferenca"])*-1)-100
             acao["Fechamento_minima"] = acao["Close"] - acao["Low"]        
