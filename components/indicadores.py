@@ -373,9 +373,6 @@ layout = dbc.Col([
 						html.H5("Dias anteriores (padrão 25)"),
 						dcc.Input(id="dias_anteriores_aroon", type="number",className="form-control form-control-lg"),
 					]),
-
-					
-
                 ]),
 
 			]),
@@ -404,6 +401,7 @@ layout = dbc.Col([
                			dbc.Row([
                				html.Div(id="tabela_compras_aroon", className="dbc"),
                			]),
+               			
 
                		],width=6),
 
@@ -418,6 +416,25 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+
+                	dbc.Col([
+                		dbc.Card([
+                			dbc.CardBody([
+                				html.H4("Porcentagem média de retorno", className="card-title"),
+                				html.H5(id="confianca_aroon"),
+                			]),
+                		])
+                	]),
+                	dbc.Col([
+                		dbc.Card([
+                			dbc.CardBody([
+                				html.H4("Quantidade de negociações", className="card-title"),
+                				html.H5(id="qtd_negociacao_aroon"),
+                			]),
+                		])
+                	]),
+       			]),
 
 			]),
 
@@ -485,6 +502,7 @@ layout = dbc.Col([
 						dbc.Row([
 							html.H5("Tabela de vendas"),
 						]),
+						
 
 						dbc.Row([
 							html.Div(id="tabela_vendas_macd", className="dbc"),
@@ -492,6 +510,9 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+       				html.H5(id="confianca_macd"),
+       			]),
 
 			]),
 
@@ -549,6 +570,7 @@ layout = dbc.Col([
                			dbc.Row([
                				html.H5("Tabela de compras"),
                			]),
+               			
                			dbc.Row([
                				html.Div(id="tabela_compras_bollinger", className="dbc"),
                			]),
@@ -566,6 +588,9 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+       				html.H5(id="confianca_bollinger"),
+       			]),
 
 			]),
 
@@ -624,6 +649,7 @@ layout = dbc.Col([
                			dbc.Row([
                				html.H5("Tabela de compras"),
                			]),
+               			
                			dbc.Row([
                				html.Div(id="tabela_compras_rsi", className="dbc"),
                			]),
@@ -641,6 +667,9 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+       				html.H5(id="confianca_rsi"),
+       			]),
 
 			]),
 
@@ -692,6 +721,7 @@ layout = dbc.Col([
                			dbc.Row([
                				html.H5("Tabela de compras"),
                			]),
+               			
                			dbc.Row([
                				html.Div(id="tabela_compras_sar", className="dbc"),
                			]),
@@ -709,6 +739,9 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+       				html.H5(id="confianca_sar"),
+       			]),
 
 			]),
 
@@ -797,6 +830,7 @@ layout = dbc.Col([
 						dbc.Row([
 							html.H5("Tabela de vendas"),
 						]),
+						
 
 						dbc.Row([
 							html.Div(id="tabela_vendas_force_index", className="dbc"),
@@ -804,6 +838,9 @@ layout = dbc.Col([
 
 					],width=6),
                 ]),
+                dbc.Row([
+               		html.H5(id="confianca_force_index"),
+               	]),
 
 			]),
 
@@ -1585,6 +1622,7 @@ def aplicar_macd(n1,rapida,lenta,sinal):
     Output('modal_negociacoes_macd','is_open'),
     Output('tabela_compras_macd','children'),
     Output('tabela_vendas_macd','children'),
+    Output('confianca_macd','children'),
     Input('negociacoes_macd','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_macd','is_open'),
@@ -1671,11 +1709,12 @@ def open_negociacoes_macd(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 
-			#print(calculaConfiabilidade(compras,vendas))
+			conf = calculaConfiabilidade(compras,vendas)
 
-			return not is_open,tabela_compra,tabela_venda
 
-	return is_open,[],[]
+			return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2)
+
+	return is_open,[],[],[]
 
 
 
@@ -1743,6 +1782,7 @@ def aplicar_bollinger(n1,dias_anteriores,mm_inferior,mm_superior):
     Output('modal_negociacoes_bollinger','is_open'),
     Output('tabela_compras_bollinger','children'),
     Output('tabela_vendas_bollinger','children'),
+    Output('confianca_bollinger','children'),
     Input('negociacoes_bollinger','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_macd','is_open'),
@@ -1795,11 +1835,14 @@ def open_modal_bollinger(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 
-			#print(calculaConfiabilidade(compras,vendas))
-			
-			return not is_open,tabela_compra,tabela_venda
+			compras.rename(columns={"Compras":"Valor"},inplace=True)
+			vendas.rename(columns={"Vendas":"Valor"},inplace=True)
 
-	return is_open,[],[]
+			conf = calculaConfiabilidade(compras,vendas)			
+			
+			return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2)
+
+	return is_open,[],[],[]
 #-----------------------------------------------------------
 
 
@@ -1847,6 +1890,7 @@ def aplicar_rsi(inferior,superior,dias_anteriores,n1):
     Output('modal_negociacoes_rsi','is_open'),
     Output('tabela_compras_rsi','children'),
     Output('tabela_vendas_rsi','children'),
+    Output('confianca_rsi','children'),
     Input('negociacoes_rsi','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_rsi','is_open'),
@@ -1882,8 +1926,8 @@ def open_negociacoes_rsi(n1,acao_selecionada,is_open,rsi_config):
 			vendas.drop(vendas.columns[1],inplace=True,axis=1)
 			compras.drop(compras.columns[1],inplace=True,axis=1)
 
-			vendas["Vendas"] = getRSIValues(vendas,fechamento_df)
-			compras["Compras"] = getRSIValues(compras,fechamento_df)
+			vendas["Valor"] = getRSIValues(vendas,fechamento_df)
+			compras["Valor"] = getRSIValues(compras,fechamento_df)
 
 			tabela_compra = dash_table.DataTable(compras.to_dict('records'), [{"name": i, "id": i} for i in compras.columns],
 	        sort_action="native",       
@@ -1904,11 +1948,11 @@ def open_negociacoes_rsi(n1,acao_selecionada,is_open,rsi_config):
 	        page_current=0,             
 	        page_size=10,)
 
-			#print(calculaConfiabilidade(compras,vendas))
+			conf = calculaConfiabilidade(compras,vendas)
 
-			return not is_open,tabela_compra,tabela_venda
+			return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2)
 
-	return is_open,[],[]
+	return is_open,[],[],[]
 
 def getRSIValues(rsi,fechamento):
 
@@ -1969,6 +2013,7 @@ def aplicar_sar(iax,maxaf,n1):
     Output('modal_negociacoes_sar','is_open'),
     Output('tabela_compras_sar','children'),
     Output('tabela_vendas_sar','children'),
+    Output('confianca_sar','children'),
     Input('negociacoes_sar','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_macd','is_open'),
@@ -2018,15 +2063,14 @@ def open_negociacoes_sar(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 			
-			compras.rename(columns={"dates":"Date"},inplace=True)
-			vendas.rename(columns={"dates":"Date"},inplace=True)
+			compras.rename(columns={"dates":"Date","psarbull":"Valor"},inplace=True)
+			vendas.rename(columns={"dates":"Date","psarbear":"Valor"},inplace=True)
 
-			#print(calculaConfiabilidade(compras,vendas))
+			conf = calculaConfiabilidade(compras,vendas)
 
+			return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2)
 
-			return not is_open,tabela_compra,tabela_venda
-
-	return is_open,[],[]
+	return is_open,[],[],[]
 #-----------------------------------------------------------
 
 
@@ -2063,6 +2107,7 @@ def aplicar_force_index(n1,dias_anteriores):
     Output('modal_negociacoes_force_index','is_open'),
     Output('tabela_compras_force_index','children'),
     Output('tabela_vendas_force_index','children'),
+    Output('confianca_force_index','children'),
     Input('negociacoes_force_index','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_macd','is_open'),
@@ -2092,8 +2137,8 @@ def open_negociacoes_force_index(n1,acao_selecionada,is_open):
 			vendas = forceIndex_df.loc[forceIndex_df["ForceIndex"]>0]
 			compras = forceIndex_df.loc[forceIndex_df["ForceIndex"]<0]
 
-			vendas["Vendas"] = getForceIndexValues(vendas,fechamento_df)
-			compras["Compras"] = getForceIndexValues(compras,fechamento_df)
+			vendas["Valor"] = getForceIndexValues(vendas,fechamento_df)
+			compras["Valor"] = getForceIndexValues(compras,fechamento_df)
 			
 			vendas.drop("ForceIndex",inplace=True,axis=1)
 			compras.drop("ForceIndex",inplace=True,axis=1)
@@ -2116,12 +2161,11 @@ def open_negociacoes_force_index(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 
+			conf = calculaConfiabilidade(compras,vendas)
 
-			#print(calculaConfiabilidade(vendas,compras))
+			return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2)
 
-			return not is_open,tabela_compra,tabela_venda
-
-	return is_open,[],[]
+	return is_open,[],[],[]
 
 
 def getForceIndexValues(forceIndex,fechamento):
@@ -2177,6 +2221,8 @@ def aplicar_aroon(n1,dias_anteriores):
     Output('modal_negociacoes_aroon','is_open'),
     Output('tabela_compras_aroon','children'),
     Output('tabela_vendas_aroon','children'),
+    Output('confianca_aroon','children'),
+    Output('qtd_negociacao_aroon','children'),
     Input('negociacoes_aroon','n_clicks'),
     Input("select_acao_selecionada","value"),
     State('modal_negociacoes_aroon','is_open'),
@@ -2243,13 +2289,11 @@ def open_modal_aroon(n1,acao_selecionada,is_open):
 	        page_current=0,             
 	        page_size=10,)
 			
+			conf = calculaConfiabilidade(df_aroon_down,df_aroon_up)
 
-			print(calculaConfiabilidade(df_aroon_down,df_aroon_up))
+		return not is_open,tabela_compra,tabela_venda,round(sum(conf)/len(conf),2),len(conf)
 
-
-		return not is_open,tabela_compra,tabela_venda
-
-	return is_open,[],[]
+	return is_open,[],[],[],[]
 
 def calculaConfiabilidade(lista_compra,lista_venda):
 
