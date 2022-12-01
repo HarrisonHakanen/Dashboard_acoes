@@ -38,6 +38,16 @@ layout = dbc.Col([
 
 
 	],style={"padding": "25px"}),
+	dbc.Row([
+		dbc.Col([
+			dcc.RadioItems(id="intervalo",
+			   options=[
+			       {'label': 'Dia', 'value': 'Dia'},
+
+			       {'label': 'Hora', 'value': 'Hora'},
+			   ],value="Dia")
+		])
+	],style={"padding": "25px"}),
 
 	dbc.Row([
 
@@ -191,12 +201,16 @@ def popula_dropdown(data):
 
 	Input("store-sazonalidade-param","data"),
 	Input("store-sazonalidade-mes","data"),
+	Input("intervalo","value"),
 
 	])
 
-def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
+def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes,intervalo):
 	
-	
+	if intervalo == "Dia":
+		intervalo = "1d"
+	else:
+		intervalo = "1m"
 	#if("carregar_acoes_ibov"==ctx.triggered_id):
 	#	data = pd.read_csv("Empresas_Ibovespa_19_11_2022.csv")
 
@@ -205,14 +219,14 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 
 	if("carregar_acoes"==ctx.triggered_id):
 
-		return carregar_acoes_func(drop_data)
+		return carregar_acoes_func(drop_data,intervalo)
 
 	return [[],[],neg_param,neg_mes,sazon_param,sazon_mes]
 
 
-def carregar_acoes_func(data):
+def carregar_acoes_func(data,intervalo):
 	
-	informacoes = funcoes.PesquisarAcoes(data)
+	informacoes = funcoes.PesquisarAcoes(data,intervalo)
 
 	value = [data[0]]
 	
