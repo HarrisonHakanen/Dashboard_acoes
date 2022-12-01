@@ -939,7 +939,7 @@ def popula_aroon(acao_selecionada,tempo,tempo_slice,aroon_store):
 		df_teste["Aroon_Date"]=AroonDate
 		df_teste=df_teste.set_index("Aroon_Date")
 
-
+		
 		df_teste.to_csv("Arquivos/Aroon/aroon"+arquivo+".csv")
 
 		fig = go.Figure()
