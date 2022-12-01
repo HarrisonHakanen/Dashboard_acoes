@@ -860,7 +860,8 @@ layout = dbc.Col([
 	[Input("select_acao_selecionada","value"),
 	Input("aroon_marker","value"),
 	Input("aroon_marker_slice","value"),
-	Input("Aroon_store","data")]
+	Input("Aroon_store","data")
+	]
 
 )
 

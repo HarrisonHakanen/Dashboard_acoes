@@ -373,7 +373,7 @@ def dados_lucro(altas_np,baixas_np):
 
 
 
-def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
+def GetAcoes(tickers,todas_acoes,data_inicio,data_fim,periodo):
 
     contador = 0
     
@@ -391,7 +391,12 @@ def GetAcoes(tickers,todas_acoes,data_inicio=0,data_fim=0):
 
             print(ticker)
             
-            acao = yf.download(ticker)
+            if periodo == "Dia":
+                acao = yf.download(ticker)
+            else:
+                acao = yf.download(ticker,interval="1m",period="1d")
+
+
 
             #Remover a primeira linha dos dados, por que as vezes o yahoo buga o ultimo valor
             #acao = acao[:-1]
@@ -583,10 +588,10 @@ def Prever_negociacoes_media_param(ticker,info,dias_anteriores=10,tipo="compra_v
 
 
 
-def PesquisarAcoes(lista_de_acoes):
+def PesquisarAcoes(lista_de_acoes,periodo):
 
 
-    info = GetAcoes(lista_de_acoes,0)
+    info = GetAcoes(lista_de_acoes,0,0,0,periodo)
     
     neg_param = pd.DataFrame()
     neg_mes = pd.DataFrame()

@@ -40,6 +40,17 @@ layout = dbc.Col([
 	],style={"padding": "25px"}),
 
 	dbc.Row([
+		dbc.Col([
+			dcc.RadioItems(id="radio_periodo",
+			   options=[
+			       {'label': 'Dia', 'value': 'Dia'},
+			       {'label': 'Minuto', 'value': 'Minuto'},
+			   ],value="Dia")
+		]),
+
+	],style={"padding": "25px"}),
+
+	dbc.Row([
 
 		dbc.Col([
 			dbc.Button("Carregar ações", color="error", id="carregar_acoes", value="acoes", className="btn btn-success"),
@@ -191,10 +202,11 @@ def popula_dropdown(data):
 
 	Input("store-sazonalidade-param","data"),
 	Input("store-sazonalidade-mes","data"),
+	Input("radio_periodo","value")
 
 	])
 
-def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
+def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes,periodo):
 	
 	
 	#if("carregar_acoes_ibov"==ctx.triggered_id):
@@ -205,14 +217,14 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes):
 
 	if("carregar_acoes"==ctx.triggered_id):
 
-		return carregar_acoes_func(drop_data)
+		return carregar_acoes_func(drop_data,periodo)
 
 	return [[],[],neg_param,neg_mes,sazon_param,sazon_mes]
 
 
-def carregar_acoes_func(data):
+def carregar_acoes_func(data,periodo):
 	
-	informacoes = funcoes.PesquisarAcoes(data)
+	informacoes = funcoes.PesquisarAcoes(data,periodo)
 
 	value = [data[0]]
 	
