@@ -19,7 +19,9 @@ from   sklearn.metrics import r2_score
 import statsmodels.api as sm
 from dash import dcc
 import math
-
+import ta as ta
+from ta import add_all_ta_features
+from ta.utils import dropna
 import pdb
 from dash_bootstrap_templates import template_from_url, ThemeChangerAIO
 import funcoes
@@ -36,50 +38,7 @@ layout = dbc.Col([
 		],style={"padding": "25px"}),
 
 
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Aroon"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_aroon",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_aroon",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="aroon_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
-			]),
-
-			dbc.Row([
-				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="aroon_marker_slice")
-				
-				],width=12),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_aroon_info"))
-					]),
-				],width=12),
-			]),
-			
-
-		],style={"padding": "25px"}),
+		
 
 
 
@@ -304,6 +263,138 @@ layout = dbc.Col([
 			])
 
 		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+			dbc.Row([
+				dbc.Row([				
+					dbc.Col([
+						html.H5("Aroon"),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="negociacoes_aroon",children=["Negociações"])
+					],width=2),
+					dbc.Col([
+						dbc.Button(id="config_aroon",children=["Configurações"])
+					],width=2),
+				]),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="aroon_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="aroon_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_aroon_info"))
+					]),
+				],width=12),
+			]),
+			
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+			dbc.Row([
+				dbc.Row([				
+					dbc.Col([
+						html.H5("ADX"),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="config_adx",children=["Configurações"])
+					],width=2),
+				]),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="adx_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="adx_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_adx_info"))
+					]),
+				],width=12),
+			]),
+			
+
+		],style={"padding": "25px"}),
+
+		dbc.Row([
+			dbc.Row([
+				dbc.Row([				
+					dbc.Col([
+						html.H5("STC"),
+					],width=8),
+					dbc.Col([
+						dbc.Button(id="config_stc",children=["Configurações"])
+					],width=2),
+				]),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="stc_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="stc_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_stc_info"))
+					]),
+				],width=12),
+			]),
+			
+
+		],style={"padding": "25px"}),		
+
 
 		dbc.Row([
 
@@ -851,6 +942,158 @@ layout = dbc.Col([
         centered=True,
         backdrop=True),
 ])
+
+@app.callback(
+	Output('grafico_stc_info','figure'),
+	Output("stc_marker_slice","min"),
+	Output("stc_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("stc_marker","value"),
+	Input("stc_marker_slice","value"),
+	Input("Stc_store","data")
+	]
+
+)
+def popula_stc(acao_selecionada,tempo,tempo_slice,stc_store):
+
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+	
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+
+		if isinstance(acao_selecionada,list):
+			acao = acao_selecionada[0]
+
+		else:
+			acao = acao_selecionada	
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+		datas = funcoes.data_slicer(tempo_slice)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		stci = ta.trend.STCIndicator(df["Close"],stc_store[0],stc_store[1],stc_store[2],stc_store[3],stc_store[4],False)
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Stc",
+		        x=df.index,
+		        y=stci.stc(),
+		        line=dict(color='blue', width=2))
+		)
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
+
+	return [{},4,tempo]
+
+
+@app.callback(
+	Output('grafico_adx_info','figure'),
+	Output("adx_marker_slice","min"),
+	Output("adx_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("adx_marker","value"),
+	Input("adx_marker_slice","value"),
+	Input("Adx_store","data")
+	]
+
+)
+
+def popula_adx(acao_selecionada,tempo,tempo_slice,adx_store):
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+	
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+
+		if isinstance(acao_selecionada,list):
+			acao = acao_selecionada[0]
+
+		else:
+			acao = acao_selecionada	
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+		datas = funcoes.data_slicer(tempo_slice)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		dias_anteriores_adx = adx_store[0]
+
+		adx = ta.trend.ADXIndicator(df["High"],df["Low"], df["Close"],dias_anteriores_adx,False)
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Adx negativo (Compra)",
+		        x=df.index,
+		        y=adx.adx_neg(),
+		        line=dict(color='red', width=2))
+		)
+		fig.add_trace(
+		    go.Scatter(
+		        name="Adx positivo (Venda)",
+		        x=df.index,
+		        y=adx.adx_pos(),
+		        line=dict(color='blue', width=2))
+		)
+		#fig.add_hline(y=0)
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
+
+	return [{},4,tempo]
 
 
 @app.callback(
