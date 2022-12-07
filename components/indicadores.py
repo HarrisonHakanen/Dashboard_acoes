@@ -402,9 +402,12 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("Candlestick"),
-					],width=10),
+					],width=8),
 					dbc.Col([
 						dbc.Button(id="config_candlestick",children=["Configurações"])
+					],width=2),
+					dbc.Col([
+						dbc.Button(id="salvar_candlestick",children=["Salvar imagem"])
 					],width=2),
 				]),
 				html.Hr(),
@@ -1646,7 +1649,7 @@ def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
 		fig.add_trace(go.Scatter(x = df.index,y = df["mm9"],name = "Média móvel "+str(candlestick_config[0]), line_color = "green"))
 		fig.add_trace(go.Scatter(x = df.index,y = df["mm11"],name = "Média móvel "+str(candlestick_config[1]), line_color = "yellow"))
 
-		fig.update_layout(height=700)
+		#fig.update_layout(height=700)
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 

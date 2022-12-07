@@ -73,7 +73,7 @@ app.layout = dbc.Container(children=[
 def render_page_content(pathname):
 
 	print(pathname)
-	if pathname == "/" or pathname == "/dashboards":
+	if pathname == "/dashboards":
 	
 
 		return dashboards.layout
@@ -109,7 +109,7 @@ def render_page_content(pathname):
 		return fechamento.layout
 
 
-	if pathname == "/indicadores":
+	if pathname == "/" or pathname == "/indicadores":
 
 		return indicadores.layout
 
