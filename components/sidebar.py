@@ -77,7 +77,7 @@ layout = dbc.Col([
 			dbc.Nav(
 	        [
 	        	dbc.NavLink("Fechamentos", href="/fechamento", active="exact"),
-	            dbc.NavLink("Negociações", href="/dashboards", active="exact"),
+	            dbc.NavLink("Negociações", href="/negociacoes", active="exact"),
 	            #dbc.NavLink("Altas baixas", href="/altas_baixas", active="exact"),
 	            dbc.NavLink("Previsões", href="/previsoes", active="exact"),
 	            dbc.NavLink("Indicadores", href="/indicadores", active="exact"),
