@@ -224,22 +224,35 @@ def carregar_acoes(n,drop_data,neg_param,neg_mes,sazon_param,sazon_mes,periodo):
 
 def carregar_acoes_func(data,periodo):
 	
-	informacoes = funcoes.PesquisarAcoes(data,periodo)
 
-	value = [data[0]]
-	
-	options = [{'label':i,'value':i}for i in data]
+	try:
+		informacoes = funcoes.PesquisarAcoes(data,periodo)
 
-	ultimos_dias = 30
+		value = [data[0]]
+		
+		options = [{'label':i,'value':i}for i in data]
 
-	informacoes[0].to_csv("Arquivos/Info/negociacoes_param.csv")
-	informacoes[1].to_csv("Arquivos/Info/negociacoes_mes.csv")
-	informacoes[2].to_csv("Arquivos/Info/sazonalidade_param.csv")
-	informacoes[3].to_csv("Arquivos/Info/sazonalidade_mes.csv")
-	informacoes[4].to_csv("Arquivos/Info/fechamento.csv")
+		ultimos_dias = 30
 
-	return options,value,informacoes[0].to_dict(),informacoes[1].to_dict(),informacoes[2].to_dict(),informacoes[3].to_dict()		
+		informacoes[0].to_csv("Arquivos/Info/negociacoes_param.csv")
+		informacoes[1].to_csv("Arquivos/Info/negociacoes_mes.csv")
+		informacoes[2].to_csv("Arquivos/Info/sazonalidade_param.csv")
+		informacoes[3].to_csv("Arquivos/Info/sazonalidade_mes.csv")
+		informacoes[4].to_csv("Arquivos/Info/fechamento.csv")
 
+		return options,value,informacoes[0].to_dict(),informacoes[1].to_dict(),informacoes[2].to_dict(),informacoes[3].to_dict()		
+
+	except:
+
+		informacoes = pd.DataFrame()
+
+		informacoes[0].read_csv("Arquivos/Info/negociacoes_param.csv")
+		informacoes[1].read_csv("Arquivos/Info/negociacoes_mes.csv")
+		informacoes[2].read_csv("Arquivos/Info/sazonalidade_param.csv")
+		informacoes[3].read_csv("Arquivos/Info/sazonalidade_mes.csv")
+		informacoes[4].read_csv("Arquivos/Info/fechamento.csv")		
+
+		return [[],[],informacoes[0].to_dict(),informacoes[1].to_dict(),informacoes[2].to_dict(),informacoes[3].to_dict()]
 '''
 @app.callback(
     Output('modal_carregar_acoes','is_open'),
