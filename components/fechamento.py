@@ -441,7 +441,7 @@ def popula_grafico(dias_anteriores,acao_selecionada):
 			df.set_index("Date",inplace=True)
 
 			df["Data"] = df.index
-
+			df["Open"] = round(df["Open"],2)
 			df["Close"] = round(df["Close"],2)
 			df["High"] = round(df["High"],2)
 			df["Low"] = round(df["Low"],2)
@@ -450,7 +450,7 @@ def popula_grafico(dias_anteriores,acao_selecionada):
 			df["Fechamento_minima"] = round(df["Fechamento_minima"],2)
 			df["High-Low"] = round(df["High-Low"],2)
 
-			df = df[["Data","Close","Diferenca","Diferenca_percentual","High","Low","High-Low","Fechamento_minima"]]
+			df = df[["Data","Open","Close","Diferenca","Diferenca_percentual","High","Low","High-Low"]]
 
 			df = df.sort_index(ascending=False)
 
