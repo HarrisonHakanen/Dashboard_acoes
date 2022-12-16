@@ -75,33 +75,12 @@ def render_page_content(pathname):
 	print(pathname)
 	if pathname == "/negociacoes":
 	
-
 		return dashboards.layout
 
-	'''
-	if pathname == "/altas_baixas":
 
-		return altas_baixas.layout
-
-	'''
-	
 	if pathname == "/previsoes":
 
 		return previsoes.layout
-
-	
-
-
-	#if pathname == "/macd":
-
-		#return macd.layout
-
-	#if pathname == "/bollinger":
-
-		#return bollinger.layout
-
-
-
 
 
 	if pathname == "/fechamento":
@@ -113,9 +92,11 @@ def render_page_content(pathname):
 
 		return indicadores.layout
 
+
 	if pathname == "/configuracoes":
 
 		return configuracoes.layout
+
   
 if __name__ == '__main__':
     app.run_server(debug=True)

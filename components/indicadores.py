@@ -402,48 +402,23 @@ layout = dbc.Col([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("Candlestick"),
-					],width=8),
+					],width=10),
 					dbc.Col([
 						dbc.Button(id="config_candlestick",children=["Configurações"])
 					],width=2),
-					dbc.Col([
-						dbc.Button(id="salvar_candlestick",children=["Salvar imagem"])
-					],width=2),
 				]),
 				html.Hr(),
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="candle_marker2",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12,style={'display':'none'}),
-
-				
-				dbc.Col([
-					dcc.Slider(4, 240,
-					    step=None,id="candle_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48',52:'52',56:'56',60:'60',64:'64',
-					        68:'68',72:'72',76:'76',80:'80',84:'84',88:'88',92:'92',96:'96',
-					        100:'100',104:'104',108:'108',112:'112',116:'116',120:'120',124:'124',
-					        128:'128',132:'132',136:'136',140:'140',144:'144',148:'148',152:'152',
-					        154:'154',156:'156',160:'160',164:'164',168:'168',172:'172',176:'176',
-					        180:'180',184:'184',188:'188',192:'192',196:'196',180:'180',184:'184',
-					        188:'188',192:'192',196:'196',200:'200',204:'204',208:'208',212:'212',
-					        216:'216',220:'220',224:'224',228:'228',232:'232',236:'236',240:'240'},value=8,
-
-					)
-				],width=12,style={'display':''}),
-				
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="candle_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='candlestick_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_candlestick",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -1586,16 +1561,14 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 
 @app.callback(
 	Output('grafico_candlestick_info','figure'),
-	Output("candle_marker_slice","min"),
-	Output("candle_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("candle_marker","value"),
-	Input("candle_marker_slice","value"),
-	Input("CandleStick_store","data")]
+	Input("CandleStick_store","data"),
+	Input("candlestick_datepicker","start_date"),
+	Input("candlestick_datepicker","end_date"),
+	Input("aplicar_data_candlestick","n_clicks")]
 )
 
-def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
-
+def popula_candlestick(acao_selecionada,candlestick_config,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada)>0:
 
@@ -1610,7 +1583,20 @@ def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
 
 
 		#Atributos--------------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_candlestick" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+		
+				
+
 
 		#-----------------------------------------
 
@@ -1653,10 +1639,10 @@ def popula_candlestick(acao_selecionada,tempo,tempo_slice,candlestick_config):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
 
-	return [{},4,tempo]
+	return {}
 
 
 @app.callback(
