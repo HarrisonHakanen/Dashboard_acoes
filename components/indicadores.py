@@ -399,6 +399,41 @@ layout = dbc.Col([
 		dbc.Row([
 
 			dbc.Row([
+				
+				html.H5("Regressão linear"),
+				html.Hr(),
+
+				dbc.Col([
+					dcc.Slider(4, 48,
+					    step=None,id="regressao_marker",
+					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
+					        36:'36',40:'40',44:'44',48:'48'},value=8
+					)
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+				
+					dcc.RangeSlider(step=1,value=[4,8],id="regressao_marker_slice")
+				
+				],width=12),
+			]),
+
+			dbc.Row([
+				dbc.Col([
+					dbc.Col([
+						dbc.Card(dcc.Graph(id="grafico_regressao_info"))
+					]),
+				]),
+			])
+
+		],style={"padding": "25px"}),
+
+
+		dbc.Row([
+
+			dbc.Row([
 				dbc.Row([				
 					dbc.Col([
 						html.H5("Candlestick"),
@@ -432,6 +467,8 @@ layout = dbc.Col([
 
 		],style={"padding": "25px"}),
 
+
+		
 		#Modal Aroon------------------------------------------
 		dbc.Modal([
 			dbc.ModalHeader(dbc.ModalTitle("Configurações aroon")),
@@ -1558,6 +1595,97 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 
 	return [{},4,tempo]
 
+
+@app.callback(
+	Output('grafico_regressao_info','figure'),
+	Output("regressao_marker_slice","min"),
+	Output("regressao_marker_slice","max"),
+	[Input("select_acao_selecionada","value"),
+	Input("regressao_marker","value"),
+	Input("regressao_marker_slice","value"),
+	]
+
+)
+
+def popula_regressao(acao_selecionada,tempo,tempo_slice):
+	if len(acao_selecionada) > 0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+		#ATRIBUTOS---------------------------
+		datas = funcoes.data_slicer(tempo_slice)
+
+		df.set_index("Date",inplace=True)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
+
+		df.reset_index(inplace=True)
+
+		X = df.index.values.reshape(-1,1)
+		y = df['Close'].values.reshape(-1,1)
+
+		reg = LinearRegression()
+		reg.fit(X, y)
+
+		f_previsoes = reg.predict(X)
+
+		f_previsoes = reg.predict(X)
+
+		previsoes_lista = list()
+		i = 0
+
+		while i < len(f_previsoes):
+		    
+		    previsoes_lista.append(f_previsoes[i][0])
+		    
+		    i+=1
+		previsoes_df = pd.DataFrame()
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Fechamento",
+		        x=df["Date"],
+		        y=df["Close"],
+		        line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Regressão",
+		        x=df["Date"],
+		        y=previsoes_lista,
+		        line=dict(color='red', width=1))
+		)
+
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return [fig,4,tempo]
+
+	return [{},4,tempo]
 
 @app.callback(
 	Output('grafico_candlestick_info','figure'),
