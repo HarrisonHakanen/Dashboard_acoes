@@ -57,22 +57,17 @@ layout = dbc.Col([
 				]),
 				html.Hr(),
 
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="macd_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="macd_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='macd_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_macd",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -102,23 +97,19 @@ layout = dbc.Col([
 					],width=2),
 				]),
 				html.Hr(),
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="bollinger_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
 
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="bollinger_marker_slice")
-				
-				],width=12),
-			]),			
+					dcc.DatePickerRange(
+				        id='boolinger_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
+				])
+			]),
 
 			dbc.Row([
 				dbc.Col([
@@ -148,21 +139,17 @@ layout = dbc.Col([
 					],width=2),
 				]),
 				html.Hr(),
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="rsi_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="rsi_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='rsi_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -191,23 +178,19 @@ layout = dbc.Col([
 					],width=2),
 				]),
 				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="sar_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="sar_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='sar_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_sar",children=["Alterar data"])
+				])
 			]),
+
 			dbc.Row([
 				dbc.Col([
 					
@@ -237,21 +220,17 @@ layout = dbc.Col([
 				]),
 				html.Hr(),
 
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="force_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="force_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='forceIndex_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_forceIndex",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -280,22 +259,17 @@ layout = dbc.Col([
 				]),
 				html.Hr(),
 
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="aroon_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="aroon_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='aroon_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -322,23 +296,17 @@ layout = dbc.Col([
 					],width=2),
 				]),
 				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="adx_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="adx_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='adx_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -364,23 +332,18 @@ layout = dbc.Col([
 					],width=2),
 				]),
 				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="stc_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
-
 			]),
+
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="stc_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='stc_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
+				])
 			]),
 
 			dbc.Row([
@@ -402,24 +365,18 @@ layout = dbc.Col([
 				
 				html.H5("Regressão linear"),
 				html.Hr(),
-
-				dbc.Col([
-					dcc.Slider(4, 48,
-					    step=None,id="regressao_marker",
-					    marks={4: '4',8: '8',12:'12',16:'16',20:'20',24:'24',28:'28',32:'32',
-					        36:'36',40:'40',44:'44',48:'48'},value=8
-					)
-				],width=12),
 			]),
 
 			dbc.Row([
 				dbc.Col([
-				
-					dcc.RangeSlider(step=1,value=[4,8],id="regressao_marker_slice")
-				
-				],width=12),
+					dcc.DatePickerRange(
+				        id='regressao_datepicker',				   				       
+				    ),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="aplicar_data_regressao",children=["Alterar data"])
+				])
 			]),
-
 			dbc.Row([
 				dbc.Col([
 					dbc.Col([
@@ -960,16 +917,15 @@ layout = dbc.Col([
 
 @app.callback(
 	Output('grafico_stc_info','figure'),
-	Output("stc_marker_slice","min"),
-	Output("stc_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("stc_marker","value"),
-	Input("stc_marker_slice","value"),
-	Input("Stc_store","data")
+	Input("Stc_store","data"),
+	Input("stc_datepicker","start_date"),
+	Input("stc_datepicker","end_date"),
+	Input("aplicar_data_stc","n_clicks")
 	]
 
 )
-def popula_stc(acao_selecionada,tempo,tempo_slice,stc_store):
+def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
 
 
 	if len(acao_selecionada)>0:
@@ -1006,7 +962,21 @@ def popula_stc(acao_selecionada,tempo,tempo_slice,stc_store):
 
 
 		df.set_index("Date",inplace=True)
-		datas = funcoes.data_slicer(tempo_slice)
+		
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_stc" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
 
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
@@ -1025,24 +995,23 @@ def popula_stc(acao_selecionada,tempo,tempo_slice,stc_store):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 
 @app.callback(
 	Output('grafico_adx_info','figure'),
-	Output("adx_marker_slice","min"),
-	Output("adx_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("adx_marker","value"),
-	Input("adx_marker_slice","value"),
-	Input("Adx_store","data")
+	Input("Adx_store","data"),
+	Input("adx_datepicker","start_date"),
+	Input("adx_datepicker","end_date"),
+	Input("aplicar_data_adx","n_clicks")
 	]
 
 )
 
-def popula_adx(acao_selecionada,tempo,tempo_slice,adx_store):
+def popula_adx(acao_selecionada,adx_store,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada)>0:
 
@@ -1078,7 +1047,19 @@ def popula_adx(acao_selecionada,tempo,tempo_slice,adx_store):
 
 
 		df.set_index("Date",inplace=True)
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_adx" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
 
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
 
@@ -1106,31 +1087,29 @@ def popula_adx(acao_selecionada,tempo,tempo_slice,adx_store):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 
 @app.callback(
 	Output('grafico_aroon_info','figure'),
-	Output("aroon_marker_slice","min"),
-	Output("aroon_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("aroon_marker","value"),
-	Input("aroon_marker_slice","value"),
-	Input("Aroon_store","data")
+	Input("Aroon_store","data"),
+	Input("aroon_datepicker","start_date"),
+	Input("aroon_datepicker","end_date"),
+	Input("aplicar_data_aroon","n_clicks")
 	]
 
 )
 
-def popula_aroon(acao_selecionada,tempo,tempo_slice,aroon_store):
+def popula_aroon(acao_selecionada,aroon_store,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada)>0:
 
 		if isinstance(acao_selecionada,list):
 			
 			ticker = acao_selecionada[0]
-
 
 		else:
 			
@@ -1153,7 +1132,20 @@ def popula_aroon(acao_selecionada,tempo,tempo_slice,aroon_store):
 
 		#Atributos--------------------------------
 		
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_aroon" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
 		dias_anteriores_aroon = aroon_store[0]
 
 		#-----------------------------------------
@@ -1226,29 +1218,28 @@ def popula_aroon(acao_selecionada,tempo,tempo_slice,aroon_store):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return[fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 @app.callback(
 	Output('grafico_boolinger_info','figure'),
-	Output("bollinger_marker_slice","min"),
-	Output("bollinger_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("bollinger_marker","value"),
-	Input("bollinger_marker_slice","value"),
-	Input("Bollinger_store","data")]
+	Input("Bollinger_store","data"),
+	Input("boolinger_datepicker","start_date"),
+	Input("boolinger_datepicker","end_date"),
+	Input("aplicar_data_boolinger","n_clicks")
+	]
 )
 
 
-def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
+def popula_boolinger(acao_selecionada,bollinger_store,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada)>0:
 
 		if isinstance(acao_selecionada,list):
 			
 			ticker = acao_selecionada[0]
-
 
 		else:
 			
@@ -1270,7 +1261,19 @@ def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
 
 
 		#Atributos--------------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_boolinger" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final		
+
 
 		mm_superior = bollinger_store[1]
 
@@ -1402,26 +1405,22 @@ def popula_boolinger(acao_selecionada,tempo,tempo_slice,bollinger_store):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 			
-	return [{},4,tempo]
+	return {}
 
 
 @app.callback(
 	Output('grafico_macd_info','figure'),
-	Output("macd_marker_slice","min"),
-	Output("macd_marker_slice","max"),
 	Input("select_acao_selecionada","value"),
-	Input("macd_marker","value"),
-	Input("macd_marker_slice","value"),
-	Input("Macd_store","data")
+	Input("Macd_store","data"),
+	Input("macd_datepicker","start_date"),
+	Input("macd_datepicker","end_date"),
+	Input("aplicar_data_macd","n_clicks")
 	
 )
 
-def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
-
-
-	
+def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada) > 0:
 
@@ -1442,9 +1441,21 @@ def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 
 
 		#ATRIBUTOS---------------------------
+		#datas = funcoes.data_slicer(tempo_slice)
 
-		datas = funcoes.data_slicer(tempo_slice)
+		datas = list()
 		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_macd" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final		
+
+
+
 		rapida = macd_config[0]
 		lenta = macd_config[1]
 		sinal = macd_config[2]
@@ -1485,37 +1496,32 @@ def popula_macd(acao_selecionada,tempo,tempo_slice,macd_config):
 
 		fig.add_trace(go.Scatter(x = df.index,y = sinal,name = "Sinal", line_color = "yellow"))
 
-		
-
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
-
 		
 		#df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
 		pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
 		pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
-		
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 		
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 
 
 @app.callback(
 	Output('grafico_rsi_info','figure'),
-	Output("rsi_marker_slice","min"),
-	Output("rsi_marker_slice","max"),
 	Input("select_acao_selecionada","value"),
-	Input("rsi_marker","value"),
-	Input("rsi_marker_slice","value"),
-	Input("Rsi_store","data")
+	Input("Rsi_store","data"),
+	Input("rsi_datepicker","start_date"),
+	Input("rsi_datepicker","end_date"),
+	Input("aplicar_data_rsi","n_clicks")
 )
 
-def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
+def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data):
 
 	if len(acao_selecionada) > 0:
 
@@ -1544,7 +1550,19 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 		#ATRIBUTOS---------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_rsi" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
 
 		inferior = rsi_config[0]
 		superior = rsi_config[1]
@@ -1591,23 +1609,23 @@ def popula_rsi(acao_selecionada,tempo,tempo_slice,rsi_config):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 
 @app.callback(
 	Output('grafico_regressao_info','figure'),
-	Output("regressao_marker_slice","min"),
-	Output("regressao_marker_slice","max"),
-	[Input("select_acao_selecionada","value"),
-	Input("regressao_marker","value"),
-	Input("regressao_marker_slice","value"),
+	[
+	Input("select_acao_selecionada","value"),
+	Input("regressao_datepicker","start_date"),
+	Input("regressao_datepicker","end_date"),
+	Input("aplicar_data_regressao","n_clicks")
 	]
 
 )
 
-def popula_regressao(acao_selecionada,tempo,tempo_slice):
+def popula_regressao(acao_selecionada,data_inicial,data_final,aplicar_data):
 	if len(acao_selecionada) > 0:
 
 		if isinstance(acao_selecionada,list):
@@ -1635,7 +1653,18 @@ def popula_regressao(acao_selecionada,tempo,tempo_slice):
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 		#ATRIBUTOS---------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_regressao" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
 
 		df.set_index("Date",inplace=True)
 
@@ -1683,9 +1712,9 @@ def popula_regressao(acao_selecionada,tempo,tempo_slice):
 
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 @app.callback(
 	Output('grafico_candlestick_info','figure'),
@@ -1775,23 +1804,22 @@ def popula_candlestick(acao_selecionada,candlestick_config,data_inicial,data_fin
 
 @app.callback(
 	Output('grafico_sar_info','figure'),
-	Output("sar_marker_slice","min"),
-	Output("sar_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("sar_marker","value"),
-	Input("sar_marker_slice","value"),
-	Input("Sar_store","data")]
+	Input("Sar_store","data"),
+	Input("sar_datepicker","start_date"),
+	Input("sar_datepicker","end_date"),
+	Input("aplicar_data_sar","n_clicks")
+	]
 )
 
 
-def popula_sar(acao_selecionada,tempo,tempo_slice,sar_config):
+def popula_sar(acao_selecionada,sar_config,data_inicial,data_final,aplicar_data):
 	
 	if len(acao_selecionada)>0:
 
 		if isinstance(acao_selecionada,list):
 			
 			ticker = acao_selecionada[0]
-
 
 		else:
 			
@@ -1800,7 +1828,18 @@ def popula_sar(acao_selecionada,tempo,tempo_slice,sar_config):
 		
 
 		#Atributos--------------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_sar" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
 
 		iaf = sar_config[0]
 
@@ -1862,23 +1901,23 @@ def popula_sar(acao_selecionada,tempo,tempo_slice,sar_config):
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
-	return [{},4,tempo]
+	return {}
 
 
 
 @app.callback(
 	Output('grafico_ForceIndex_info','figure'),
-	Output("force_marker_slice","min"),
-	Output("force_marker_slice","max"),
 	[Input("select_acao_selecionada","value"),
-	Input("force_marker","value"),
-	Input("force_marker_slice","value"),
-	Input("ForceIndex_store","data")]
+	Input("ForceIndex_store","data"),
+	Input("forceIndex_datepicker","start_date"),
+	Input("forceIndex_datepicker","end_date"),
+	Input("aplicar_data_forceIndex","n_clicks")
+	]
 )
 
-def popula_forceIndex(acao_selecionada,tempo,tempo_slice,forceIndex_config):
+def popula_forceIndex(acao_selecionada,forceIndex_config,data_inicial,data_final,aplicar_data):
 	if len(acao_selecionada)>0:
 
 		if isinstance(acao_selecionada,list):
@@ -1892,7 +1931,18 @@ def popula_forceIndex(acao_selecionada,tempo,tempo_slice,forceIndex_config):
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
 		#Atributos--------------------------------
-		datas = funcoes.data_slicer(tempo_slice)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_forceIndex" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
 
 		n = forceIndex_config[0]
 
@@ -1929,16 +1979,13 @@ def popula_forceIndex(acao_selecionada,tempo,tempo_slice,forceIndex_config):
 		        line=dict(color='blue', width=1))
 		)
 		fig.add_hline(y=AAPL_ForceIndex["Close"].max(),line_color="red")
-
-
-
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
-		return [fig,4,tempo]
+		return fig
 
 
-	return [{},4,tempo]
+	return {}
 
 
 

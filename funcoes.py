@@ -695,6 +695,8 @@ def ForceIndex(data, ndays):
     return data
 
 
+
+
 def data_slicer(tempo_slice):
 
     inicial_diferente = 0
