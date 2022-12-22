@@ -1698,7 +1698,7 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 
 		datas = list()
 		
-		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
 		datas.append(datetime.now())
 		
 		if("aplicar_data_polinomial" == ctx.triggered_id):
@@ -1803,7 +1803,7 @@ def popula_regressao(acao_selecionada,data_inicial,data_final,aplicar_data):
 
 		datas = list()
 		
-		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
 		datas.append(datetime.now())
 		
 		if("aplicar_data_regressao" == ctx.triggered_id):
