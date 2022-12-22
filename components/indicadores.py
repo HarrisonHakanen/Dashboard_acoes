@@ -15,6 +15,7 @@ import dateutil.relativedelta
 from datetime import datetime
 import matplotlib.pyplot as plt
 from   sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
 from   sklearn.metrics import r2_score
 import statsmodels.api as sm
 from dash import dcc
@@ -31,361 +32,402 @@ import funcoes
 
 layout = dbc.Col([
 
-		dbc.Row([
-			dbc.Col([
-				html.H1("Indicadores", className="text-primary"),
-			]),
-		],style={"padding": "25px"}),
+	dbc.Row([
+		dbc.Col([
+			dcc.Tabs([
+				dcc.Tab(label='Indicadores', children=[
 
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("MACD"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_macd",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_macd",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
 
-		
+						]),
 
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='macd_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_macd",children=["Alterar data"])
+							])
+						]),
 
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_macd_info"))
+								]),
+							],width=12),
+						]),
+						
 
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("MACD"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_macd",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_macd",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
+					],style={"padding": "25px"}),
 
-			]),
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("Bollinger"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_bollinger",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_bollinger",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
 
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='macd_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_macd",children=["Alterar data"])
-				])
-			]),
+						]),
 
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_macd_info"))
-					]),
-				],width=12),
-			]),
-			
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='boolinger_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
+							])
+						]),
 
-		],style={"padding": "25px"}),
+						dbc.Row([
+							dbc.Col([
+								
+								html.Hr(),
 
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
+								]),
+							]),
+						]),
 
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Bollinger"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_bollinger",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_bollinger",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
+					],style={"padding": "25px"}),
 
-			]),
+					dbc.Row([
 
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='boolinger_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
-				])
-			]),
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("SAR"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_sar",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_sar",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
 
-			dbc.Row([
-				dbc.Col([
-					
-					html.Hr(),
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='sar_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_sar",children=["Alterar data"])
+							])
+						]),
 
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
-					]),
-				]),
-			]),
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_sar_info"))
+								]),
 
-		],style={"padding": "25px"}),
+							]),
+						]),
 
+					],style={"padding": "25px"}),
 
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("RSI"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_rsi",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_rsi",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='rsi_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_rsi_info"))
-					]),
-				]),
-			]),
-
-		],style={"padding": "25px"}),
-
-		
-		dbc.Row([
-
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("SAR"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_sar",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_sar",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='sar_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_sar",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_sar_info"))
-					]),
 
 				]),
-			]),
 
-		],style={"padding": "25px"}),
-
-
-		dbc.Row([
-			dbc.Row([
 				
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Force Index"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_force_index",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_force_index",children=["Configurações"])
-					],width=2),
+				dcc.Tab(label='Osciladores', children=[
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("RSI"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_rsi",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_rsi",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='rsi_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+								]),
+							]),
+						]),
+
+					],style={"padding": "25px"}),
+
+					dbc.Row([
+						dbc.Row([
+							
+							dbc.Row([				
+								dbc.Col([
+									html.H5("Force Index"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_force_index",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_force_index",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='forceIndex_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_forceIndex",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_ForceIndex_info"))
+								]),
+							]),
+						])
+
+					],style={"padding": "25px"}),
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("Aroon"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_aroon",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_aroon",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='aroon_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_aroon_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("ADX"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="config_adx",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='adx_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_adx_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("STC"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="config_stc",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='stc_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_stc_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),		
+
+
+
 				]),
-				html.Hr(),
 
-			]),
 
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='forceIndex_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_forceIndex",children=["Alterar data"])
+
+				dcc.Tab(label='Regressões', children=[
+
+					dbc.Row([
+
+						dbc.Row([
+							
+							html.H5("Regressão linear"),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='regressao_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_regressao",children=["Alterar data"])
+							])
+						]),
+						dbc.Row([
+							dbc.Col([
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_regressao_info"))
+								]),
+							]),
+						])
+
+					],style={"padding": "25px"}),
+
+
+					dbc.Row([
+
+						dbc.Row([
+							
+							html.H5("Regressão polinomial"),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='polinomial_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_polinomial",children=["Alterar data"])
+							])
+						]),
+						dbc.Row([
+							dbc.Col([
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_polinomial_info"))
+								]),
+							]),
+						])
+
+					],style={"padding": "25px"}),
+
+
 				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_ForceIndex_info"))
-					]),
-				]),
-			])
-
-		],style={"padding": "25px"}),
-
-
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Aroon"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="negociacoes_aroon",children=["Negociações"])
-					],width=2),
-					dbc.Col([
-						dbc.Button(id="config_aroon",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
 
 			]),
+		],width=12)
+	],style={"padding": "25px"}),
 
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='aroon_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_aroon_info"))
-					]),
-				],width=12),
-			]),
-			
-
-		],style={"padding": "25px"}),
-
-
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("ADX"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="config_adx",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='adx_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_adx_info"))
-					]),
-				],width=12),
-			]),
-			
-
-		],style={"padding": "25px"}),
-
-		dbc.Row([
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("STC"),
-					],width=8),
-					dbc.Col([
-						dbc.Button(id="config_stc",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-			]),
-
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='stc_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_stc_info"))
-					]),
-				],width=12),
-			]),
-			
-
-		],style={"padding": "25px"}),		
-
-
-		dbc.Row([
-
-			dbc.Row([
-				
-				html.H5("Regressão linear"),
-				html.Hr(),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='regressao_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_regressao",children=["Alterar data"])
-				])
-			]),
-			dbc.Row([
-				dbc.Col([
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_regressao_info"))
-					]),
-				]),
-			])
-
-		],style={"padding": "25px"}),
 
 
 		dbc.Row([
@@ -1607,6 +1649,110 @@ def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data)
 		fig.add_hline(y=rsi["Close"].max()*superior,line_color="red")
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
+
+	return {}
+
+@app.callback(
+	Output('grafico_polinomial_info','figure'),
+	[
+	Input("select_acao_selecionada","value"),
+	Input("polinomial_datepicker","start_date"),
+	Input("polinomial_datepicker","end_date"),
+	Input("aplicar_data_polinomial","n_clicks")
+	]
+
+)
+def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
+
+	if len(acao_selecionada) > 0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+		#ATRIBUTOS---------------------------
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_polinomial" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+		df.set_index("Date",inplace=True)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
+
+		df.reset_index(inplace=True)
+
+		X = df.index.values.reshape(-1,1)
+		y = df['Close'].values.reshape(-1,1)
+
+		poly = PolynomialFeatures(degree = 4)
+		X_poly = poly.fit_transform(X)
+		  
+		poly.fit(X_poly, y)
+		lin2 = LinearRegression()
+		lin2.fit(X_poly, y)
+
+		f_polinomial = lin2.predict(poly.fit_transform(X))
+
+		previsoes_polinomial = list()
+
+		i = 0
+
+		while i < len(f_polinomial):
+		    
+		    previsoes_polinomial.append(f_polinomial[i][0])
+		    
+		    i+=1
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Fechamento",
+		        x=df["Date"],
+		        y=df["Close"],
+		        line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="Regressão",
+		        x=df["Date"],
+		        y=previsoes_polinomial,
+		        line=dict(color='red', width=1))
+		)
+
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
 		return fig
