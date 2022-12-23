@@ -1705,19 +1705,15 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
 			
 			ticker = acao_selecionada
 
+		
+
 
 		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
 		negociacoes_acao = pd.read_csv("Arquivos/Info/negociacoes_param.csv")		
 
 
-		if isinstance(acao_selecionada,list):
-			fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
-			negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == acao_selecionada[0]] 
-			
-		else:
-			fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
-			negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == acao_selecionada]
-
+		fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == ticker]
+		negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == ticker]
 
 		
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
@@ -1836,19 +1832,74 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
 			i+=1
 
 
-			ComprasDefinitivas_df = pd.DataFrame()
-			ComprasDefinitivas_df["Date"] = ComprasDefinitivasDatas
-			ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
-			ComprasDefinitivas_df["Acao"] = "Compra"
+		ComprasDefinitivas_df = pd.DataFrame()
+		ComprasDefinitivas_df["Date"] = ComprasDefinitivasDatas
+		ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
+		ComprasDefinitivas_df["Acao"] = "Compra"
 
+		FechamentoDefinitivo_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
+
+		FechamentoDefinitivo_df.sort_values(by='Date',inplace=True)
+
+		#----------------------------------------------------------
+		
+
+		try:
+
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 			
-			FechamentoDefinitivo_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
+			aroon = pd.read_csv("aroon"+arquivo+".csv")
+			bollinger_compras = pd.read_csv(arquivo+"compras.csv")
+			bollinger_vendas = pd.DataFrame(arquivo+"vendas.csv")
+			
+			force_index = pd.DataFrame("forceIndex"+arquivo+".csv")
+			
+			macd_sinal = pd.DataFrame(arquivo+"sinal.csv")
+			macd_macd = pd.DataFrame(arquivo+"macd.csv")
+
+			rsi = pd.DataFrame("rsi"+arquivo+".csv")
+
+			sar = pd.DataFrame("sar"+arquivo+".csv")	
 
 
-			FechamentoDefinitivo_df.sort_values(by='Date',inplace=True)
-			FechamentoDefinitivo_df.to_csv("FechamentoDefinitivo.csv")
+			Aroon_dates = list()
+			AroonUp_list = list()
+			AroonDown_list = list()
+			
+			i = 0
+			while i < len(FechamentoDefinitivo_df):
+
+				
+				j = 0
+				while j < len(aroon):
+
+					if FechamentoDefinitivo_df["Date"]._get_value(i) == aroon["Aroon_Date"]._get_value(j):
+
+						Aroon_dates.append(aroon["Aroon_Date"]._get_value(j))
+						AroonUp_list.append(arron["Aroon_Up"]._get_value(j))
+						AroonDown_list.append(arron["Aroon_Down"]._get_value(j))
 
 
+					j+=1
+				i+=1
+			
+
+
+			Bollinger_compras_list = list()
+			Bollinger_vendas_list = list()
+
+			ForceIndex_list = list()
+
+			Macd_sinal_list = list()
+			Macd_macd_list = list()
+
+			Rsi_list = list()
+
+			Sar_list = list()
+
+		
+		except:
+			print("Deu ruim")
 
 	return {}
 
@@ -1896,7 +1947,7 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 
 		datas = list()
 		
-		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-4))
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
 		if("aplicar_data_polinomial" == ctx.triggered_id):
@@ -1910,6 +1961,8 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 
 		df.reset_index(inplace=True)
+
+		df.dropna(inplace=True)
 
 		X = df.index.values.reshape(-1,1)
 		y = df['Close'].values.reshape(-1,1)
@@ -2015,6 +2068,8 @@ def popula_regressao(acao_selecionada,data_inicial,data_final,aplicar_data):
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 
 		df.reset_index(inplace=True)
+
+		df.dropna(inplace=True)
 
 		X = df.index.values.reshape(-1,1)
 		y = df['Close'].values.reshape(-1,1)
