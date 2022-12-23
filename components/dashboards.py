@@ -838,7 +838,7 @@ def popula_grafico_negocios_param(acao_selecionada):
 		df['Valor compra'] = round(df['Valor compra'])
 		df['Valor venda'] = round(df['Valor venda'])
 
-
+		
 		
 		fig = go.Figure()
 		fig.add_trace(go.Scatter(name='Altas', x=df['Data venda'], y=df['Valor venda'], mode='lines'))

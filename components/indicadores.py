@@ -422,6 +422,35 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
+					dbc.Row([
+
+						dbc.Row([
+							
+							html.H5("Regressão logística"),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='logistica_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_logistica",children=["Alterar data"])
+							])
+						]),
+						dbc.Row([
+							dbc.Col([
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_logistica_info"))
+								]),
+							]),
+						])
+
+					],style={"padding": "25px"}),
+
+
 				])
 
 			]),
@@ -1656,6 +1685,175 @@ def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data)
 	return {}
 
 @app.callback(
+	Output('grafico_logistica_info','figure'),
+	[
+	Input("select_acao_selecionada","value"),
+	Input("logistica_datepicker","start_date"),
+	Input("logistica_datepicker","end_date"),
+	Input("aplicar_data_logistica","n_clicks")
+	]
+)
+def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
+
+	if len(acao_selecionada) > 0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+		negociacoes_acao = pd.read_csv("Arquivos/Info/negociacoes_param.csv")		
+
+
+		if isinstance(acao_selecionada,list):
+			fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+			negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == acao_selecionada[0]] 
+			
+		else:
+			fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+			negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == acao_selecionada]
+
+
+		
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+		#ATRIBUTOS---------------------------
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_polinomial" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		fechamento_df.set_index("Date",inplace=True)
+		fechamento_df = pd.DataFrame(fechamento_df[str(datas[0]):str(datas[1])]['Close'])
+		fechamento_df.reset_index(inplace=True)
+
+		Compras_df = pd.DataFrame()
+		Vendas_df = pd.DataFrame()
+
+		Compras_df["Date"] = negociacao_df["Data compra"]
+		Compras_df["Valor"] = negociacao_df["Valor compra"]
+
+		Vendas_df["Date"] = negociacao_df["Data venda"]
+		Vendas_df["Valor"] = negociacao_df["Valor venda"]
+
+		Compras_df.set_index("Date",inplace = True)
+		Compras_df = pd.DataFrame(Compras_df[str(datas[0]):str(datas[1])]['Valor'])
+		Compras_df.reset_index(inplace=True)
+
+		Vendas_df.set_index("Date",inplace = True)
+		Vendas_df = pd.DataFrame(Vendas_df[str(datas[0]):str(datas[1])]['Valor'])
+		Vendas_df.reset_index(inplace=True)
+
+
+
+		VendasDefinitivas = list()
+		VendasDefinitivasDatas = list()
+
+		i = 0
+
+		while i < len(Vendas_df):
+
+			j = 0
+
+			while j < len(fechamento_df):
+
+
+
+				if Vendas_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
+
+					
+					if j-2 != 0 and j+2 < len(fechamento_df):
+						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
+						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
+
+						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
+						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
+
+						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j))
+						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
+
+						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
+						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
+
+						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
+						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
+				j+=1
+			i+=1
+
+		VendasDefinitivas_df = pd.DataFrame()
+		VendasDefinitivas_df["Date"] = VendasDefinitivasDatas
+		VendasDefinitivas_df["Valor"] = VendasDefinitivas
+		VendasDefinitivas_df["Acao"] = "Venda"
+		
+
+		#----------------------------------------------------------
+
+
+		ComprasDefinitivas = list()
+		ComprasDefinitivasDatas = list()
+
+		i = 0
+
+		while i < len(Compras_df):
+
+			j = 0
+
+			while j < len(fechamento_df):
+
+				if Compras_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
+
+					
+					if j-2 != 0 and j+2 < len(fechamento_df):
+						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
+						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
+
+						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
+						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
+
+						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j))
+						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
+
+						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
+						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
+
+						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
+						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
+				j+=1
+			i+=1
+
+
+			ComprasDefinitivas_df = pd.DataFrame()
+			ComprasDefinitivas_df["Date"] = ComprasDefinitivasDatas
+			ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
+			ComprasDefinitivas_df["Acao"] = "Compra"
+
+			
+			FechamentoDefinitivo_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
+
+
+			FechamentoDefinitivo_df.sort_values(by='Date',inplace=True)
+			FechamentoDefinitivo_df.to_csv("FechamentoDefinitivo.csv")
+
+
+
+	return {}
+
+
+@app.callback(
 	Output('grafico_polinomial_info','figure'),
 	[
 	Input("select_acao_selecionada","value"),
@@ -1698,7 +1896,7 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 
 		datas = list()
 		
-		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-4))
 		datas.append(datetime.now())
 		
 		if("aplicar_data_polinomial" == ctx.triggered_id):
