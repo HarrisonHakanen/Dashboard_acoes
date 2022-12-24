@@ -435,10 +435,14 @@ layout = dbc.Col([
 								dcc.DatePickerRange(
 							        id='logistica_datepicker',				   				       
 							    ),
-							],width=10),
+							],width=8),
 							dbc.Col([
 								dbc.Button(id="aplicar_data_logistica",children=["Alterar data"])
-							])
+							],width=2),
+
+							dbc.Col([
+								dbc.Button(id="executar_logistica",children=["Executar"])
+							],width=2)
 						]),
 						dbc.Row([
 							dbc.Col([
@@ -1690,10 +1694,11 @@ def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data)
 	Input("select_acao_selecionada","value"),
 	Input("logistica_datepicker","start_date"),
 	Input("logistica_datepicker","end_date"),
-	Input("aplicar_data_logistica","n_clicks")
+	Input("aplicar_data_logistica","n_clicks"),
+	Input("executar_logistica","n_clicks")
 	]
 )
-def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
+def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data,executar):
 
 	if len(acao_selecionada) > 0:
 
@@ -1705,190 +1710,192 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
 			
 			ticker = acao_selecionada
 
-		
+		if "executar_logistica" == ctx.triggered_id:
 
 
-		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
-		negociacoes_acao = pd.read_csv("Arquivos/Info/negociacoes_param.csv")		
+			fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+			negociacoes_acao = pd.read_csv("Arquivos/Info/negociacoes_param.csv")		
 
 
-		fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == ticker]
-		negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == ticker]
+			fechamento_df = fechamento_acao.loc[fechamento_acao["ticker"] == ticker]
+			negociacao_df = negociacoes_acao.loc[negociacoes_acao["ticker"] == ticker]
 
-		
-		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+			
+			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 
-		#ATRIBUTOS---------------------------
-		#datas = funcoes.data_slicer(tempo_slice)
+			#ATRIBUTOS---------------------------
+			#datas = funcoes.data_slicer(tempo_slice)
 
-		datas = list()
-		
-		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
-		datas.append(datetime.now())
-		
-		if("aplicar_data_polinomial" == ctx.triggered_id):
+			datas = list()
+			
+			datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-124))
+			datas.append(datetime.now())
+			
+			if("aplicar_data_polinomial" == ctx.triggered_id):
 
-			if(data_inicial != None and data_final != None):
-				datas[0] = data_inicial
-				datas[1] = data_final
-
-
-		fechamento_df.set_index("Date",inplace=True)
-		fechamento_df = pd.DataFrame(fechamento_df[str(datas[0]):str(datas[1])]['Close'])
-		fechamento_df.reset_index(inplace=True)
-
-		Compras_df = pd.DataFrame()
-		Vendas_df = pd.DataFrame()
-
-		Compras_df["Date"] = negociacao_df["Data compra"]
-		Compras_df["Valor"] = negociacao_df["Valor compra"]
-
-		Vendas_df["Date"] = negociacao_df["Data venda"]
-		Vendas_df["Valor"] = negociacao_df["Valor venda"]
-
-		Compras_df.set_index("Date",inplace = True)
-		Compras_df = pd.DataFrame(Compras_df[str(datas[0]):str(datas[1])]['Valor'])
-		Compras_df.reset_index(inplace=True)
-
-		Vendas_df.set_index("Date",inplace = True)
-		Vendas_df = pd.DataFrame(Vendas_df[str(datas[0]):str(datas[1])]['Valor'])
-		Vendas_df.reset_index(inplace=True)
+				if(data_inicial != None and data_final != None):
+					datas[0] = data_inicial
+					datas[1] = data_final
 
 
+			fechamento_df.set_index("Date",inplace=True)
+			fechamento_df = pd.DataFrame(fechamento_df[str(datas[0]):str(datas[1])]['Close'])
+			fechamento_df.reset_index(inplace=True)
 
-		VendasDefinitivas = list()
-		VendasDefinitivasDatas = list()
+			Compras_df = pd.DataFrame()
+			Vendas_df = pd.DataFrame()
 
-		i = 0
+			Compras_df["Date"] = negociacao_df["Data compra"]
+			Compras_df["Valor"] = negociacao_df["Valor compra"]
 
-		while i < len(Vendas_df):
+			Vendas_df["Date"] = negociacao_df["Data venda"]
+			Vendas_df["Valor"] = negociacao_df["Valor venda"]
 
-			j = 0
+			Compras_df.set_index("Date",inplace = True)
+			Compras_df = pd.DataFrame(Compras_df[str(datas[0]):str(datas[1])]['Valor'])
+			Compras_df.reset_index(inplace=True)
 
-			while j < len(fechamento_df):
+			Vendas_df.set_index("Date",inplace = True)
+			Vendas_df = pd.DataFrame(Vendas_df[str(datas[0]):str(datas[1])]['Valor'])
+			Vendas_df.reset_index(inplace=True)
 
 
 
-				if Vendas_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
+			VendasDefinitivas = list()
+			VendasDefinitivasDatas = list()
 
-					
-					if j-2 != 0 and j+2 < len(fechamento_df):
-						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
-						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
+			i = 0
 
-						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
-						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
+			while i < len(Vendas_df):
 
-						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j))
-						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
+				j = 0
 
-						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
-						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
-
-						VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
-						VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
-				j+=1
-			i+=1
-
-		VendasDefinitivas_df = pd.DataFrame()
-		VendasDefinitivas_df["Date"] = VendasDefinitivasDatas
-		VendasDefinitivas_df["Valor"] = VendasDefinitivas
-		VendasDefinitivas_df["Acao"] = "Venda"
-		
-
-		#----------------------------------------------------------
+				while j < len(fechamento_df):
 
 
-		ComprasDefinitivas = list()
-		ComprasDefinitivasDatas = list()
 
-		i = 0
+					if Vendas_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
 
-		while i < len(Compras_df):
+						
+						if j-2 != 0 and j+2 > len(fechamento_df):
+							VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
+							VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
 
-			j = 0
+							VendasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
+							VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
 
-			while j < len(fechamento_df):
+							VendasDefinitivas.append(fechamento_df["Close"]._get_value(j))
+							VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
 
-				if Compras_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
+							VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
+							VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
 
-					
-					if j-2 != 0 and j+2 < len(fechamento_df):
-						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
-						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
+							VendasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
+							VendasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
+					j+=1
+				i+=1
 
-						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
-						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
+			VendasDefinitivas_df = pd.DataFrame()
+			VendasDefinitivas_df["Date"] = VendasDefinitivasDatas
+			VendasDefinitivas_df["Valor"] = VendasDefinitivas
+			VendasDefinitivas_df["Acao"] = "Venda"
+			
 
-						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j))
-						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
-
-						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
-						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
-
-						ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
-						ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
-				j+=1
-			i+=1
+			#----------------------------------------------------------
 
 
-		ComprasDefinitivas_df = pd.DataFrame()
-		ComprasDefinitivas_df["Date"] = ComprasDefinitivasDatas
-		ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
-		ComprasDefinitivas_df["Acao"] = "Compra"
+			ComprasDefinitivas = list()
+			ComprasDefinitivasDatas = list()
+
+			i = 0
+
+			while i < len(Compras_df):
+
+				j = 0
+
+				while j < len(fechamento_df):
+
+					if Compras_df["Date"]._get_value(i) == fechamento_df["Date"]._get_value(j):
+
+						
+						if j-2 != 0 and j+2 > len(fechamento_df):
+							ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-2))
+							ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-2))
+
+							ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j-1))
+							ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j-1))
+
+							ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j))
+							ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j))
+
+							ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+1))
+							ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+1))
+
+							ComprasDefinitivas.append(fechamento_df["Close"]._get_value(j+2))
+							ComprasDefinitivasDatas.append(fechamento_df["Date"]._get_value(j+2))
+					j+=1
+				i+=1
 
 
-		Negociacoes_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
+			ComprasDefinitivas_df = pd.DataFrame()
+			ComprasDefinitivas_df["Date"] = ComprasDefinitivasDatas
+			ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
+			ComprasDefinitivas_df["Acao"] = "Compra"
 
+			Negociacoes_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
 
-		
-		#----------------------------------------------------------
+			Negociacoes_df.reset_index(inplace=True)
 
-		Neutras = list()
-		Neutras_datas = list()
-		encontrou = 0
+			Negociacoes_df.drop(Negociacoes_df.columns[0],axis=1,inplace=True)
+			
+			#----------------------------------------------------------
 
-		i = 0
-		while i <len(fechamento_df):
-
-			j = 0
-			while j < len(Negociacoes_df):
-				
-				#print(fechamento_df["Date"]._get_value(i))
-				#print(Negociacoes_df["Date"]._get_value(j))
-
-				if fechamento_df["Date"]._get_value(i) == Negociacoes_df["Date"]._get_value(j):
-
-					encontrou = 1	
-
-				j+=1
-
-			if encontrou == 0:
-
-				Neutras.append(fechamento_df["Close"]._get_value(i))
-				Neutras_datas.append(fechamento_df["Date"]._get_value(i))
-
-
+			Neutras = list()
+			Neutras_datas = list()
 			encontrou = 0
 
-			i+=1
 
-		Neutras_df = pd.DataFrame()
-		Neutras_df["Date"] = Neutras_datas
-		Neutras_df["Valor"] = Neutras
-		Neutras_df["Acao"] = "Neutro"
+			i = 0
+			while i <len(fechamento_df):
 
-		Negociacoes_df.concat([Neutras_df])
-		Negociacoes_df.sort_values(by='Date',inplace=True)
-		Negociacoes_df.to_csv("Negociações.csv")
+				j = 0
+				while j < len(Negociacoes_df):
 
-		#----------------------------------------------------------
-		
+					if fechamento_df["Date"]._get_value(i) == Negociacoes_df["Date"]._get_value(j):
 
-		try:
+						encontrou = 1	
+
+					j+=1
+
+				if encontrou == 0:
+
+					Neutras.append(fechamento_df["Close"]._get_value(i))
+					Neutras_datas.append(fechamento_df["Date"]._get_value(i))
+
+
+				encontrou = 0
+
+				i+=1
+
+			Neutras_df = pd.DataFrame()
+			Neutras_df["Date"] = Neutras_datas
+			Neutras_df["Valor"] = Neutras
+			Neutras_df["Acao"] = "Neutro"
+
+			Negociacoes_df = pd.concat([Negociacoes_df,Neutras_df])
+			Negociacoes_df.sort_values(by='Date',inplace=True)
+
+			Negociacoes_df.reset_index(inplace=True)
+
+			Negociacoes_df.drop(Negociacoes_df.columns[0],axis=1,inplace=True)
+
+			Negociacoes_df.to_csv("Negociações.csv")
+			#----------------------------------------------------------
+			
 
 			arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
-			
+
+			'''
 			aroon = pd.read_csv("aroon"+arquivo+".csv")
 			bollinger_compras = pd.read_csv(arquivo+"compras.csv")
 			bollinger_vendas = pd.DataFrame(arquivo+"vendas.csv")
@@ -1937,10 +1944,9 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
 			Rsi_list = list()
 
 			Sar_list = list()
+			'''
+			
 
-		
-		except:
-			print("Deu ruim")
 
 	return {}
 
