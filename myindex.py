@@ -7,7 +7,6 @@ import plotly.express as px
 from app import *
 import funcoes
 from app import *
-
 from components import dashboards, altas_baixas,sidebar,previsoes,macd,bollinger,fechamento,indicadores,configuracoes
 
 ultimos_dias = 30

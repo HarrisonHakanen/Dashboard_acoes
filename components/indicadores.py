@@ -1837,9 +1837,50 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data):
 		ComprasDefinitivas_df["Valor"] = ComprasDefinitivas
 		ComprasDefinitivas_df["Acao"] = "Compra"
 
-		FechamentoDefinitivo_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
 
-		FechamentoDefinitivo_df.sort_values(by='Date',inplace=True)
+		Negociacoes_df = pd.concat([VendasDefinitivas_df,ComprasDefinitivas_df])
+
+
+		
+		#----------------------------------------------------------
+
+		Neutras = list()
+		Neutras_datas = list()
+		encontrou = 0
+
+		i = 0
+		while i <len(fechamento_df):
+
+			j = 0
+			while j < len(Negociacoes_df):
+				
+				#print(fechamento_df["Date"]._get_value(i))
+				#print(Negociacoes_df["Date"]._get_value(j))
+
+				if fechamento_df["Date"]._get_value(i) == Negociacoes_df["Date"]._get_value(j):
+
+					encontrou = 1	
+
+				j+=1
+
+			if encontrou == 0:
+
+				Neutras.append(fechamento_df["Close"]._get_value(i))
+				Neutras_datas.append(fechamento_df["Date"]._get_value(i))
+
+
+			encontrou = 0
+
+			i+=1
+
+		Neutras_df = pd.DataFrame()
+		Neutras_df["Date"] = Neutras_datas
+		Neutras_df["Valor"] = Neutras
+		Neutras_df["Acao"] = "Neutro"
+
+		Negociacoes_df.concat([Neutras_df])
+		Negociacoes_df.sort_values(by='Date',inplace=True)
+		Negociacoes_df.to_csv("Negociações.csv")
 
 		#----------------------------------------------------------
 		
