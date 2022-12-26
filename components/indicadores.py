@@ -286,7 +286,7 @@ layout = dbc.Col([
 							dbc.Row([				
 								dbc.Col([
 									html.H5("ADX"),
-								],width=8),
+								],width=10),
 								dbc.Col([
 									dbc.Button(id="config_adx",children=["Configurações"])
 								],width=2),
@@ -324,7 +324,7 @@ layout = dbc.Col([
 							dbc.Row([				
 								dbc.Col([
 									html.H5("STC"),
-								],width=8),
+								],width=10),
 								dbc.Col([
 									dbc.Button(id="config_stc",children=["Configurações"])
 								],width=2),
@@ -356,11 +356,48 @@ layout = dbc.Col([
 
 					],style={"padding": "25px"}),		
 
+				
+
+
+					dbc.Row([
+						
+						dbc.Row([
+							dbc.Row([
+								dbc.Col([
+									html.H5("CCI"),
+								],width=10),
+								dbc.Col([
+									dbc.Button(id="config_cci",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='cci_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_cci",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_cci_info"))
+								]),
+							],width=12),
+						]),
+
+					],style={"padding": "25px"}),
 
 
 				]),
-
-
 
 				dcc.Tab(label='Regressões', children=[
 
@@ -998,7 +1035,6 @@ layout = dbc.Col([
 	Input("stc_datepicker","end_date"),
 	Input("aplicar_data_stc","n_clicks")
 	]
-
 )
 def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
 
@@ -1074,6 +1110,88 @@ def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
 
 	return {}
 
+
+@app.callback(
+	Output('grafico_cci_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("CCI_store","data"),
+	Input("cci_datepicker","start_date"),
+	Input("cci_datepicker","end_date"),
+	Input("aplicar_data_cci","n_clicks")
+	]
+)
+
+def popula_cci(acao_selecionada,cci_store,data_inicial,data_final,aplicar_data):
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+
+		else:
+			
+			ticker = acao_selecionada
+
+	
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+
+		if isinstance(acao_selecionada,list):
+			acao = acao_selecionada[0]
+
+		else:
+			acao = acao_selecionada	
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+
+		if("aplicar_data_cci" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		cci_results = ta.trend.CCIIndicator(df["High"],df["Low"],df["Close"],cci_store[0],cci_store[1],False)
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="CCI",
+		        x=cci_results.cci().index,
+		        y=cci_results.cci(),
+		        line=dict(color='blue', width=2))
+		)
+
+		fig.add_hline(y=-100,line_color="blue",line_width=1, line_dash="dash")
+		fig.add_hline(y=100,line_color="blue",line_width=1, line_dash="dash")
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
+
+	return {}
 
 @app.callback(
 	Output('grafico_adx_info','figure'),
