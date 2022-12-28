@@ -159,6 +159,47 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
+					dbc.Row([
+
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("CMF"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_cmf",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_cmf",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='cmf_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_cmf",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_cmf_info"))
+								]),
+
+							]),
+						]),
+
+					],style={"padding": "25px"}),
+
+
 				]),
 
 				
@@ -2469,6 +2510,97 @@ def popula_sar(acao_selecionada,sar_config,data_inicial,data_final,aplicar_data)
 
 	return {}
 
+
+@app.callback(
+	Output('grafico_cmf_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("Cmf_store","data"),
+	Input("cmf_datepicker","start_date"),
+	Input("cmf_datepicker","end_date"),
+	Input("aplicar_data_cmf","n_clicks")
+	]
+)
+
+
+def popula_cmf(acao_selecionada,cmf_config,data_inicial,data_final,aplicar_data):
+	
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+		
+
+		#Atributos--------------------------------
+		#datas = funcoes.data_slicer(tempo_slice)
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_cmf" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df["Date"] = df.index
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		resultado_cmf = ta.volume.ChaikinMoneyFlowIndicator(df["High"],df["Low"],df["Close"],df["Volume"],cmf_config[0],False)
+
+		cmf_list = list()
+
+
+		i=0
+		while i< len(resultado_cmf.chaikin_money_flow()):
+		    
+		    if(resultado_cmf.chaikin_money_flow()[i] != None):
+		        
+		        cmf_list.append(resultado_cmf.chaikin_money_flow()[i])
+		        
+		    i+=1
+		    
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Bar(
+		    x=df.index,
+		    y=cmf_list,
+		    marker_color='blue'
+		))
+
+
+		fig.add_hline(y=0,line_color="blue",line_width=1)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
+
+	return {}
 
 
 @app.callback(
