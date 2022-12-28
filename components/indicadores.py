@@ -200,6 +200,47 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
+					dbc.Row([
+
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("Awesome Oscilator"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_awesome",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_awesome",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='awesome_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_awesome",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_awesome_info"))
+								]),
+
+							]),
+						]),
+
+					],style={"padding": "25px"}),
+
+
 				]),
 
 				
@@ -2601,6 +2642,93 @@ def popula_cmf(acao_selecionada,cmf_config,data_inicial,data_final,aplicar_data)
 		return fig
 
 	return {}
+
+
+@app.callback(
+	Output('grafico_awesome_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("Awesome_store","data"),
+	Input("awesome_datepicker","start_date"),
+	Input("awesome_datepicker","end_date"),
+	Input("aplicar_data_awesome","n_clicks")
+	]
+)
+
+
+def popula_awesome(acao_selecionada,awesome_config,data_inicial,data_final,aplicar_data):
+	
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_awesome" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df["Date"] = df.index
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+
+		resultados_awesome = ta.momentum.AwesomeOscillatorIndicator(df["High"],df["Low"],awesome_config[0],awesome_config[1],False)
+
+		awesome_list = list()
+
+		i=0
+		while i< len(resultados_awesome.awesome_oscillator()):
+		    
+		    if(resultados_awesome.awesome_oscillator()[i] != None):
+		        
+		        awesome_list.append(resultados_awesome.awesome_oscillator()[i])
+		        
+		    i+=1
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Bar(
+		    x=df.index,
+		    y=awesome_list,
+		    marker_color='blue'
+		))
+
+
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')		    
+
+		return fig
+
+	return{}
+
 
 
 @app.callback(
