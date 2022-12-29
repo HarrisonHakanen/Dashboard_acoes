@@ -2636,7 +2636,7 @@ def popula_cmf(acao_selecionada,cmf_config,data_inicial,data_final,aplicar_data)
 		))
 
 
-		fig.add_hline(y=0,line_color="blue",line_width=1)
+		
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
 		return fig
