@@ -241,6 +241,88 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("KAMA"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_kama",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_kama",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='kama_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_kama",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_kama_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("TSI"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_tsi",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_tsi",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='tsi_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_tsi",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_tsi_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+
 				]),
 
 				
@@ -2729,7 +2811,183 @@ def popula_awesome(acao_selecionada,awesome_config,data_inicial,data_final,aplic
 
 	return{}
 
+@app.callback(
+	Output('grafico_kama_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("Kama_store","data"),
+	Input("kama_datepicker","start_date"),
+	Input("kama_datepicker","end_date"),
+	Input("aplicar_data_kama","n_clicks")
+	]
+)
 
+
+def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_data):
+	
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_kama" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df["Date"] = df.index
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		resultados_kama = ta.momentum.KAMAIndicator(df["Close"],10,2,30,False)
+
+		kama_list = list()
+
+		i=0
+		while i< len(resultados_kama.kama()):
+		    
+		    if(resultados_kama.kama()[i] != None):
+		        
+		        kama_list.append(resultados_kama.kama()[i])
+		        
+		    i+=1
+		    
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="KAMA",
+		        x=df.index,
+		        y=kama_list,
+		        line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(go.Candlestick(
+		        x=df.index,
+		        open=df['Open'],
+		        high=df['High'],
+		        low=df['Low'],
+		        close=df['Close']))
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+		return fig
+
+	return {}
+
+
+@app.callback(
+	Output('grafico_tsi_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("Tsi_store","data"),
+	Input("tsi_datepicker","start_date"),
+	Input("tsi_datepicker","end_date"),
+	Input("aplicar_data_tsi","n_clicks")
+	]
+)
+
+
+def popula_tsi(acao_selecionada,tsi_config,data_inicial,data_final,aplicar_data):
+	
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_tsi" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final
+
+
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+			
+		else:
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df["Date"] = df.index
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+		resultados_tsi = ta.momentum.TSIIndicator(df["Close"],tsi_config[0],tsi_config[1],False)
+
+		tsi_list = list()
+
+		i=0
+		while i< len(resultados_tsi.tsi()):
+		    
+		    if(resultados_tsi.tsi()[i] != None):
+		        
+		        tsi_list.append(resultados_tsi.tsi()[i])
+		        
+		    i+=1
+		    
+		fig = go.Figure()
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="TSI",
+		        x=df.index,
+		        y=tsi_list,
+		        line=dict(color='blue', width=1))
+		)
+
+		fig.add_hline(y=20,line_color="blue",line_width=1, line_dash="dash")
+		fig.add_hline(y=-20,line_color="blue",line_width=1, line_dash="dash")
+
+		return fig
+
+	return {}
 
 @app.callback(
 	Output('grafico_ForceIndex_info','figure'),
