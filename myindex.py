@@ -37,6 +37,7 @@ app.layout = dbc.Container(children=[
 	dcc.Store(id='Awesome_store',data=[5,34]),
 	dcc.Store(id='Kama_store',data=[10,2,30]),
 	dcc.Store(id='Tsi_store',data=[25,13]),
+	dcc.Store(id='Keltner_store',data=[25,13]),
 
 	dcc.Store(id='store-negociacoes-param'),
 	dcc.Store(id='store-negociacoes-mes'),

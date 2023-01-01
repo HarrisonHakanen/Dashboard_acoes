@@ -389,9 +389,11 @@ def GetAcoes(tickers,todas_acoes,data_inicio,data_fim,periodo):
         
         if(contador<10):
 
-            print(ticker)
+            
             
             if periodo == "Dia":
+                print(ticker)
+                
                 acao = yf.download(ticker)
             else:
                 acao = yf.download(ticker,interval="1m",period="1d")

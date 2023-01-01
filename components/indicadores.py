@@ -35,7 +35,8 @@ layout = dbc.Col([
 	dbc.Row([
 		dbc.Col([
 			dcc.Tabs([
-				dcc.Tab(label='Indicadores', children=[
+				dcc.Tab(label="Tendência",children=[
+
 
 					dbc.Row([
 						dbc.Row([
@@ -77,17 +78,18 @@ layout = dbc.Col([
 
 					],style={"padding": "25px"}),
 
+
 					dbc.Row([
 						dbc.Row([
 							dbc.Row([				
 								dbc.Col([
-									html.H5("Bollinger"),
+									html.H5("Aroon"),
 								],width=8),
 								dbc.Col([
-									dbc.Button(id="negociacoes_bollinger",children=["Negociações"])
+									dbc.Button(id="negociacoes_aroon",children=["Negociações"])
 								],width=2),
 								dbc.Col([
-									dbc.Button(id="config_bollinger",children=["Configurações"])
+									dbc.Button(id="config_aroon",children=["Configurações"])
 								],width=2),
 							]),
 							html.Hr(),
@@ -97,23 +99,134 @@ layout = dbc.Col([
 						dbc.Row([
 							dbc.Col([
 								dcc.DatePickerRange(
-							        id='boolinger_datepicker',				   				       
+							        id='aroon_datepicker',				   				       
 							    ),
 							],width=10),
 							dbc.Col([
-								dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
+								dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
 							])
 						]),
 
 						dbc.Row([
 							dbc.Col([
 								
-								html.Hr(),
-
 								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
+									dbc.Card(dcc.Graph(id="grafico_aroon_info"))
 								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("ADX"),
+								],width=10),
+								dbc.Col([
+									dbc.Button(id="config_adx",children=["Configurações"])
+								],width=2),
 							]),
+							html.Hr(),
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='adx_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_adx_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),
+
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("STC"),
+								],width=10),
+								dbc.Col([
+									dbc.Button(id="config_stc",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='stc_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_stc_info"))
+								]),
+							],width=12),
+						]),
+						
+
+					],style={"padding": "25px"}),		
+
+
+					dbc.Row([
+						
+						dbc.Row([
+							dbc.Row([
+								dbc.Col([
+									html.H5("CCI"),
+								],width=10),
+								dbc.Col([
+									dbc.Button(id="config_cci",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+						]),
+
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='cci_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_cci",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_cci_info"))
+								]),
+							],width=12),
 						]),
 
 					],style={"padding": "25px"}),
@@ -159,46 +272,10 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
-					dbc.Row([
 
-						dbc.Row([
-							dbc.Row([				
-								dbc.Col([
-									html.H5("CMF"),
-								],width=8),
-								dbc.Col([
-									dbc.Button(id="negociacoes_cmf",children=["Negociações"])
-								],width=2),
-								dbc.Col([
-									dbc.Button(id="config_cmf",children=["Configurações"])
-								],width=2),
-							]),
-							html.Hr(),
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='cmf_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_cmf",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								
-								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_cmf_info"))
-								]),
-
-							]),
-						]),
-
-					],style={"padding": "25px"}),
-
+				]),
+				
+				dcc.Tab(label='Momentum', children=[
 
 					dbc.Row([
 
@@ -281,7 +358,6 @@ layout = dbc.Col([
 
 					],style={"padding": "25px"}),
 
-
 					dbc.Row([
 						dbc.Row([
 							dbc.Row([				
@@ -322,48 +398,142 @@ layout = dbc.Col([
 
 					],style={"padding": "25px"}),
 
+					dbc.Row([
+					dbc.Row([
+						dbc.Row([				
+							dbc.Col([
+								html.H5("RSI"),
+							],width=8),
+							dbc.Col([
+								dbc.Button(id="negociacoes_rsi",children=["Negociações"])
+							],width=2),
+							dbc.Col([
+								dbc.Button(id="config_rsi",children=["Configurações"])
+							],width=2),
+						]),
+						html.Hr(),
+					]),
+
+					dbc.Row([
+						dbc.Col([
+							dcc.DatePickerRange(
+						        id='rsi_datepicker',				   				       
+						    ),
+						],width=10),
+						dbc.Col([
+							dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
+						])
+					]),
+
+					dbc.Row([
+						dbc.Col([
+							dbc.Col([
+								dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+							]),
+						]),
+					]),
+
+				],style={"padding": "25px"}),
+
+
 
 				]),
 
 				
-				dcc.Tab(label='Osciladores', children=[
+
+
+
+				dcc.Tab(label='Volatilidade', children=[
 
 					dbc.Row([
 						dbc.Row([
 							dbc.Row([				
 								dbc.Col([
-									html.H5("RSI"),
+									html.H5("Bollinger"),
 								],width=8),
 								dbc.Col([
-									dbc.Button(id="negociacoes_rsi",children=["Negociações"])
+									dbc.Button(id="negociacoes_bollinger",children=["Negociações"])
 								],width=2),
 								dbc.Col([
-									dbc.Button(id="config_rsi",children=["Configurações"])
+									dbc.Button(id="config_bollinger",children=["Configurações"])
 								],width=2),
 							]),
 							html.Hr(),
+
 						]),
 
 						dbc.Row([
 							dbc.Col([
 								dcc.DatePickerRange(
-							        id='rsi_datepicker',				   				       
+							        id='boolinger_datepicker',				   				       
 							    ),
 							],width=10),
 							dbc.Col([
-								dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
+								dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
 							])
 						]),
 
 						dbc.Row([
 							dbc.Col([
+								
+								html.Hr(),
+
 								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_rsi_info"))
+									dbc.Card(dcc.Graph(id="grafico_boolinger_info"))
 								]),
 							]),
 						]),
 
 					],style={"padding": "25px"}),
+
+
+
+					dbc.Row([
+						dbc.Row([
+							dbc.Row([				
+								dbc.Col([
+									html.H5("Keltner"),
+								],width=8),
+								dbc.Col([
+									dbc.Button(id="negociacoes_keltner",children=["Negociações"])
+								],width=2),
+								dbc.Col([
+									dbc.Button(id="config_keltner",children=["Configurações"])
+								],width=2),
+							]),
+							html.Hr(),
+
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								dcc.DatePickerRange(
+							        id='keltner_datepicker',				   				       
+							    ),
+							],width=10),
+							dbc.Col([
+								dbc.Button(id="aplicar_data_keltner",children=["Alterar data"])
+							])
+						]),
+
+						dbc.Row([
+							dbc.Col([
+								
+								html.Hr(),
+
+								dbc.Col([
+									dbc.Card(dcc.Graph(id="grafico_keltner_info"))
+								]),
+							]),
+						]),
+
+					],style={"padding": "25px"}),
+
+					
+				]),
+
+				dcc.Tab(label='Volume', children=[
+
 
 					dbc.Row([
 						dbc.Row([
@@ -404,55 +574,19 @@ layout = dbc.Col([
 
 					],style={"padding": "25px"}),
 
+
 					dbc.Row([
+
 						dbc.Row([
 							dbc.Row([				
 								dbc.Col([
-									html.H5("Aroon"),
+									html.H5("CMF"),
 								],width=8),
 								dbc.Col([
-									dbc.Button(id="negociacoes_aroon",children=["Negociações"])
+									dbc.Button(id="negociacoes_cmf",children=["Negociações"])
 								],width=2),
 								dbc.Col([
-									dbc.Button(id="config_aroon",children=["Configurações"])
-								],width=2),
-							]),
-							html.Hr(),
-
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='aroon_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								
-								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_aroon_info"))
-								]),
-							],width=12),
-						]),
-						
-
-					],style={"padding": "25px"}),
-
-
-					dbc.Row([
-						dbc.Row([
-							dbc.Row([				
-								dbc.Col([
-									html.H5("ADX"),
-								],width=10),
-								dbc.Col([
-									dbc.Button(id="config_adx",children=["Configurações"])
+									dbc.Button(id="config_cmf",children=["Configurações"])
 								],width=2),
 							]),
 							html.Hr(),
@@ -461,11 +595,11 @@ layout = dbc.Col([
 						dbc.Row([
 							dbc.Col([
 								dcc.DatePickerRange(
-							        id='adx_datepicker',				   				       
+							        id='cmf_datepicker',				   				       
 							    ),
 							],width=10),
 							dbc.Col([
-								dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
+								dbc.Button(id="aplicar_data_cmf",children=["Alterar data"])
 							])
 						]),
 
@@ -473,94 +607,15 @@ layout = dbc.Col([
 							dbc.Col([
 								
 								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_adx_info"))
+									dbc.Card(dcc.Graph(id="grafico_cmf_info"))
 								]),
-							],width=12),
-						]),
-						
 
-					],style={"padding": "25px"}),
-
-
-
-					dbc.Row([
-						dbc.Row([
-							dbc.Row([				
-								dbc.Col([
-									html.H5("STC"),
-								],width=10),
-								dbc.Col([
-									dbc.Button(id="config_stc",children=["Configurações"])
-								],width=2),
 							]),
-							html.Hr(),
-						]),
-
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='stc_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								
-								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_stc_info"))
-								]),
-							],width=12),
-						]),
-						
-
-					],style={"padding": "25px"}),		
-
-				
-
-
-					dbc.Row([
-						
-						dbc.Row([
-							dbc.Row([
-								dbc.Col([
-									html.H5("CCI"),
-								],width=10),
-								dbc.Col([
-									dbc.Button(id="config_cci",children=["Configurações"])
-								],width=2),
-							]),
-							html.Hr(),
-						]),
-
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='cci_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_cci",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								
-								dbc.Col([
-									dbc.Card(dcc.Graph(id="grafico_cci_info"))
-								]),
-							],width=12),
 						]),
 
 					],style={"padding": "25px"}),
 
-
+					
 				]),
 
 				dcc.Tab(label='Regressões', children=[
@@ -656,539 +711,538 @@ layout = dbc.Col([
 					],style={"padding": "25px"}),
 
 
-				])
+				]),
 
 			]),
-		],width=12)
+		]),
+	]),
+
+
+	dbc.Row([
+
+		dbc.Row([
+			dbc.Row([				
+				dbc.Col([
+					html.H5("Candlestick"),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="config_candlestick",children=["Configurações"])
+				],width=2),
+			]),
+			html.Hr(),
+		]),
+
+		dbc.Row([
+			dbc.Col([
+				dcc.DatePickerRange(
+			        id='candlestick_datepicker',				   				       
+			    ),
+			],width=10),
+			dbc.Col([
+				dbc.Button(id="aplicar_data_candlestick",children=["Alterar data"])
+			])
+		]),
+
+		dbc.Row([
+			dbc.Col([
+
+				dbc.Col([
+					dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
+				]),
+			]),
+		]),
+
 	],style={"padding": "25px"}),
 
 
-
-		dbc.Row([
-
-			dbc.Row([
-				dbc.Row([				
-					dbc.Col([
-						html.H5("Candlestick"),
-					],width=10),
-					dbc.Col([
-						dbc.Button(id="config_candlestick",children=["Configurações"])
-					],width=2),
-				]),
-				html.Hr(),
-			]),
-
-			dbc.Row([
-				dbc.Col([
-					dcc.DatePickerRange(
-				        id='candlestick_datepicker',				   				       
-				    ),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="aplicar_data_candlestick",children=["Alterar data"])
-				])
-			]),
-
-			dbc.Row([
-				dbc.Col([
-
-					dbc.Col([
-						dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
-					]),
-				]),
-			]),
-
-		],style={"padding": "25px"}),
-
-
 		
-		#Modal Aroon------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações aroon")),
+	#Modal Aroon------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações aroon")),
 
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Dias anteriores (padrão 25)"),
-						dcc.Input(id="dias_anteriores_aroon", type="number",className="form-control form-control-lg"),
-					]),
-                ]),
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Dias anteriores (padrão 25)"),
+					dcc.Input(id="dias_anteriores_aroon", type="number",className="form-control form-control-lg"),
+				]),
+            ]),
 
-			]),
+		]),
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_aroon",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
-			])
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_aroon",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
+		])
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_aroon",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_aroon",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações aroon")),
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações aroon")),
 
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			dbc.Row([
-               				html.Div(id="tabela_compras_aroon", className="dbc"),
-               			]),
-               			
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			dbc.Row([
+           				html.Div(id="tabela_compras_aroon", className="dbc"),
+           			]),
+           			
 
-               		],width=6),
+           		],width=6),
 
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
-
-						dbc.Row([
-							html.Div(id="tabela_vendas_aroon", className="dbc"),
-						]),
-
-					],width=6),
-                ]),
-                dbc.Row([
-
-                	dbc.Col([
-                		dbc.Card([
-                			dbc.CardBody([
-                				html.H4("Porcentagem média de retorno", className="card-title"),
-                				html.H5(id="confianca_aroon"),
-                			]),
-                		])
-                	]),
-                	dbc.Col([
-                		dbc.Card([
-                			dbc.CardBody([
-                				html.H4("Quantidade de negociações", className="card-title"),
-                				html.H5(id="qtd_negociacao_aroon"),
-                			]),
-                		])
-                	]),
-       			]),
-
-			]),
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_aroon",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
-
-
-
-		#Modal MACD------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações MACD")),
-
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Rápida MM (padrão 12)"),
-						dcc.Input(id="rapida_mm", type="number",className="form-control form-control-lg"),
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
 					]),
 
-					dbc.Col([
-						html.H5("Lenta MM (padrão 26)"),
-						dcc.Input(id="lenta_mm", type="number",className="form-control form-control-lg"),
-					]),
-					dbc.Col([
-						html.H5("Sinal (padrão 9)"),
-						dcc.Input(id="sinal", type="number",className="form-control form-control-lg"),
+					dbc.Row([
+						html.Div(id="tabela_vendas_aroon", className="dbc"),
 					]),
 
-                ]),
+				],width=6),
+            ]),
+            dbc.Row([
 
-			]),
+            	dbc.Col([
+            		dbc.Card([
+            			dbc.CardBody([
+            				html.H4("Porcentagem média de retorno", className="card-title"),
+            				html.H5(id="confianca_aroon"),
+            			]),
+            		])
+            	]),
+            	dbc.Col([
+            		dbc.Card([
+            			dbc.CardBody([
+            				html.H4("Quantidade de negociações", className="card-title"),
+            				html.H5(id="qtd_negociacao_aroon"),
+            			]),
+            		])
+            	]),
+   			]),
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_macd",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
-			])
+		]),
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_macd",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
-
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações macd")),
-
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			dbc.Row([
-               				html.Div(id="tabela_compras_macd", className="dbc"),
-               			]),
-
-               		],width=6),
-
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
-						
-
-						dbc.Row([
-							html.Div(id="tabela_vendas_macd", className="dbc"),
-						]),
-
-					],width=6),
-                ]),
-                dbc.Row([
-       				html.H5(id="confianca_macd"),
-       			]),
-
-			]),
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_macd",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_aroon",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-        #Modal Bollinger------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações Bollinger")),
 
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Dias anteriores (padrão 10)"),
-						dcc.Input(id="dias_anteriores_bollinger", type="number",className="form-control form-control-lg"),
+	#Modal MACD------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações MACD")),
+
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Rápida MM (padrão 12)"),
+					dcc.Input(id="rapida_mm", type="number",className="form-control form-control-lg"),
+				]),
+
+				dbc.Col([
+					html.H5("Lenta MM (padrão 26)"),
+					dcc.Input(id="lenta_mm", type="number",className="form-control form-control-lg"),
+				]),
+				dbc.Col([
+					html.H5("Sinal (padrão 9)"),
+					dcc.Input(id="sinal", type="number",className="form-control form-control-lg"),
+				]),
+
+            ]),
+
+		]),
+
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_macd",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_macd",color="warning"),
+		])
+
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_macd",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
+
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações macd")),
+
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			dbc.Row([
+           				html.Div(id="tabela_compras_macd", className="dbc"),
+           			]),
+
+           		],width=6),
+
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
+					]),
+					
+
+					dbc.Row([
+						html.Div(id="tabela_vendas_macd", className="dbc"),
 					]),
 
-					dbc.Col([
-						html.H5("Quantidade de desvio padrão superior (padrão 1.5)"),
-						dcc.Input(id="mm_superior", type="number",className="form-control form-control-lg"),
-					]),
-					dbc.Col([
-						html.H5("Quantidade de desvio padrão inferior (padrão 1.5)"),
-						dcc.Input(id="mm_inferior", type="number",className="form-control form-control-lg"),
-					]),
+				],width=6),
+            ]),
+            dbc.Row([
+   				html.H5(id="confianca_macd"),
+   			]),
 
-                ]),
+		]),
 
-			]),
-
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_bollinger",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_bollinger",color="warning"),
-			])
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_bollinger",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_macd",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-        dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações bollinger")),
+    #Modal Bollinger------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações Bollinger")),
 
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			
-               			dbc.Row([
-               				html.Div(id="tabela_compras_bollinger", className="dbc"),
-               			]),
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Dias anteriores (padrão 10)"),
+					dcc.Input(id="dias_anteriores_bollinger", type="number",className="form-control form-control-lg"),
+				]),
 
-               		],width=6),
+				dbc.Col([
+					html.H5("Quantidade de desvio padrão superior (padrão 1.5)"),
+					dcc.Input(id="mm_superior", type="number",className="form-control form-control-lg"),
+				]),
+				dbc.Col([
+					html.H5("Quantidade de desvio padrão inferior (padrão 1.5)"),
+					dcc.Input(id="mm_inferior", type="number",className="form-control form-control-lg"),
+				]),
 
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
+            ]),
 
-						dbc.Row([
-							html.Div(id="tabela_vendas_bollinger", className="dbc"),
-						]),
+		]),
 
-					],width=6),
-                ]),
-                dbc.Row([
-       				html.H5(id="confianca_bollinger"),
-       			]),
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_bollinger",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_bollinger",color="warning"),
+		])
 
-			]),
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_bollinger",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_bollinger",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-        #Modal RSI------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações RSI")),
+    dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações bollinger")),
 
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Inferior (padrão 0.3)"),
-						dcc.Input(id="inferior_rsi", type="number",className="form-control form-control-lg"),
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			
+           			dbc.Row([
+           				html.Div(id="tabela_compras_bollinger", className="dbc"),
+           			]),
+
+           		],width=6),
+
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
 					]),
 
-					dbc.Col([
-						html.H5("Superior (padrão 0.7)"),
-						dcc.Input(id="superior_rsi", type="number",className="form-control form-control-lg"),
-					]),
-					dbc.Col([
-						html.H5("Dias anteriores (padrão 14)"),
-						dcc.Input(id="dias_anteriores_rsi", type="number",className="form-control form-control-lg"),
+					dbc.Row([
+						html.Div(id="tabela_vendas_bollinger", className="dbc"),
 					]),
 
-                ]),
+				],width=6),
+            ]),
+            dbc.Row([
+   				html.H5(id="confianca_bollinger"),
+   			]),
 
-			]),
+		]),
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_rsi",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_rsi",color="warning"),
-			])
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_rsi",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
-
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_bollinger",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações RSI")),
+    #Modal RSI------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações RSI")),
 
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			
-               			dbc.Row([
-               				html.Div(id="tabela_compras_rsi", className="dbc"),
-               			]),
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Inferior (padrão 0.3)"),
+					dcc.Input(id="inferior_rsi", type="number",className="form-control form-control-lg"),
+				]),
 
-               		],width=6),
+				dbc.Col([
+					html.H5("Superior (padrão 0.7)"),
+					dcc.Input(id="superior_rsi", type="number",className="form-control form-control-lg"),
+				]),
+				dbc.Col([
+					html.H5("Dias anteriores (padrão 14)"),
+					dcc.Input(id="dias_anteriores_rsi", type="number",className="form-control form-control-lg"),
+				]),
 
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
+            ]),
 
-						dbc.Row([
-							html.Div(id="tabela_vendas_rsi", className="dbc"),
-						]),
+		]),
 
-					],width=6),
-                ]),
-                dbc.Row([
-       				html.H5(id="confianca_rsi"),
-       			]),
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_rsi",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_rsi",color="warning"),
+		])
 
-			]),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_rsi",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_rsi",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
 
-        #Modal SAR------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações SAR")),
 
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("IAF (padrão 0.2)"),
-						dcc.Input(id="iax", type="number",className="form-control form-control-lg"),
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações RSI")),
+
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			
+           			dbc.Row([
+           				html.Div(id="tabela_compras_rsi", className="dbc"),
+           			]),
+
+           		],width=6),
+
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
 					]),
 
-					dbc.Col([
-						html.H5("MAX AF (padrão 0.2)"),
-						dcc.Input(id="max_af", type="number",className="form-control form-control-lg"),
+					dbc.Row([
+						html.Div(id="tabela_vendas_rsi", className="dbc"),
 					]),
-                ]),
 
-			]),
+				],width=6),
+            ]),
+            dbc.Row([
+   				html.H5(id="confianca_rsi"),
+   			]),
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_sar",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_sar",color="warning"),
-			])
+		]),
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_sar",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_rsi",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
+
+    #Modal SAR------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações SAR")),
+
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("IAF (padrão 0.2)"),
+					dcc.Input(id="iax", type="number",className="form-control form-control-lg"),
+				]),
+
+				dbc.Col([
+					html.H5("MAX AF (padrão 0.2)"),
+					dcc.Input(id="max_af", type="number",className="form-control form-control-lg"),
+				]),
+            ]),
+
+		]),
+
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_sar",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_sar",color="warning"),
+		])
+
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_sar",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações SAR")),
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações SAR")),
 
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			
-               			dbc.Row([
-               				html.Div(id="tabela_compras_sar", className="dbc"),
-               			]),
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			
+           			dbc.Row([
+           				html.Div(id="tabela_compras_sar", className="dbc"),
+           			]),
 
-               		],width=6),
+           		],width=6),
 
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
-
-						dbc.Row([
-							html.Div(id="tabela_vendas_sar", className="dbc"),
-						]),
-
-					],width=6),
-                ]),
-                dbc.Row([
-       				html.H5(id="confianca_sar"),
-       			]),
-
-			]),
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_sar",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
-
-		#Modal Force Index------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações Force Index")),
-
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Dias anteriores (padrão 21)"),
-						dcc.Input(id="dias_anteriores_force_index", type="number",className="form-control form-control-lg"),
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
 					]),
-                ]),
 
-			]),
+					dbc.Row([
+						html.Div(id="tabela_vendas_sar", className="dbc"),
+					]),
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_force_index",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_force_index",color="warning"),
-			])
+				],width=6),
+            ]),
+            dbc.Row([
+   				html.H5(id="confianca_sar"),
+   			]),
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_force_index",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+		]),
 
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_sar",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
-        #Modal CandleStick------------------------------------------
-		dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Configurações Candlestick")),
+	#Modal Force Index------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações Force Index")),
 
-			dbc.ModalBody([
-				dbc.Row([
-                    dbc.Col([
-						html.H5("Primeira media móvel"),
-						dcc.Input(id="primeira_mm", type="number",className="form-control form-control-lg"),
-					],width=3),
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Dias anteriores (padrão 21)"),
+					dcc.Input(id="dias_anteriores_force_index", type="number",className="form-control form-control-lg"),
+				]),
+            ]),
 
-					dbc.Col([
-						html.H5("Segunda média móvel"),
-						dcc.Input(id="segunda_mm", type="number",className="form-control form-control-lg"),
-					],width=3),
-                ]),
+		]),
 
-			]),
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_force_index",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_force_index",color="warning"),
+		])
 
-			dbc.ModalFooter([
-				dbc.Button("Aplicar",id="aplicar_candlestick",color="success"),
-				dbc.Button("Restaurar padrão",id="restaurar_force_index",color="warning"),
-			])
-
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_candlestick",
-        size="lg",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_force_index",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
 
-        dbc.Modal([
-			dbc.ModalHeader(dbc.ModalTitle("Negociações force index")),
+    #Modal CandleStick------------------------------------------
+	dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Configurações Candlestick")),
 
-			dbc.ModalBody([
-				dbc.Row([
-               		dbc.Col([
-               			dbc.Row([
-               				html.H5("Tabela de compras"),
-               			]),
-               			dbc.Row([
-               				html.Div(id="tabela_compras_force_index", className="dbc"),
-               			]),
+		dbc.ModalBody([
+			dbc.Row([
+                dbc.Col([
+					html.H5("Primeira media móvel"),
+					dcc.Input(id="primeira_mm", type="number",className="form-control form-control-lg"),
+				],width=3),
 
-               		],width=6),
+				dbc.Col([
+					html.H5("Segunda média móvel"),
+					dcc.Input(id="segunda_mm", type="number",className="form-control form-control-lg"),
+				],width=3),
+            ]),
 
-					dbc.Col([
-						dbc.Row([
-							html.H5("Tabela de vendas"),
-						]),
-						
+		]),
 
-						dbc.Row([
-							html.Div(id="tabela_vendas_force_index", className="dbc"),
-						]),
+		dbc.ModalFooter([
+			dbc.Button("Aplicar",id="aplicar_candlestick",color="success"),
+			dbc.Button("Restaurar padrão",id="restaurar_force_index",color="warning"),
+		])
 
-					],width=6),
-                ]),
-                dbc.Row([
-               		html.H5(id="confianca_force_index"),
-               	]),
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_candlestick",
+    size="lg",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 
-			]),
 
-		],style={"background-color":"rgba(17,140,79,0.05)"},
-        id="modal_negociacoes_force_index",
-        size="xl",
-        is_open=False,
-        centered=True,
-        backdrop=True),
+    dbc.Modal([
+		dbc.ModalHeader(dbc.ModalTitle("Negociações force index")),
+
+		dbc.ModalBody([
+			dbc.Row([
+           		dbc.Col([
+           			dbc.Row([
+           				html.H5("Tabela de compras"),
+           			]),
+           			dbc.Row([
+           				html.Div(id="tabela_compras_force_index", className="dbc"),
+           			]),
+
+           		],width=6),
+
+				dbc.Col([
+					dbc.Row([
+						html.H5("Tabela de vendas"),
+					]),
+					
+
+					dbc.Row([
+						html.Div(id="tabela_vendas_force_index", className="dbc"),
+					]),
+
+				],width=6),
+            ]),
+            dbc.Row([
+           		html.H5(id="confianca_force_index"),
+           	]),
+
+		]),
+
+	],style={"background-color":"rgba(17,140,79,0.05)"},
+    id="modal_negociacoes_force_index",
+    size="xl",
+    is_open=False,
+    centered=True,
+    backdrop=True),
 ])
 
 @app.callback(
@@ -1578,6 +1632,184 @@ def popula_aroon(acao_selecionada,aroon_store,data_inicial,data_final,aplicar_da
 		return fig
 
 	return {}
+
+
+
+@app.callback(
+	Output('grafico_keltner_info','figure'),
+	[Input("select_acao_selecionada","value"),
+	Input("Keltner_store","data"),
+	Input("keltner_datepicker","start_date"),
+	Input("keltner_datepicker","end_date"),
+	Input("aplicar_data_keltner","n_clicks")
+	]
+)
+
+
+def popula_boolinger(acao_selecionada,keltner_store,data_inicial,data_final,aplicar_data):
+
+	if len(acao_selecionada)>0:
+
+		if isinstance(acao_selecionada,list):
+			
+			ticker = acao_selecionada[0]
+
+		else:
+			
+			ticker = acao_selecionada
+
+		
+		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
+		
+
+		if isinstance(acao_selecionada,list):
+			acao = acao_selecionada[0]
+
+		else:
+			acao = acao_selecionada
+
+
+		datas = list()
+		
+		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
+		datas.append(datetime.now())
+		
+		if("aplicar_data_keltner" == ctx.triggered_id):
+
+			if(data_inicial != None and data_final != None):
+				datas[0] = data_inicial
+				datas[1] = data_final		
+
+
+		fechamento_acao = pd.read_csv("Arquivos/Info/fechamento.csv")
+
+
+		if isinstance(acao_selecionada,list):
+			
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada[0]]
+
+		else:
+			
+			df = fechamento_acao.loc[fechamento_acao["ticker"] == acao_selecionada]
+
+
+		df.set_index("Date",inplace=True)
+
+		df = pd.DataFrame(df[str(datas[0]):str(datas[1])])
+
+
+		resultados_keltner = ta.volatility.KeltnerChannel(df["High"],df["Low"],df["Close"],keltner_store[0],keltner_store[1],False,True,2)
+
+		channel_high = list()
+		channel_low = list()
+		channel_high_indicator = list()
+		channel_low_indicator = list()
+		channel_middle = list()
+		channel_percent = list()
+
+		i=0
+		while i< len(resultados_keltner.keltner_channel_hband()):
+		    
+		    if(resultados_keltner.keltner_channel_hband()[i] != None):
+		        
+		        channel_high.append(resultados_keltner.keltner_channel_hband()[i])
+		        
+		    i+=1
+		    
+		i=0
+		while i< len(resultados_keltner.keltner_channel_lband()):
+		    
+		    if(resultados_keltner.keltner_channel_lband()[i] != None):
+		        
+		        channel_low.append(resultados_keltner.keltner_channel_lband()[i])
+		        
+		    i+=1
+		    
+		#-------------------------------------------------------------------------------------------------------
+		    
+		i=0
+		while i< len(resultados_keltner.keltner_channel_hband_indicator()):
+		    
+		    if(resultados_keltner.keltner_channel_hband_indicator()[i] != None):
+		        
+		        channel_high_indicator.append(resultados_keltner.keltner_channel_hband_indicator()[i])
+		        
+		    i+=1
+		    
+		i=0
+		while i< len(resultados_keltner.keltner_channel_lband_indicator()):
+		    
+		    if(resultados_keltner.keltner_channel_lband_indicator()[i] != None):
+		        
+		        channel_low_indicator.append(resultados_keltner.keltner_channel_lband_indicator()[i])
+		        
+		    i+=1
+		    
+		#-------------------------------------------------------------------------------------------------------
+
+		i=0
+		while i< len(resultados_keltner.keltner_channel_mband()):
+		    
+		    if(resultados_keltner.keltner_channel_mband()[i] != None):
+		        
+		        channel_middle.append(resultados_keltner.keltner_channel_mband()[i])
+		        
+		    i+=1
+		    
+		#-------------------------------------------------------------------------------------------------------
+
+		i=0
+		while i< len(resultados_keltner.keltner_channel_pband()):
+		    
+		    if(resultados_keltner.keltner_channel_pband()[i] != None):
+		        
+		        channel_percent.append(resultados_keltner.keltner_channel_pband()[i])
+		        
+		    i+=1
+
+
+		fig = go.Figure()
+
+		fig.add_trace(
+		go.Scatter(
+		    name="High band",
+		    x=df.index,
+		    y=channel_high,
+		    line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(
+		go.Scatter(
+		    name="Low band",
+		    x=df.index,
+		    y=channel_low,
+		    line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(
+		go.Scatter(
+		    name="Middle",
+		    x=df.index,
+		    y=channel_middle,
+		    line=dict(color='red', width=1))
+		)
+
+		fig.add_trace(go.Candlestick(
+		    x=df.index,
+		    open=df['Open'],
+		    high=df['High'],
+		    low=df['Low'],
+		    close=df['Close']))
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+
+
+		return fig
+
+	return {}
+
+
 
 @app.callback(
 	Output('grafico_boolinger_info','figure'),
@@ -2984,6 +3216,9 @@ def popula_tsi(acao_selecionada,tsi_config,data_inicial,data_final,aplicar_data)
 
 		fig.add_hline(y=20,line_color="blue",line_width=1, line_dash="dash")
 		fig.add_hline(y=-20,line_color="blue",line_width=1, line_dash="dash")
+
+		fig.update_layout(xaxis_rangeslider_visible=True)
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 
 		return fig
 
