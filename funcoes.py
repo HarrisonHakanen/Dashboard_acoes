@@ -375,6 +375,8 @@ def dados_lucro(altas_np,baixas_np):
 
 def GetAcoes(tickers,todas_acoes,data_inicio,data_fim,periodo):
 
+    
+
     contador = 0
     
     lista_de_acoes = list()
@@ -388,17 +390,9 @@ def GetAcoes(tickers,todas_acoes,data_inicio,data_fim,periodo):
     for ticker in tickers["Acoes"]:
         
         if(contador<10):
-
+    
+            acao = yf.download(ticker)
             
-            
-            if periodo == "Dia":
-                print(ticker)
-                
-                acao = yf.download(ticker)
-            else:
-                acao = yf.download(ticker,interval="1m",period="1d")
-
-
 
             #Remover a primeira linha dos dados, por que as vezes o yahoo buga o ultimo valor
             #acao = acao[:-1]

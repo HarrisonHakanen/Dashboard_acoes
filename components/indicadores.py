@@ -32,6 +32,43 @@ import funcoes
 
 layout = dbc.Col([
 
+
+	dbc.Row([
+
+		dbc.Row([
+			dbc.Row([				
+				dbc.Col([
+					html.H5("Candlestick"),
+				],width=10),
+				dbc.Col([
+					dbc.Button(id="config_candlestick",children=["Configurações"])
+				],width=2),
+			]),
+			html.Hr(),
+		]),
+
+		dbc.Row([
+			dbc.Col([
+				dcc.DatePickerRange(
+			        id='datepicker_geral',				   				       
+			    ),
+			],width=10),
+			dbc.Col([
+				dbc.Button(id="aplicar_data_geral",children=["Alterar data"])
+			])
+		]),
+
+		dbc.Row([
+			dbc.Col([
+
+				dbc.Col([
+					dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
+				]),
+			]),
+		]),
+
+	],style={"padding": "25px"}),
+
 	dbc.Row([
 		dbc.Col([
 			dcc.Tabs([
@@ -54,18 +91,6 @@ layout = dbc.Col([
 							html.Hr(),
 
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='macd_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_macd",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -98,17 +123,6 @@ layout = dbc.Col([
 
 						dbc.Row([
 							dbc.Col([
-								dcc.DatePickerRange(
-							        id='aroon_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_aroon",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
 								
 								dbc.Col([
 									dbc.Card(dcc.Graph(id="grafico_aroon_info"))
@@ -130,17 +144,6 @@ layout = dbc.Col([
 								],width=2),
 							]),
 							html.Hr(),
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='adx_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_adx",children=["Alterar data"])
-							])
 						]),
 
 						dbc.Row([
@@ -167,18 +170,6 @@ layout = dbc.Col([
 								],width=2),
 							]),
 							html.Hr(),
-						]),
-
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='stc_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_stc",children=["Alterar data"])
-							])
 						]),
 
 						dbc.Row([
@@ -208,18 +199,6 @@ layout = dbc.Col([
 							html.Hr(),
 						]),
 
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='cci_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_cci",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -246,17 +225,6 @@ layout = dbc.Col([
 								],width=2),
 							]),
 							html.Hr(),
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='sar_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_sar",children=["Alterar data"])
-							])
 						]),
 
 						dbc.Row([
@@ -296,17 +264,6 @@ layout = dbc.Col([
 
 						dbc.Row([
 							dbc.Col([
-								dcc.DatePickerRange(
-							        id='awesome_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_awesome",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
 								
 								dbc.Col([
 									dbc.Card(dcc.Graph(id="grafico_awesome_info"))
@@ -337,17 +294,6 @@ layout = dbc.Col([
 
 						dbc.Row([
 							dbc.Col([
-								dcc.DatePickerRange(
-							        id='kama_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_kama",children=["Alterar data"])
-							])
-						]),
-
-						dbc.Row([
-							dbc.Col([
 								
 								dbc.Col([
 									dbc.Card(dcc.Graph(id="grafico_kama_info"))
@@ -374,18 +320,6 @@ layout = dbc.Col([
 							html.Hr(),
 
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='tsi_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_tsi",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -413,18 +347,6 @@ layout = dbc.Col([
 						]),
 						html.Hr(),
 					]),
-
-					dbc.Row([
-						dbc.Col([
-							dcc.DatePickerRange(
-						        id='rsi_datepicker',				   				       
-						    ),
-						],width=10),
-						dbc.Col([
-							dbc.Button(id="aplicar_data_rsi",children=["Alterar data"])
-						])
-					]),
-
 					dbc.Row([
 						dbc.Col([
 							dbc.Col([
@@ -434,14 +356,7 @@ layout = dbc.Col([
 					]),
 
 				],style={"padding": "25px"}),
-
-
-
 				]),
-
-				
-
-
 
 				dcc.Tab(label='Volatilidade', children=[
 
@@ -461,18 +376,6 @@ layout = dbc.Col([
 							html.Hr(),
 
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='boolinger_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_boolinger",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -504,18 +407,6 @@ layout = dbc.Col([
 							html.Hr(),
 
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='keltner_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_keltner",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -552,18 +443,6 @@ layout = dbc.Col([
 							html.Hr(),
 
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='forceIndex_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_forceIndex",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								dbc.Col([
@@ -591,18 +470,6 @@ layout = dbc.Col([
 							]),
 							html.Hr(),
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='cmf_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_cmf",children=["Alterar data"])
-							])
-						]),
-
 						dbc.Row([
 							dbc.Col([
 								
@@ -627,17 +494,6 @@ layout = dbc.Col([
 							html.H5("Regressão linear"),
 							html.Hr(),
 						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='regressao_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_regressao",children=["Alterar data"])
-							])
-						]),
 						dbc.Row([
 							dbc.Col([
 								dbc.Col([
@@ -655,17 +511,6 @@ layout = dbc.Col([
 							
 							html.H5("Regressão polinomial"),
 							html.Hr(),
-						]),
-
-						dbc.Row([
-							dbc.Col([
-								dcc.DatePickerRange(
-							        id='polinomial_datepicker',				   				       
-							    ),
-							],width=10),
-							dbc.Col([
-								dbc.Button(id="aplicar_data_polinomial",children=["Alterar data"])
-							])
 						]),
 						dbc.Row([
 							dbc.Col([
@@ -718,41 +563,7 @@ layout = dbc.Col([
 	]),
 
 
-	dbc.Row([
-
-		dbc.Row([
-			dbc.Row([				
-				dbc.Col([
-					html.H5("Candlestick"),
-				],width=10),
-				dbc.Col([
-					dbc.Button(id="config_candlestick",children=["Configurações"])
-				],width=2),
-			]),
-			html.Hr(),
-		]),
-
-		dbc.Row([
-			dbc.Col([
-				dcc.DatePickerRange(
-			        id='candlestick_datepicker',				   				       
-			    ),
-			],width=10),
-			dbc.Col([
-				dbc.Button(id="aplicar_data_candlestick",children=["Alterar data"])
-			])
-		]),
-
-		dbc.Row([
-			dbc.Col([
-
-				dbc.Col([
-					dbc.Card(dcc.Graph(id="grafico_candlestick_info"))
-				]),
-			]),
-		]),
-
-	],style={"padding": "25px"}),
+	
 
 
 		
@@ -1249,9 +1060,9 @@ layout = dbc.Col([
 	Output('grafico_stc_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Stc_store","data"),
-	Input("stc_datepicker","start_date"),
-	Input("stc_datepicker","end_date"),
-	Input("aplicar_data_stc","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
@@ -1299,7 +1110,7 @@ def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_stc" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -1333,9 +1144,9 @@ def popula_stc(acao_selecionada,stc_store,data_inicial,data_final,aplicar_data):
 	Output('grafico_cci_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("CCI_store","data"),
-	Input("cci_datepicker","start_date"),
-	Input("cci_datepicker","end_date"),
-	Input("aplicar_data_cci","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -1380,7 +1191,7 @@ def popula_cci(acao_selecionada,cci_store,data_inicial,data_final,aplicar_data):
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 
-		if("aplicar_data_cci" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -1415,9 +1226,9 @@ def popula_cci(acao_selecionada,cci_store,data_inicial,data_final,aplicar_data):
 	Output('grafico_adx_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Adx_store","data"),
-	Input("adx_datepicker","start_date"),
-	Input("adx_datepicker","end_date"),
-	Input("aplicar_data_adx","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 
 )
@@ -1465,7 +1276,7 @@ def popula_adx(acao_selecionada,adx_store,data_inicial,data_final,aplicar_data):
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_adx" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -1507,9 +1318,9 @@ def popula_adx(acao_selecionada,adx_store,data_inicial,data_final,aplicar_data):
 	Output('grafico_aroon_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Aroon_store","data"),
-	Input("aroon_datepicker","start_date"),
-	Input("aroon_datepicker","end_date"),
-	Input("aplicar_data_aroon","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 
 )
@@ -1550,7 +1361,7 @@ def popula_aroon(acao_selecionada,aroon_store,data_inicial,data_final,aplicar_da
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_aroon" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -1639,9 +1450,9 @@ def popula_aroon(acao_selecionada,aroon_store,data_inicial,data_final,aplicar_da
 	Output('grafico_keltner_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Keltner_store","data"),
-	Input("keltner_datepicker","start_date"),
-	Input("keltner_datepicker","end_date"),
-	Input("aplicar_data_keltner","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -1674,7 +1485,7 @@ def popula_boolinger(acao_selecionada,keltner_store,data_inicial,data_final,apli
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_keltner" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -1815,9 +1626,9 @@ def popula_boolinger(acao_selecionada,keltner_store,data_inicial,data_final,apli
 	Output('grafico_boolinger_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Bollinger_store","data"),
-	Input("boolinger_datepicker","start_date"),
-	Input("boolinger_datepicker","end_date"),
-	Input("aplicar_data_boolinger","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -1857,7 +1668,7 @@ def popula_boolinger(acao_selecionada,bollinger_store,data_inicial,data_final,ap
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_boolinger" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2003,9 +1814,9 @@ def popula_boolinger(acao_selecionada,bollinger_store,data_inicial,data_final,ap
 	Output('grafico_macd_info','figure'),
 	Input("select_acao_selecionada","value"),
 	Input("Macd_store","data"),
-	Input("macd_datepicker","start_date"),
-	Input("macd_datepicker","end_date"),
-	Input("aplicar_data_macd","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	
 )
 
@@ -2037,7 +1848,7 @@ def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_dat
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_macd" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2049,7 +1860,6 @@ def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_dat
 		lenta = macd_config[1]
 		sinal = macd_config[2]
 		#------------------------------------
-
 
 
 		if isinstance(acao_selecionada,list):
@@ -2066,6 +1876,42 @@ def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_dat
 		
 		df = pd.DataFrame(df[str(datas[0]):str(datas[1])]['Close'])
 
+
+		resultados_macd = ta.trend.MACD(df["Close"],macd_config[1],macd_config[0],macd_config[2],False)
+
+
+		macd_list = list()
+		macd_diff = list()
+		macd_signal = list()
+
+		i=0
+		while i < len(resultados_macd.macd()):
+
+			if(resultados_macd.macd()[i]!=None):
+				macd_list.append(resultados_macd.macd()[i])
+
+			i+=1
+
+		i=0
+		while i < len(resultados_macd.macd_diff()):
+
+			if(resultados_macd.macd_diff()[i]!=None):
+				macd_diff.append(resultados_macd.macd_diff()[i])
+
+			i+=1
+		
+
+		i=0
+		while i < len(resultados_macd.macd_signal()):
+
+			if(resultados_macd.macd_signal()[i]!=None):
+				macd_signal.append(resultados_macd.macd_signal()[i])
+
+			i+=1
+
+
+
+		'''
 		#Calcula a média móvel exponencial rápida e lenta
 		rapidaMME=df.Close.ewm(span=rapida).mean()
 
@@ -2077,19 +1923,40 @@ def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_dat
 
 		#Calcula a média móvel exponencial do próprio MACD
 		sinal = MACD.ewm(span=sinal).mean()
-
+		'''
 
 		fig = go.Figure()
 
-		fig.add_trace(go.Scatter(x = df.index,y = MACD,name = "MACD", line_color = "green"))
+		fig.add_trace(go.Scatter(
+		    x = df.index,
+		    y = macd_list,
+		    name = "MACD",
+		    line_color = "green"
+		))
 
-		fig.add_trace(go.Scatter(x = df.index,y = sinal,name = "Sinal", line_color = "yellow"))
+		fig.add_trace(go.Scatter(
+		    x = df.index,
+		    y = macd_signal,
+		    name = "Sinal",
+		    line_color = "yellow"
+		))
+
+		fig.add_trace(
+		    go.Bar(
+		    x=df.index,
+		    y=macd_diff,
+		    name="Historograma",
+		    marker_color='blue'
+		))
+
+		
+
 
 		arquivo = str(datetime.now().month) + str(datetime.now().day) + ticker
 		
 		#df["Close"].to_csv("Arquivos/Macd/"+arquivo+"close.csv")
-		pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
-		pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
+		#pd.DataFrame(MACD).to_csv("Arquivos/Macd/"+arquivo+"macd.csv")
+		#pd.DataFrame(sinal).to_csv("Arquivos/Macd/"+arquivo+"sinal.csv")
 
 		fig.update_layout(xaxis_rangeslider_visible=True)
 		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
@@ -2105,9 +1972,9 @@ def popula_macd(acao_selecionada,macd_config,data_inicial,data_final,aplicar_dat
 	Output('grafico_rsi_info','figure'),
 	Input("select_acao_selecionada","value"),
 	Input("Rsi_store","data"),
-	Input("rsi_datepicker","start_date"),
-	Input("rsi_datepicker","end_date"),
-	Input("aplicar_data_rsi","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 )
 
 def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data):
@@ -2146,7 +2013,7 @@ def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data)
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_rsi" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2206,10 +2073,10 @@ def popula_rsi(acao_selecionada,rsi_config,data_inicial,data_final,aplicar_data)
 	Output('grafico_logistica_info','figure'),
 	[
 	Input("select_acao_selecionada","value"),
-	Input("logistica_datepicker","start_date"),
-	Input("logistica_datepicker","end_date"),
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
 	Input("aplicar_data_logistica","n_clicks"),
-	Input("executar_logistica","n_clicks")
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data,executar):
@@ -2245,7 +2112,7 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data,execu
 			datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-124))
 			datas.append(datetime.now())
 			
-			if("aplicar_data_polinomial" == ctx.triggered_id):
+			if("aplicar_data_geral" == ctx.triggered_id):
 
 				if(data_inicial != None and data_final != None):
 					datas[0] = data_inicial
@@ -2469,9 +2336,9 @@ def popula_logistica(acao_selecionada,data_inicial,data_final,aplicar_data,execu
 	Output('grafico_polinomial_info','figure'),
 	[
 	Input("select_acao_selecionada","value"),
-	Input("polinomial_datepicker","start_date"),
-	Input("polinomial_datepicker","end_date"),
-	Input("aplicar_data_polinomial","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 
 )
@@ -2511,7 +2378,7 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_polinomial" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2576,9 +2443,9 @@ def popula_polinomial(acao_selecionada,data_inicial,data_final,aplicar_data):
 	Output('grafico_regressao_info','figure'),
 	[
 	Input("select_acao_selecionada","value"),
-	Input("regressao_datepicker","start_date"),
-	Input("regressao_datepicker","end_date"),
-	Input("aplicar_data_regressao","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 
 )
@@ -2618,7 +2485,7 @@ def popula_regressao(acao_selecionada,data_inicial,data_final,aplicar_data):
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-12))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_regressao" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2680,9 +2547,9 @@ def popula_regressao(acao_selecionada,data_inicial,data_final,aplicar_data):
 	Output('grafico_candlestick_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("CandleStick_store","data"),
-	Input("candlestick_datepicker","start_date"),
-	Input("candlestick_datepicker","end_date"),
-	Input("aplicar_data_candlestick","n_clicks")]
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")]
 )
 
 def popula_candlestick(acao_selecionada,candlestick_config,data_inicial,data_final,aplicar_data):
@@ -2706,7 +2573,7 @@ def popula_candlestick(acao_selecionada,candlestick_config,data_inicial,data_fin
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_candlestick" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2766,9 +2633,9 @@ def popula_candlestick(acao_selecionada,candlestick_config,data_inicial,data_fin
 	Output('grafico_sar_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Sar_store","data"),
-	Input("sar_datepicker","start_date"),
-	Input("sar_datepicker","end_date"),
-	Input("aplicar_data_sar","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -2795,7 +2662,7 @@ def popula_sar(acao_selecionada,sar_config,data_inicial,data_final,aplicar_data)
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_sar" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2870,9 +2737,9 @@ def popula_sar(acao_selecionada,sar_config,data_inicial,data_final,aplicar_data)
 	Output('grafico_cmf_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Cmf_store","data"),
-	Input("cmf_datepicker","start_date"),
-	Input("cmf_datepicker","end_date"),
-	Input("aplicar_data_cmf","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -2899,7 +2766,7 @@ def popula_cmf(acao_selecionada,cmf_config,data_inicial,data_final,aplicar_data)
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_cmf" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -2962,9 +2829,9 @@ def popula_cmf(acao_selecionada,cmf_config,data_inicial,data_final,aplicar_data)
 	Output('grafico_awesome_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Awesome_store","data"),
-	Input("awesome_datepicker","start_date"),
-	Input("awesome_datepicker","end_date"),
-	Input("aplicar_data_awesome","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -2987,7 +2854,7 @@ def popula_awesome(acao_selecionada,awesome_config,data_inicial,data_final,aplic
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_awesome" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -3047,9 +2914,9 @@ def popula_awesome(acao_selecionada,awesome_config,data_inicial,data_final,aplic
 	Output('grafico_kama_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Kama_store","data"),
-	Input("kama_datepicker","start_date"),
-	Input("kama_datepicker","end_date"),
-	Input("aplicar_data_kama","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -3072,7 +2939,7 @@ def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_dat
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_kama" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -3140,9 +3007,9 @@ def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_dat
 	Output('grafico_tsi_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("Tsi_store","data"),
-	Input("tsi_datepicker","start_date"),
-	Input("tsi_datepicker","end_date"),
-	Input("aplicar_data_tsi","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -3165,7 +3032,7 @@ def popula_tsi(acao_selecionada,tsi_config,data_inicial,data_final,aplicar_data)
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_tsi" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
@@ -3228,9 +3095,9 @@ def popula_tsi(acao_selecionada,tsi_config,data_inicial,data_final,aplicar_data)
 	Output('grafico_ForceIndex_info','figure'),
 	[Input("select_acao_selecionada","value"),
 	Input("ForceIndex_store","data"),
-	Input("forceIndex_datepicker","start_date"),
-	Input("forceIndex_datepicker","end_date"),
-	Input("aplicar_data_forceIndex","n_clicks")
+	Input("datepicker_geral","start_date"),
+	Input("datepicker_geral","end_date"),
+	Input("aplicar_data_geral","n_clicks")
 	]
 )
 
@@ -3255,7 +3122,7 @@ def popula_forceIndex(acao_selecionada,forceIndex_config,data_inicial,data_final
 		datas.append(datetime.now() + dateutil.relativedelta.relativedelta(months=-8))
 		datas.append(datetime.now())
 		
-		if("aplicar_data_forceIndex" == ctx.triggered_id):
+		if("aplicar_data_geral" == ctx.triggered_id):
 
 			if(data_inicial != None and data_final != None):
 				datas[0] = data_inicial
