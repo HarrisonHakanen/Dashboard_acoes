@@ -2967,6 +2967,9 @@ def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_dat
 
 		resultados_kama = ta.momentum.KAMAIndicator(df["Close"],10,2,30,False)
 
+
+		resultados_kama2 = ta.momentum.KAMAIndicator(df["Close"],10,5,30,False)
+
 		kama_list = list()
 
 		i=0
@@ -2975,6 +2978,19 @@ def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_dat
 		    if(resultados_kama.kama()[i] != None):
 		        
 		        kama_list.append(resultados_kama.kama()[i])
+		        
+		    i+=1
+
+
+
+		kama_list2 = list()
+
+		i=0
+		while i< len(resultados_kama2.kama()):
+		    
+		    if(resultados_kama2.kama()[i] != None):
+		        
+		        kama_list2.append(resultados_kama2.kama()[i])
 		        
 		    i+=1
 		    
@@ -2986,6 +3002,14 @@ def popula_kama(acao_selecionada,kama_config,data_inicial,data_final,aplicar_dat
 		        x=df.index,
 		        y=kama_list,
 		        line=dict(color='blue', width=1))
+		)
+
+		fig.add_trace(
+		    go.Scatter(
+		        name="KAMA 2",
+		        x=df.index,
+		        y=kama_list2,
+		        line=dict(color='orange', width=1))
 		)
 
 		fig.add_trace(go.Candlestick(
